@@ -39,6 +39,7 @@
   &:nth-child(even) {
     .slider__item-text {
       align-self: flex-end;
+      transition-delay: 0.5s;
 
       @media (max-width: $mobile) and (orientation: landscape) {
         align-self: flex-start;
@@ -96,12 +97,45 @@
   max-width: 34rem;
   font-size: 1.8rem;
   line-height: 2rem;
+  opacity: 0;
+  transform: translateX(4.6rem);
+  transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+  will-change: transform, opacity;
+  transition-delay: 0.3s;
+
+  .screen--story.active .swiper-slide-active & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  //@media (min-width: $mobile) and (orientation: landscape) {
+  //  .screen--story.active .swiper-slide-next & {
+  //    opacity: 1;
+  //    transform: translateX(0);
+  //  }
+  //}
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
+
+  @media (min-width: $mobile) {
+    .screen--story.active .swiper-slide-next & {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 
   @media (min-width: $stop-scaling) {
     margin-top: 36px;
     max-width: 340px;
     font-size: 18px;
     line-height: 20px;
+
+    .screen--story.active .swiper-slide-next & {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   @media (orientation: portrait) {
@@ -274,5 +308,29 @@
       height: 0.4rem;
       background-color: $c-light;
     }
+  }
+}
+
+@keyframes appearRight {
+  from {
+    opacity: 0;
+    transform: translateX(4.6rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes disappearLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-4.6rem);
   }
 }
