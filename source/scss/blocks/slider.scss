@@ -108,13 +108,6 @@
     transform: translateX(0);
   }
 
-  //@media (min-width: $mobile) and (orientation: landscape) {
-  //  .screen--story.active .swiper-slide-next & {
-  //    opacity: 1;
-  //    transform: translateX(0);
-  //  }
-  //}
-
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
