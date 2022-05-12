@@ -1,5 +1,4 @@
 .overlay-screen {
-  content: '';
   position: absolute;
   z-index: 1;
   top: 0;
@@ -10,8 +9,8 @@
   transform: translateY(100%);
   will-change: transform;
 
-  .screen--prizes.active ~ & {
-    animation: backgroundAppear 0.35s ease-in-out both;
+  &.overlay-screen--visible {
+    animation: backgroundAppear 0.4s ease-in backwards;
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;
