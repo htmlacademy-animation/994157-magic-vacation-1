@@ -10424,6 +10424,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_throttle__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_throttle__WEBPACK_IMPORTED_MODULE_0__);
 
 
+const STORY_SCREEN_INDEX = 1;
+
 class FullPageScroll {
   constructor() {
     this.THROTTLE_TIMEOUT = 1000;
@@ -10432,8 +10434,10 @@ class FullPageScroll {
 
     this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
     this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
+    this.overlay = document.querySelector(`.overlay-screen`);
 
     this.activeScreen = 0;
+    this.prevScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
   }
@@ -10465,6 +10469,7 @@ class FullPageScroll {
 
   onUrlHashChanged() {
     const newIndex = Array.from(this.screenElements).findIndex((screen) => location.hash.slice(1) === screen.id);
+    this.prevScreen = this.activeScreen;
     this.activeScreen = (newIndex < 0) ? 0 : newIndex;
     this.changePageDisplay();
   }
@@ -10473,6 +10478,15 @@ class FullPageScroll {
     this.changeVisibilityDisplay();
     this.changeActiveMenuItem();
     this.emitChangeDisplayEvent();
+    this.changeOverlayDisplay();
+  }
+
+  changeOverlayDisplay() {
+    if (this.activeScreen > STORY_SCREEN_INDEX && this.prevScreen === STORY_SCREEN_INDEX) {
+      this.overlay.classList.add(`overlay-screen--visible`);
+    } else {
+      this.overlay.classList.remove(`overlay-screen--visible`);
+    }
   }
 
   changeVisibilityDisplay() {
@@ -10483,7 +10497,7 @@ class FullPageScroll {
     this.screenElements[this.activeScreen].classList.remove(`screen--hidden`);
     setTimeout(() => {
       this.screenElements[this.activeScreen].classList.add(`active`);
-    }, 100);
+    }, 400);
   }
 
   changeActiveMenuItem() {
@@ -10507,6 +10521,8 @@ class FullPageScroll {
   }
 
   reCalculateActiveScreenPosition(delta) {
+    this.prevScreen = this.activeScreen;
+
     if (delta > 0) {
       this.activeScreen = Math.min(this.screenElements.length - 1, ++this.activeScreen);
     } else {

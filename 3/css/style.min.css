@@ -1502,6 +1502,7 @@ img {
   position: relative;
   padding: 0 5.6rem;
   height: 6rem;
+  width: 100%;
   text-transform: uppercase;
   font: inherit;
   font-size: 2.4rem;
@@ -1510,6 +1511,7 @@ img {
   border: 0;
   border-radius: 3rem;
   outline: none;
+  background: transparent;
   opacity: 0;
   will-change: opacity;
   transition: opacity 0.3s ease 0.35s;
@@ -1521,6 +1523,7 @@ img {
 }
 .screen--game.active .form__field {
   opacity: 1;
+  transition: none;
 }
 .form__field:focus {
   border: 1px solid #a67ee5;
@@ -3285,7 +3288,7 @@ img {
   overflow: hidden;
   opacity: 1;
   pointer-events: auto;
-  transition: opacity 0s ease 0.35s;
+  transition: opacity 0s ease 0.4s;
 }
 .screen--hidden {
   opacity: 0;
@@ -3720,6 +3723,9 @@ img {
     background-position: top center, bottom center;
   }
 }
+.screen--intro.active ~ .screen--story {
+  transition-delay: 0s;
+}
 
 .screen--prizes {
   background-color: #5f458c;
@@ -3731,6 +3737,7 @@ img {
 .screen--game::before {
   content: "";
   position: absolute;
+  z-index: 1;
   right: -8.5rem;
   bottom: 0;
   width: 32.7rem;
@@ -4442,7 +4449,6 @@ img {
   }
 }
 .overlay-screen {
-  content: "";
   position: absolute;
   z-index: 1;
   top: 0;
@@ -4453,11 +4459,11 @@ img {
   transform: translateY(100%);
   will-change: transform;
 }
-.screen--prizes.active ~ .overlay-screen {
-  animation: backgroundAppear 0.35s ease-in-out both;
+.overlay-screen.overlay-screen--visible {
+  animation: backgroundAppear 0.4s ease-in backwards;
 }
 @media (prefers-reduced-motion: reduce) {
-  .screen--prizes.active ~ .overlay-screen {
+  .overlay-screen.overlay-screen--visible {
     animation: none;
   }
 }
