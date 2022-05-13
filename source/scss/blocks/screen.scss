@@ -1,13 +1,25 @@
 .screen {
-  position: relative;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   z-index: 1;
   overflow: hidden;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0s ease 0.4s;
 
   &--hidden {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.active {
+    z-index: 2;
   }
 
   @media (max-width: $tablet) and (orientation: portrait) {
@@ -370,6 +382,10 @@
     background-size: auto calc(100vh - 13.8rem), 100% 25rem;
     background-position: top center, bottom center;
   }
+
+  .screen--intro.active ~ & {
+    transition-delay: 0s;
+  }
 }
 
 .screen--prizes {
@@ -377,12 +393,12 @@
 }
 
 .screen--game {
-  position: relative;
   background-color: $c-dark;
 
   &::before {
     content: "";
     position: absolute;
+    z-index: 1;
     right: -8.5rem;
     bottom: 0;
     width: 32.7rem;
