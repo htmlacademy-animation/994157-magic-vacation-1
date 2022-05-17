@@ -3,6 +3,8 @@
   flex-grow: 1;
   width: 100%;
 
+  @include scale-in-block;
+
   .swiper-wrapper {
     min-height: 100vh;
     box-sizing: border-box;
@@ -61,6 +63,14 @@
 
       @media (max-width: $mobile) and (orientation: landscape) {
         margin-top: auto;
+      }
+    }
+  }
+
+  .screen--hidden.screen--story & {
+    &.swiper-slide-active {
+      @media (orientation: portrait), (max-width: $mobile) and (orientation: landscape) {
+        pointer-events: none;
       }
     }
   }

@@ -13,7 +13,6 @@ export default class FullPageScroll {
     this.overlay = document.querySelector(`.overlay-screen`);
 
     this.activeScreen = 0;
-    this.prevScreen = 0;
     this.onScrollHandler = this.onScroll.bind(this);
     this.onUrlHashChengedHandler = this.onUrlHashChanged.bind(this);
   }
@@ -45,7 +44,6 @@ export default class FullPageScroll {
 
   onUrlHashChanged() {
     const newIndex = Array.from(this.screenElements).findIndex((screen) => location.hash.slice(1) === screen.id);
-    this.prevScreen = this.activeScreen;
     this.activeScreen = (newIndex < 0) ? 0 : newIndex;
     this.changePageDisplay();
   }
@@ -58,8 +56,10 @@ export default class FullPageScroll {
   }
 
   changeOverlayDisplay() {
-    if (this.activeScreen > STORY_SCREEN_INDEX && this.prevScreen === STORY_SCREEN_INDEX) {
-      this.overlay.classList.add(`overlay-screen--visible`);
+    if (this.activeScreen > STORY_SCREEN_INDEX) {
+      setTimeout(() => {
+        this.overlay.classList.add(`overlay-screen--visible`);
+      }, 100);
     } else {
       this.overlay.classList.remove(`overlay-screen--visible`);
     }
@@ -97,8 +97,6 @@ export default class FullPageScroll {
   }
 
   reCalculateActiveScreenPosition(delta) {
-    this.prevScreen = this.activeScreen;
-
     if (delta > 0) {
       this.activeScreen = Math.min(this.screenElements.length - 1, ++this.activeScreen);
     } else {
