@@ -158,11 +158,25 @@
     height: 4rem;
   }
 
+  .btn__content {
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.2s ease;
+
+    .screen--game.active & {
+      opacity: 1;
+      transition-delay: 0.5s;
+    }
+  }
+
   svg {
     @include center;
     display: none;
     width: 1.6rem;
     height: 1.8rem;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.2s ease;
 
     @media (min-width: $stop-scaling) {
       width: 16px;
@@ -175,6 +189,11 @@
 
     @media (max-width: $tablet) and (orientation: landscape) {
       display: block;
+    }
+
+    .screen--game.active & {
+      opacity: 1;
+      transition-delay: 0.5s;
     }
   }
 }
