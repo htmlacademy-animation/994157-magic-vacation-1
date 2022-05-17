@@ -18,10 +18,6 @@
     pointer-events: none;
   }
 
-  &.active {
-    z-index: 2;
-  }
-
   @media (max-width: $tablet) and (orientation: portrait) {
     min-height: calc(var(--vh, 1vh) * 100);
   }
@@ -381,10 +377,6 @@
   @media (orientation: portrait) {
     background-size: auto calc(100vh - 13.8rem), 100% 25rem;
     background-position: top center, bottom center;
-  }
-
-  .screen--intro.active ~ & {
-    transition-delay: 0s;
   }
 }
 

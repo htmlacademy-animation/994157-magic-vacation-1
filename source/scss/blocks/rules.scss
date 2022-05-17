@@ -23,6 +23,14 @@
   }
 }
 
+.rules__content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  @include scale-in-block;
+}
+
 .rules__title {
   margin: 0 0 5rem;
   text-transform: uppercase;
@@ -144,9 +152,8 @@
     font-size: 1.2rem;
   }
 
-  &::before {
-    content: counter(li);
-    counter-increment: li;
+  &::before,
+  &::after {
     position: absolute;
     top: 0;
     left: 0;
@@ -155,8 +162,6 @@
     font-family: $font-alt;
     font-weight: 400;
     font-size: 2.4rem;
-    background-color: $c-purple;
-    border-radius: 50%;
     line-height: 5rem;
     text-align: center;
 
@@ -177,11 +182,76 @@
     }
   }
 
+  &::after {
+    content: counter(li);
+    counter-increment: li;
+    will-change: opacity;
+  }
+
+  &:before {
+    content: '';
+    background-color: $c-purple;
+    border-radius: 50%;
+    will-change: transform;
+  }
+
   p {
     margin: 0;
+    will-change: transform, opacity;
 
     @media (max-width: $tablet) and (orientation: portrait) {
       min-height: calc(1.4rem * 2.2);
+    }
+  }
+
+  .screen--rules.active & {
+    &:before {
+      animation-name: bulletCircleAppear;
+      animation-duration: 0.3s;
+      animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1.2);
+      animation-fill-mode: both;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+
+    &:after {
+      animation-name: fadeIn;
+      animation-duration: 0.3s;
+      animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1.2);
+      animation-fill-mode: both;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+
+    p {
+      animation-name: textAppear;
+      animation-duration: 0.3s;
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+  }
+
+  @for $i from 0 through 3 {
+    &:nth-child(#{$i + 1}) {
+      &:before {
+        animation-delay: calc(0.75s + #{$i*0.2s});
+      }
+
+      &:after {
+        animation-delay: calc(0.85s + #{$i*0.2s});
+      }
+
+      p {
+        animation-delay: calc(0.90s + #{$i*0.2s});
+      }
     }
   }
 }
@@ -209,5 +279,60 @@
   @media (max-width: $mobile) and (orientation: landscape) {
     bottom: 2rem;
     right: 1.5rem;
+  }
+
+  .screen--rules.active & {
+    &:before {
+      animation: LinkBackgroundAppear 0.4s ease both 1.6s;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+
+    .btn__content {
+      animation: fadeIn 0.2s ease both 1.75s;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+  }
+}
+
+@keyframes bulletCircleAppear {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes textAppear {
+  from {
+    opacity: 0;
+    transform: translateX(1em);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes LinkBackgroundAppear {
+  0% {
+    visibility: hidden;
+    width: 35%;
+  }
+
+  1% {
+    visibility: visible;
+    width: 35%;
+  }
+
+  100% {
+    width: 100%;
   }
 }

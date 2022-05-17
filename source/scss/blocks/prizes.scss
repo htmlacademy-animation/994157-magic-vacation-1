@@ -5,6 +5,8 @@
   padding: 14.6rem 0 7.7rem;
   width: 100%;
 
+  @include scale-in-block;
+
   @media (min-width: $stop-scaling) {
     padding: 146px 0 65px;
   }
