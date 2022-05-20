@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle';
+import {SCREEN_CHANGED_EVENT_TYPE, SCREEN_ACTIVE_SET} from '../constants';
 
 const STORY_SCREEN_INDEX = 1;
 
@@ -51,7 +52,7 @@ export default class FullPageScroll {
   changePageDisplay() {
     this.changeVisibilityDisplay();
     this.changeActiveMenuItem();
-    this.emitChangeDisplayEvent();
+    this.emitChangeDisplayEvent(SCREEN_CHANGED_EVENT_TYPE);
     this.changeOverlayDisplay();
   }
 
@@ -73,6 +74,7 @@ export default class FullPageScroll {
     this.screenElements[this.activeScreen].classList.remove(`screen--hidden`);
     setTimeout(() => {
       this.screenElements[this.activeScreen].classList.add(`active`);
+      this.emitChangeDisplayEvent(SCREEN_ACTIVE_SET);
     }, 400);
   }
 
@@ -84,8 +86,8 @@ export default class FullPageScroll {
     }
   }
 
-  emitChangeDisplayEvent() {
-    const event = new CustomEvent(`screenChanged`, {
+  emitChangeDisplayEvent(eventType) {
+    const event = new CustomEvent(eventType, {
       detail: {
         'screenId': this.activeScreen,
         'screenName': this.screenElements[this.activeScreen].id,

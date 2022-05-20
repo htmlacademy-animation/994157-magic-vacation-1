@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-  padding: 15.5rem 0 10rem;
+  padding: 13.5rem 0 10rem;
   width: 100%;
 
   @media (min-width: $stop-scaling) {
@@ -50,6 +50,10 @@
   @media (max-width: $mobile) and (orientation: landscape) {
     font-size: 5rem;
   }
+
+  & > span:last-child {
+    transform: translateY(-0.2em);
+  }
 }
 
 .intro__content {
@@ -95,7 +99,7 @@
   line-height: 1.27;
   opacity: 0;
   transform: translateY(14px);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   transition-delay: 1s;
   will-change: transform, opacity;
 
@@ -155,6 +159,18 @@
   text-transform: uppercase;
   font-size: 2.4rem;
   line-height: 1.2;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  transition-delay: 1.55s;
+  will-change: transform, opacity;
+
+  .screen--intro.active & {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
   @media (min-width: $stop-scaling) {
     margin: 0 0 16px;

@@ -1,0 +1,29 @@
+.animated-text__word {
+  display: inline-block;
+  overflow: hidden;
+
+  & + & {
+    margin-left: 0.24em;
+  }
+
+  .intro__title & {
+    margin: 0;
+  }
+}
+
+.animated-text__word > span {
+  display: inline-block;
+  margin-right: -0.01em;
+  transform: translate3d(0, 1.19em, 0);
+  transition-timing-function: ease;
+  transition-property: transform;
+  will-change: transform;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  .animated-text.active & {
+    transform: translate3d(0, 0.19em, 0);
+  }
+}
