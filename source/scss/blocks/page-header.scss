@@ -321,7 +321,7 @@
         transform: scaleX(1);
 
         .page-header--animated & {
-          animation: linkLineAppear 0.35s $easing-fast 0.2s forwards;
+          animation: link-line-appear 0.35s $easing-fast 0.2s forwards;
 
           @media (prefers-reduced-motion: reduce) {
             animation: none;
@@ -366,7 +366,7 @@
   }
 }
 
-@keyframes linkLineAppear {
+@keyframes link-line-appear {
   from {
     transform: scaleX(0);
   }

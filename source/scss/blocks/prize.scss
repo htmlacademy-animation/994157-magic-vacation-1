@@ -1,0 +1,195 @@
+.prize {
+  display: none;
+
+  .screen--result.screen--show & {
+    display: block;
+  }
+
+  img {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    @media (max-width: $mobile) and (orientation: portrait) {
+      top: 47%;
+      left: 55%;
+    }
+  }
+}
+
+.prize__leaf-blue-right {
+  width: 37vh;
+  transform-origin: bottom left;
+  animation: leaf-blue-right-appear 2.2s ease-in-out 0.65s both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translate3d(0, -35%, 0);
+  }
+}
+
+.prize__leaf-blue-left {
+  width: 37vh;
+  transform-origin: right center;
+  animation: leaf-blue-left-appear 2.2s ease-in-out 0.65s both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translate3d(-124%, 3%, 0);
+  }
+}
+
+.prize__leaf-green {
+  width: 43vh;
+  transform-origin: left 85%;
+  animation: leaf-green-appear 2.2s ease-in-out 0.75s both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translate3d(-10%, 28%, 0);
+  }
+}
+
+.prize__suitcase {
+  width: 45vh;
+  transform-origin: center bottom;
+  animation: suitcase-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1.2) 0.5s both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translate3d(-60%, -27%, 0);
+  }
+}
+
+.prize__flamingo {
+  width: 35vh;
+  animation:
+    flamingo-appear 0.4s ease-in-out 0.5s both,
+    flamingo-bounce 3s ease-in-out 1s infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transform: translate3d(-90%, -5%, 0);
+  }
+}
+
+@keyframes leaf-blue-right-appear {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -35%, 0) rotate(-40deg);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate3d(0, -35%, 0) rotate(10deg);
+  }
+
+  40% {
+    transform: translate3d(0, -35%, 0) rotate(-10deg);
+  }
+
+  65% {
+    transform: translate3d(0, -35%, 0) rotate(3deg);
+  }
+
+  85% {
+    transform: translate3d(0, -35%, 0) rotate(-3deg);
+  }
+
+  100% {
+    transform: translate3d(0, -35%, 0) rotate(0deg);
+  }
+}
+
+@keyframes leaf-blue-left-appear {
+  0% {
+    opacity: 0;
+    transform: translate3d(-124%, 3%, 0) rotate(40deg);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate3d(-124%, 3%, 0) rotate(-10deg);
+  }
+
+  45% {
+    transform: translate3d(-124%, 3%, 0) rotate(10deg);
+  }
+
+  70% {
+    transform: translate3d(-124%, 3%, 0) rotate(-3deg);
+  }
+
+  90% {
+    transform: translate3d(-124%, 3%, 0) rotate(3deg);
+  }
+
+  100% {
+    transform: translate3d(-124%, 3%, 0) rotate(0deg);
+  }
+}
+
+@keyframes leaf-green-appear {
+  0% {
+    opacity: 0;
+    transform: translate3d(-10%, 28%, 0) rotate(-20deg);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate3d(-10%, 28%, 0) rotate(10deg);
+  }
+
+  40% {
+    transform: translate3d(-10%, 28%, 0) rotate(-10deg);
+  }
+
+  65% {
+    transform: translate3d(-10%, 28%, 0) rotate(3deg);
+  }
+
+  85% {
+    transform: translate3d(-10%, 28%, 0) rotate(-3deg);
+  }
+
+  100% {
+    transform: translate3d(-10%, 28%, 0) rotate(0deg);
+  }
+}
+
+@keyframes suitcase-appear {
+  from {
+    transform: translate3d(-60%, 0, 0) scale(0);
+  }
+
+  to {
+    transform: translate3d(-60%, -27%, 0) scale(1);
+  }
+}
+
+@keyframes flamingo-appear {
+  from {
+    opacity: 0;
+    transform: translate3d(-90%, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(-90%, -5%, 0);
+  }
+}
+
+@keyframes flamingo-bounce {
+  0% {
+    transform: translate3d(-90%, -5%, 0) rotate(0);
+  }
+
+  50% {
+    transform: translate3d(-90%, -10%, 0) rotate(5deg);
+  }
+
+  100% {
+    transform: translate3d(-90%, -5%, 0) rotate(0);
+  }
+}
