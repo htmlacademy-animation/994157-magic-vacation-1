@@ -12,7 +12,6 @@ import FullPageScroll from './modules/full-page-scroll';
 import animateTypography from './modules/animate-typography';
 
 // init modules
-pageLoaded();
 mobileHeight();
 slider();
 menu();
@@ -25,3 +24,5 @@ animateTypography();
 
 const fullPageScroll = new FullPageScroll();
 fullPageScroll.init();
+pageLoaded();
+

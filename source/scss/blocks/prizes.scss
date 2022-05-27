@@ -61,6 +61,14 @@
   font-size: 2.4rem;
   line-height: 1.2;
 
+  .screen--prizes.active & {
+    animation: text-slide-up 0.3s ease-out 0.85s both;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
   @media (min-width: $stop-scaling) {
     margin-left: 58px;
     margin-bottom: -56px;
@@ -96,6 +104,12 @@
   justify-content: flex-end;
   align-items: flex-end;
   margin-top: auto;
+  opacity: 0;
+  transition: opacity 0s ease 0.85s;
+
+  .screen--prizes.active & {
+    opacity: 1;
+  }
 
   @media (max-width: $tablet) and (orientation: portrait) {
     flex-direction: column;

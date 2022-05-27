@@ -1,9 +1,69 @@
 import Swiper from "swiper";
+import {AnimateTypography} from "./animate-typography";
+import {SCREEN_ACTIVE_SET, THEME_CLASS_NAMES} from '../constants';
 
 export default () => {
   let storySlider;
+  let currentThemeClass = THEME_CLASS_NAMES.purple;
   let sliderContainer = document.getElementById(`story`);
   sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
+
+  const titleNode = document.querySelector(`.js-story-title`);
+  const animateTitle = new AnimateTypography({selector: `.js-story-title`, node: titleNode, duration: 500, delayStep: 330, classForActivate: `active`});
+  animateTitle.init();
+
+  const toggleTitleAnimation = (slideIndex) => {
+    if (slideIndex > 0) {
+      setTimeout(() => {
+        animateTitle.destroyAnimation();
+      }, 400);
+    } else {
+      setTimeout(() => {
+        animateTitle.runAnimation();
+      }, 400);
+    }
+  };
+
+  const changeThemeClass = (themeClassName) => {
+    document.body.classList.remove(currentThemeClass);
+    currentThemeClass = themeClassName;
+    document.body.classList.add(currentThemeClass);
+  };
+
+  const changeTheme = (slideIndex) => {
+    if (slideIndex >= 6) {
+      changeThemeClass(THEME_CLASS_NAMES.default);
+    } else if (slideIndex >= 4) {
+      changeThemeClass(THEME_CLASS_NAMES.lightBlue);
+    } else if (slideIndex >= 2) {
+      changeThemeClass(THEME_CLASS_NAMES.blue);
+    } else {
+      changeThemeClass(THEME_CLASS_NAMES.purple);
+    }
+  };
+
+  const hideTheme = () => {
+    document.body.classList.remove(currentThemeClass);
+  };
+
+  const showTheme = () => {
+    document.body.classList.add(currentThemeClass);
+  };
+
+  const toggleTheme = ({detail}) => {
+    const {screenName} = detail;
+
+    if (screenName === `story`) {
+      showTheme();
+    } else {
+      hideTheme();
+    }
+  };
+
+  const handleSlideChange = (slideIndex) => {
+    toggleTitleAnimation(slideIndex);
+    changeTheme(slideIndex);
+  };
 
   const setSlider = function () {
     if (((window.innerWidth / window.innerHeight) < 1) || window.innerWidth < 769) {
@@ -30,6 +90,8 @@ export default () => {
             } else if (storySlider.activeIndex === 6 || storySlider.activeIndex === 7) {
               sliderContainer.style.backgroundImage = `url("img/slide4.jpg"), linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2F2A42 16.85%)`;
             }
+
+            handleSlideChange(storySlider.activeIndex);
           },
           resize: () => {
             storySlider.update();
@@ -42,6 +104,7 @@ export default () => {
       storySlider = new Swiper(`.js-slider`, {
         slidesPerView: 2,
         slidesPerGroup: 2,
+        virtualTranslate: true,
         pagination: {
           el: `.swiper-pagination`,
           type: `fraction`
@@ -64,6 +127,7 @@ export default () => {
             } else if (storySlider.activeIndex === 6) {
               sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
             }
+            handleSlideChange(storySlider.activeIndex);
           },
           resize: () => {
             storySlider.update();
@@ -81,6 +145,8 @@ export default () => {
     }
     setSlider();
   });
+
+  document.body.addEventListener(SCREEN_ACTIVE_SET, toggleTheme);
 
   setSlider();
 };

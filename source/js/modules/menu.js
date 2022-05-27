@@ -19,14 +19,13 @@ export default () => {
 
   for (let i = 0; i < menuLinks.length; i++) {
     menuLinks[i].addEventListener(`click`, function () {
-      if (header.classList.contains(`page-header--animated`)) {
-        header.classList.remove(`page-header--animated`);
-      }
-
       if (window.innerWidth < 1025) {
         header.classList.remove(`page-header--menu-opened`);
         document.body.classList.remove(`menu-opened`);
       }
+    });
+    menuLinks[i].addEventListener(`animationend`, () => {
+      header.classList.remove(`page-header--animated`);
     });
   }
 };
