@@ -1,0 +1,19 @@
+.page {
+  --main-color: #{$c-dark};
+  --accent-color: #{$c-purple};
+
+  &--theme-purple {
+    --main-color: #{$c-purple};
+    --accent-color: #{$c-dark};
+  }
+
+  &--theme-light-blue {
+    --main-color: #{$c-light-blue};
+    --accent-color: #{$c-blue};
+  }
+
+  &--theme-blue {
+    --main-color: #{$c-blue};
+    --accent-color: #{$c-light-blue};
+  }
+}

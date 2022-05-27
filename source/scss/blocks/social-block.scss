@@ -23,7 +23,7 @@
   display: none;
   width: 4rem;
   height: 4rem;
-  color: $c-dark;
+  color: var(--main-color);
   border-radius: 50%;
   transition: color 0.3s ease;
 
@@ -58,7 +58,7 @@
     will-change: border-color, background-color, transform;
 
     .page--loaded & {
-      animation: toggler-circle-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1.2) 0.35s backwards;
+      animation: toggler-circle-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1.2) 0.3s backwards;
 
       @media (prefers-reduced-motion: reduce) {
         animation: none;
@@ -86,23 +86,19 @@
   }
 
   &:hover {
-    color: $c-purple;
+    color: var(--accent-color);
 
     &::before {
       transform: translate3d(-50%, -50%, 0) scale(1.125);
     }
   }
 
-  .social-block--active & {
-    color: $c-purple;
-  }
-
   &:focus {
-    color: $c-purple;
+    color: var(--accent-color);
     outline: none;
 
     &::before {
-      border-color: $c-purple;
+      border-color: currentColor;
     }
 
     & + .social-block__list {
@@ -119,9 +115,10 @@
     color: $c-light;
 
     &::before {
+      color: var(--accent-color);
       transform: translate3d(-50%, -50%, 0) scale(1);
-      background-color: $c-purple;
-      border-color: $c-purple;
+      background-color: currentColor;
+      border-color: currentColor;
     }
   }
 }
@@ -240,28 +237,28 @@
 
   @media (max-width: $tablet) and (orientation: portrait) {
     color: $c-light;
-    background-color: $c-dark;
+    background-color: var(--main-color);
   }
 
   @media (max-width: $mobile) and (orientation: landscape) {
     color: $c-light;
-    background-color: $c-dark;
+    background-color: var(--main-color);
   }
 
   &:hover {
-    color: $c-purple;
+    color: var(--accent-color);
   }
 
   &:focus {
-    color: $c-purple;
+    color: var(--accent-color);
     background-color: $c-light;
-    border-color: $c-purple;
+    border-color: currentColor;
     outline: none;
   }
 
   &:active,
   &:active:focus {
-    color: $c-purple;
+    color: var(--accent-color);
     background-color: $c-light;
     border-color: $c-light;
   }

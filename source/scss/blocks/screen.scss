@@ -11,7 +11,11 @@
   overflow: hidden;
   opacity: 1;
   pointer-events: auto;
-  transition: opacity 0s ease 0.4s;
+  transition: opacity 0s ease;
+
+  .page--loaded & {
+    transition-delay: 350ms;
+  }
 
   &--hidden {
     opacity: 0;
@@ -58,8 +62,24 @@
   will-change: transform;
   transition: transform 0.35s $easing-fast;
 
-  .page--loaded & {
+  .screen.active & {
     transform: translateY(0);
+  }
+
+  @media (min-width: $tablet) {
+    .screen--prizes & {
+      .page[data-active-screen='rules'] & {
+        transition-delay: 0.4s;
+      }
+    }
+
+    .screen--prizes.active & {
+      transition-delay: 0.2s;
+
+      .page[data-previos-active-screen='rules'] & {
+        transition: none;
+      }
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -70,9 +90,9 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0 3.6rem 0 0;
-    will-change: width, height;
-    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-    transition-delay: 0.3s;
+    will-change: width, height, transform;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.35s $easing-fast;
+    transition-delay: 0.3s, 0.3s, 0s;
 
     &.screen__footer--full {
       width: 100%;
@@ -89,9 +109,9 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0 3.6rem 0 0;
-    will-change: width, height;
-    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-    transition-delay: 0.3s;
+    will-change: width, height, transform;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.35s $easing-fast;
+    transition-delay: 0.3s, 0.3s, 0s;
 
     &.screen__footer--full {
       width: 100%;
@@ -285,6 +305,16 @@
   font-size: 1.2rem;
   line-height: 1.2;
 
+  .screen--prizes.active & {
+    .page[data-previos-active-screen='rules'] & {
+      animation: fade-in 0.35s ease-out both;
+    }
+  }
+
+  .page[data-active-screen='rules'] & {
+    animation: fade-out 0.35s ease-in both;
+  }
+
   @media (min-width: $stop-scaling) {
     padding: 8px 0;
     font-size: 12px;
@@ -381,7 +411,9 @@
 }
 
 .screen--prizes {
-  background-color: $c-dark;
+  .page[data-previos-active-screen='story'] & {
+    transition-delay: 0ms;
+  }
 }
 
 .screen--game {
