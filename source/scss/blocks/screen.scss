@@ -59,7 +59,6 @@
   background-color: $c-light;
   z-index: 1;
   transform: translateY(100%);
-  will-change: transform;
   transition: transform 0.35s $easing-fast;
 
   .screen.active & {
@@ -90,7 +89,6 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0 3.6rem 0 0;
-    will-change: width, height, transform;
     transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.35s $easing-fast;
     transition-delay: 0.3s, 0.3s, 0s;
 
@@ -109,7 +107,6 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 0 3.6rem 0 0;
-    will-change: width, height, transform;
     transition: width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.35s $easing-fast;
     transition-delay: 0.3s, 0.3s, 0s;
 

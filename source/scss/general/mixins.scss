@@ -59,10 +59,10 @@
   transform: translate(-50%, -50%);
 }
 
-@mixin delay($rule, $number, $value) {
-  @for $i from 1 through ($number) {
-    &:nth-child(#{$i}) {
-      #{$rule}-delay: (#{$i*$value});
+@mixin delay($rule, $number, $value, $fromIter: 1, $plus: 0) {
+  @for $i from ($fromIter) through ($number) {
+    &:nth-child(#{$i + 1}) {
+      #{$rule}-delay: (#{$plus + $i*$value});
     }
   }
 }
@@ -79,7 +79,6 @@
   opacity: 1;
   transform: scale(1);
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-  will-change: transform, opacity;
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;

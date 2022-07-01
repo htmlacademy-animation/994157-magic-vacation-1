@@ -10,6 +10,26 @@
   </defs>
 
   <g id="primary-award-from">
+    <animate
+      id="appear"
+      attributeType="CSS"
+      attributeName="opacity"
+      from="0"
+      to="1"
+      dur="0.5s"
+      fill="freeze"
+      begin="0s"
+    />
+    <animate
+      id="from"
+      attributeType="CSS"
+      attributeName="opacity"
+      from="1"
+      to="0"
+      dur="0.5s"
+      fill="freeze"
+      begin="appear.begin + 2.7s"
+    />
     <g id="airship">
       <g id="airship-cabin">
         <g>
@@ -41,7 +61,7 @@
               to="0"
               dur="0.001s"
               fill="freeze"
-              begin="2.5s"
+              begin="from.begin - 0.2s"
             />
           </path>
           <path
@@ -54,7 +74,7 @@
             keyTimes="0; 0.3; 0.5; 0.7; 1"
             dur="2s"
             repeatCount="indefinite"
-            begin="-1s"
+            begin="appear.begin - 1s"
             repeatDur="5s"
           />
           <animateTransform
@@ -65,7 +85,7 @@
             dur="2s"
             additive="sum"
             repeatCount="indefinite"
-            begin="-1s"
+            begin="appear.begin - 1s"
             repeatDur="5s"
           />
           <animateTransform
@@ -76,7 +96,7 @@
             dur="2s"
             additive="sum"
             repeatCount="indefinite"
-            begin="-1s"
+            begin="appear.begin - 1s"
             repeatDur="5s"
           />
         </g>
@@ -105,6 +125,7 @@
           dur="2s"
           repeatCount="indefinite"
           repeatDur="4s"
+          begin="appear.begin"
         />
       </g>
       <g id="airship-ball">
@@ -129,7 +150,7 @@
                 M 132.18 186.12 C 148.92 181.85 176.76 176.12 204.99 176.12 C 249.52 176.12 278.25 182.55 278.6 190.5 C 278.6 190.67 278.6 190.84 278.6 191.01 C 277.75 198.87 249.15 205.18 205 205.18 C 176.77 205.18 148.93 199.42 132.19 195.18 C 128.4 194.18 126.4 192.65 126.19 191.05 L 126.19 190.54 C 126.32 188.85 128.34 187.18 132.29 186.17;
                 M 132.013 184.012 C 148.818 179.31 176.776 169.5 205.115 169.5 C 249.817 169.5 278.649 180.081 279 188.835 C 279 189.022 279 189.209 279 189.396 C 278.147 198.052 249.436 201 205.115 201 C 176.776 201 148.828 198.657 132.023 193.988 C 128.219 192.887 126.211 191.202 126 189.44 L 126 188.879 C 126.131 187.018 128.158 185.179 132.124 184.067;
                 M 132.18 186.12 C 148.92 181.85 176.76 176.12 204.99 176.12 C 249.52 176.12 278.25 182.55 278.6 190.5 C 278.6 190.67 278.6 190.84 278.6 191.01 C 277.75 198.87 249.15 205.18 205 205.18 C 176.77 205.18 148.93 199.42 132.19 195.18 C 128.4 194.18 126.4 192.65 126.19 191.05 L 126.19 190.54 C 126.32 188.85 128.34 187.18 132.29 186.17"
-            begin="0s"
+            begin="appear.begin"
             dur="2s"
             repeatCount="indefinite"
             repeatDur="4s"
@@ -160,6 +181,7 @@
           dur="2s"
           repeatCount="indefinite"
           repeatDur="4s"
+          begin="appear.begin"
         />
       </g>
     </g>
@@ -176,6 +198,7 @@
           to="0 0"
           dur="2s"
           fill="freeze"
+          begin="appear.begin"
         />
       </g>
       <animateTransform
@@ -186,6 +209,7 @@
         to="-10 0"
         dur="2s"
         fill="freeze"
+        begin="appear.begin"
       />
       <animate
         id="cloudFade"
@@ -195,6 +219,7 @@
         keyTimes="0; 0.2; 0.8; 1"
         dur="2s"
         fill="freeze"
+        begin="appear.begin"
       />
     </g>
     <g id="cloud-right">
@@ -253,6 +278,7 @@
           dur="1s"
           repeatCount="indefinite"
           repeatDur="4s"
+          begin="appear.begin"
         />
       </line>
       <line
@@ -299,16 +325,6 @@
         />
       </line>
     </g>
-    <animate
-      id="from"
-      attributeType="CSS"
-      attributeName="opacity"
-      from="1"
-      to="0"
-      dur="0.5s"
-      fill="freeze"
-      begin="2.7s"
-    />
   </g>
 
   <g id="window-plane">
@@ -395,18 +411,18 @@
         dur="4s"
         additive="sum"
         begin="toCloudFadeIn.begin"
-        fill="freeze"
+        repeatCount="indefinite"
       />
-      <animate
-        id="toCloudFadeOut"
-        attributeType="CSS"
-        attributeName="opacity"
-        from="1"
-        to="0"
-        dur="0.3s"
-        fill="freeze"
-        begin="toCloudFadeIn.end + 3.2s"
-      />
+<!--      <animate-->
+<!--        id="toCloudFadeOut"-->
+<!--        attributeType="CSS"-->
+<!--        attributeName="opacity"-->
+<!--        from="1"-->
+<!--        to="0"-->
+<!--        dur="0.3s"-->
+<!--        fill="freeze"-->
+<!--        begin="toCloudFadeIn.end + 3.2s"-->
+<!--      />-->
     </g>
   </g>
 
@@ -517,20 +533,20 @@
         type="rotate"
         values="0 204 235; 5 204 235; 0 204 235;"
         keyTimes="0; 0.5; 1"
-        dur="1s"
+        dur="2s"
         additive="sum"
         begin="from.end - 0.25s"
-        fill="freeze"
+        repeatCount="indefinite"
       />
       <animateTransform
         attributeName="transform"
         type="translate"
         values="-8 -5; 0 0; -8 -5;"
         keyTimes="0; 0.5; 1"
-        dur="1s"
+        dur="2s"
         additive="sum"
         begin="from.end - 0.25s"
-        fill="freeze"
+        repeatCount="indefinite"
       />
     </g>
 

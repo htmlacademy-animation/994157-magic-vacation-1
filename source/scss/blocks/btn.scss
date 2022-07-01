@@ -39,7 +39,6 @@
     border: 2px solid $c-light;
     border-radius: 3.5rem;
     z-index: -1;
-    will-change: transform, width, background-color, border-color;
     transform: scale(1);
     transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
   }

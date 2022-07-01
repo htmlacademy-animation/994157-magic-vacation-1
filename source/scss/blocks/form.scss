@@ -45,7 +45,6 @@
     border-radius: 3rem;
     background: #fff;
     transform: translateY(-50%);
-    will-change: width;
 
     .screen--game.active &,
     .screen--result.screen--show & {
@@ -96,7 +95,6 @@
   outline: none;
   background: transparent;
   opacity: 0;
-  will-change: opacity;
   transition: opacity 0.3s ease-out 0.2s;
 
   @media (prefers-reduced-motion: reduce) {
@@ -167,7 +165,6 @@
   }
 
   .screen--result & {
-    will-change: opacity;
     opacity: 0;
     transition: opacity 0.3s ease-out 0.8s;
 
@@ -182,7 +179,6 @@
 
   .btn__content {
     opacity: 0;
-    will-change: opacity;
     transition: opacity 0.3s ease-out;
 
     @media (prefers-reduced-motion: reduce) {
@@ -206,7 +202,6 @@
     width: 1.6rem;
     height: 1.8rem;
     opacity: 0;
-    will-change: opacity;
     transition: opacity 0.2s ease;
 
     @media (min-width: $stop-scaling) {
