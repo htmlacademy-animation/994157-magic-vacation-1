@@ -7,3 +7,14 @@ export const THEME_CLASS_NAMES = {
   lightBlue: `page--theme-light-blue`,
   blue: `page--theme-blue`
 };
+
+export const SCREEN_NAMES = {
+  TOP: `top`,
+  STORY: `story`,
+  PRIZES: `prizes`,
+  RULES: `rules`,
+  GAME: `game`,
+  RESULT_TRIP: `result`,
+  RESULT_SUITCASE: `result2`,
+  RESULT_NEGATIVE: `result3`,
+};

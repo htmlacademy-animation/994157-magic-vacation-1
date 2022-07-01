@@ -10,6 +10,7 @@ import social from './modules/social.js';
 import pageLoaded from './modules/pageLoaded.js';
 import FullPageScroll from './modules/full-page-scroll';
 import animateTypography from './modules/animate-typography';
+import svgAnimation from './modules/svg-animation';
 
 // init modules
 mobileHeight();
@@ -21,6 +22,7 @@ result();
 form();
 social();
 animateTypography();
+svgAnimation();
 
 const fullPageScroll = new FullPageScroll();
 fullPageScroll.init();

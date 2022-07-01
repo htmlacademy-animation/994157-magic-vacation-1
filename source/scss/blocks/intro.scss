@@ -101,7 +101,6 @@
   transform: translateY(14px);
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   transition-delay: 1s;
-  will-change: transform, opacity;
 
   .screen--intro.active & {
     opacity: 1;
@@ -162,7 +161,6 @@
   opacity: 0;
   transition: opacity 0.3s ease-out;
   transition-delay: 1.55s;
-  will-change: transform, opacity;
 
   .screen--intro.active & {
     opacity: 1;

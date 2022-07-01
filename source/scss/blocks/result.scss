@@ -102,7 +102,6 @@
   line-height: 1.2;
   color: $c-light;
   opacity: 0;
-  will-change: opacity;
   transition: opacity 0.3s ease-out;
 
   @media (min-width: $stop-scaling) {
@@ -164,7 +163,6 @@
       transform: translate3d(-50%, -50%, 0) scale(1);
       transform-origin: center;
       transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
-      will-change: border-color, background-color, transform;
     }
 
     .screen--result.screen--show & {

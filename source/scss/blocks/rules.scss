@@ -198,19 +198,16 @@
   &::after {
     content: counter(li);
     counter-increment: li;
-    will-change: opacity;
   }
 
   &:before {
     content: '';
     background-color: $c-purple;
     border-radius: 50%;
-    will-change: transform;
   }
 
   p {
     margin: 0;
-    will-change: transform, opacity;
 
     @media (max-width: $tablet) and (orientation: portrait) {
       min-height: calc(1.4rem * 2.2);
@@ -292,7 +289,6 @@
 
   .btn__content {
     opacity: 0;
-    will-change: opacity;
     transition: opacity 0.2s ease;
 
     .screen--rules.active & {

@@ -55,7 +55,6 @@
     transform: translate3d(-50%, -50%, 0) scale(1);
     transform-origin: center;
     transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
-    will-change: border-color, background-color, transform;
 
     .page--loaded & {
       animation: toggler-circle-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1.2) 0.3s backwards;
@@ -190,7 +189,6 @@
     opacity: 0;
     transform: translateY(1rem);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    will-change: opacity, transform;
 
     @include delay('transition', 3, 0.06s);
 

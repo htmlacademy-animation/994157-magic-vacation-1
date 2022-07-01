@@ -81,6 +81,7 @@ export default class FullPageScroll {
     this.screenElements[this.activeScreen].classList.remove(`screen--hidden`);
     setTimeout(() => {
       this.screenElements[this.activeScreen].classList.add(`active`);
+      this.screenElements[this.activeScreen].classList.add(`visited`);
       this.screenElements[this.previosScreen].classList.remove(`screen--leave`);
       this.emitChangeDisplayEvent(SCREEN_ACTIVE_SET);
     }, 350);
