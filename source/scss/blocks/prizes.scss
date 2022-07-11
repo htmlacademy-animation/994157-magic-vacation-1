@@ -150,12 +150,12 @@
   &--journeys {
     .prizes__icon {
       left: -8.8rem;
-      bottom: 1.4rem;
+      bottom: -0.5rem;
       width: 26.8rem;
 
       @media (min-width: $stop-scaling) {
         left: -88px;
-        bottom: 14px;
+        bottom: -5px;
         width: 268px;
       }
 
@@ -167,7 +167,6 @@
 
       @media (max-width: $tablet) and (orientation: landscape) {
         left: -3.8rem;
-        bottom: -0.6rem;
         width: 13rem;
       }
 
@@ -191,12 +190,12 @@
 
     .prizes__icon {
       left: -14.8rem;
-      bottom: 1.4rem;
+      bottom: -0.4rem;
       width: 18.8rem;
 
       @media (min-width: $stop-scaling) {
         left: -148px;
-        bottom: 14px;
+        bottom: -4px;
         width: 188px;
       }
 
