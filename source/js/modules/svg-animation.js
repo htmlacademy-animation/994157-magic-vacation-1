@@ -1,6 +1,10 @@
 const targets = [{
   animateTarget: `primaryAwardAppear`,
   parent: `journeys`
+},
+{
+  animateTarget: `secondaryAwardAppear`,
+  parent: `cases`
 }];
 
 class SvgAnimation {
