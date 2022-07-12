@@ -171,6 +171,8 @@
       }
 
       @media (max-width: $mobile) and (orientation: landscape) {
+        bottom: -1.2rem;
+        left: -3.2rem;
         width: 10rem;
       }
     }
@@ -213,6 +215,8 @@
       }
 
       @media (max-width: $mobile) and (orientation: landscape) {
+        bottom: -1.2rem;
+        left: -5.2rem;
         width: 7rem;
       }
     }
@@ -225,25 +229,30 @@
 
     .prizes__icon {
       width: 26rem;
+      bottom: -0.4rem;
+      left: -4.4rem;
 
       @media (min-width: $stop-scaling) {
+        bottom: -4px;
+        left: -44px;
         width: 260px;
       }
 
       @media (max-width: $tablet) and (orientation: portrait) {
         width: 8.66rem;
+        left: 0;
+        bottom: 0;
       }
 
       @media (max-width: $tablet) and (orientation: landscape) {
+        left: -2.2rem;
         width: 13rem;
       }
 
       @media (max-width: $mobile) and (orientation: landscape) {
+        bottom: -1.2rem;
+        left: -1.8rem;
         width: 10rem;
-      }
-
-      img {
-        display: block;
       }
     }
   }
@@ -263,6 +272,10 @@
     @media (max-width: $tablet) and (orientation: landscape) {
       width: 17.2rem;
       height: auto;
+    }
+
+    @media (max-width: $mobile) and (orientation: landscape) {
+      width: 13.2rem;
     }
 
     @media (max-width: $tablet) and (orientation: portrait) {
