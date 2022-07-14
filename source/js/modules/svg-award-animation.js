@@ -11,7 +11,7 @@ const targets = [{
   parent: `codes`
 }];
 
-class SvgAnimation {
+class SvgAwardAnimation {
   constructor({animateTarget, screenName, parent}) {
     this._animateTarget = animateTarget;
     this._screenName = screenName;
@@ -38,7 +38,7 @@ class SvgAnimation {
 
 export default () => {
   targets.forEach(({animateTarget, screenName, parent}) => {
-    const svgAnimation = new SvgAnimation({animateTarget, screenName, parent});
+    const svgAnimation = new SvgAwardAnimation({animateTarget, screenName, parent});
     svgAnimation.init();
   });
 };
