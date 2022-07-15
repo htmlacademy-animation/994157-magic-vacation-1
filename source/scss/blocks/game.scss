@@ -78,6 +78,19 @@
   font-size: 4.8rem;
   line-height: 0.906;
   letter-spacing: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in 0s, transform 0.3s ease-in 0s;
+  transform: translateX(100%);
+
+  .screen--game.screen--show & {
+    transform: translateX(0);
+    opacity: 1;
+    transition: opacity 0.3s ease-out 1s, transform 0.3s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
   @media (min-width: $stop-scaling) {
     font-size: 48px;

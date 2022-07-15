@@ -22,6 +22,16 @@
     pointer-events: none;
   }
 
+  &--game {
+    opacity: 0;
+    pointer-events: none;
+
+    &.screen--show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   @media (max-width: $tablet) and (orientation: portrait) {
     min-height: calc(var(--vh, 1vh) * 100);
   }
