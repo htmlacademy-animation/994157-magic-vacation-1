@@ -121,6 +121,7 @@
   transition-property: opacity;
   transition-timing-function: ease-out;
   transition-duration: 0.4s;
+  transition-delay: 0s;
 
   @media (min-width: $stop-scaling) {
     margin-left: 75px;
@@ -143,11 +144,28 @@
 
   .screen--prizes.active & {
     opacity: 1;
-
-    @include delay('transition', 3, 3s, 0, 0.5s);
   }
 
   &--journeys {
+    transform: translateX(calc(100% + 7rem));
+    transition: opacity 0.4s ease-out 0.5s, transform 0.75s ease-out 4s;
+
+    .screen--prizes.active & {
+      transform: translateX(0);
+
+      &.animated {
+        transition-delay: 0.5s;
+      }
+    }
+
+    @media (max-width: $tablet) and (orientation: portrait) {
+      transform: translateX(0);
+
+      .screen--prizes.active & {
+        transition-delay: 0.5s;
+      }
+    }
+
     .prizes__icon {
       left: -8.8rem;
       bottom: -0.5rem;
@@ -180,6 +198,20 @@
 
   &--cases {
     margin-left: 7rem;
+
+    .screen--prizes.active & {
+      transition-delay: 4s;
+
+      &.animated {
+        transition-delay: 1s;
+      }
+    }
+
+    @media (max-width: $tablet) and (orientation: portrait) {
+      .screen--prizes.active & {
+        transition-delay: 1s;
+      }
+    }
 
     @media (min-width: $stop-scaling) {
       margin-left: 70px;
@@ -223,6 +255,20 @@
   }
 
   &--codes {
+    .screen--prizes.active & {
+      transition-delay: 6.5s;
+
+      &.animated {
+        transition-delay: 1.5s;
+      }
+    }
+
+    @media (max-width: $tablet) and (orientation: portrait) {
+      .screen--prizes.active & {
+        transition-delay: 1.5s;
+      }
+    }
+
     @media (max-width: $tablet) and (orientation: portrait) {
       padding-left: 0.8rem;
     }
@@ -337,52 +383,6 @@
     font-size: 0.8rem;
   }
 
-  b {
-    font-family: $font-alt;
-    font-weight: 400;
-    font-size: 12rem;
-    line-height: 0.55;
-
-    @media (min-width: $stop-scaling) {
-      font-size: 120px;
-    }
-
-    @media (max-width: $tablet) and (orientation: portrait) {
-      font-size: 4.8rem;
-      line-height: 0.6;
-    }
-
-    @media (max-width: $tablet) and (orientation: landscape) {
-      font-size: 6rem;
-    }
-
-    @media (max-width: $mobile) and (orientation: landscape) {
-      font-size: 3.5rem;
-    }
-  }
-
-  span {
-    display: flex;
-    align-items: flex-end;
-    margin-left: 1.4rem;
-    max-width: 14rem;
-
-    @media (min-width: $stop-scaling) {
-      margin-left: 14px;
-      max-width: 140px;
-    }
-
-    @media (max-width: $tablet) and (orientation: portrait) {
-      margin-left: 0;
-      max-width: 11rem;
-    }
-
-    @media (max-width: $mobile) and (orientation: landscape) {
-      margin-left: 1rem;
-      max-width: 13rem;
-    }
-  }
-
   svg {
     flex: none;
     margin-left: 1rem;
@@ -405,5 +405,85 @@
       width: 0.5rem;
       height: 0.5rem;
     }
+  }
+}
+
+.prizes__number {
+  font-family: $font-alt;
+  font-weight: 400;
+  font-size: 12rem;
+  line-height: 0.55;
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+
+  .prizes__desc.animated & {
+    opacity: 1;
+  }
+
+  .prizes__item--cases & {
+    min-width: 6.6rem;
+
+    @media (max-width: $tablet) and (orientation: landscape) {
+      min-width: 3.4rem;
+    }
+  }
+
+  .prizes__item--codes & {
+    min-width: 19.5rem;
+
+    @media (max-width: $tablet) and (orientation: landscape) {
+      min-width: 10rem;
+    }
+  }
+
+  @media (min-width: $tablet) {
+    text-align: right;
+  }
+
+  @media (min-width: $stop-scaling) {
+    font-size: 120px;
+  }
+
+  @media (max-width: $tablet) and (orientation: portrait) {
+    font-size: 4.8rem;
+    line-height: 0.6;
+  }
+
+  @media (max-width: $tablet) and (orientation: landscape) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: $mobile) and (orientation: landscape) {
+    font-size: 3.5rem;
+  }
+}
+
+.prizes__desc-text {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 1.4rem;
+  max-width: 14rem;
+  opacity: 0;
+  transform: translateX(1.2em);
+  transition: opacity 0.3s ease-out 0.1s, transform 0.3s ease-out 0.1s;
+
+  .prizes__desc.animated & {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (min-width: $stop-scaling) {
+    margin-left: 14px;
+    max-width: 140px;
+  }
+
+  @media (max-width: $tablet) and (orientation: portrait) {
+    margin-left: 0;
+    max-width: 11rem;
+  }
+
+  @media (max-width: $mobile) and (orientation: landscape) {
+    margin-left: 1rem;
+    max-width: 13rem;
   }
 }
