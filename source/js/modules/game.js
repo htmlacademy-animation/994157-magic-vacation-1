@@ -1,5 +1,6 @@
 import {SCREEN_ACTIVE_SET, SCREEN_CHANGED_EVENT_TYPE, SCREEN_NAMES} from '../constants';
 import {GameTimer} from './game-timer';
+import {Scene2DSeaCalf} from './scene-2d-sea-calf';
 
 export class Game {
   constructor() {
@@ -10,6 +11,7 @@ export class Game {
     this.screenGameEl = document.getElementById(`${SCREEN_NAMES.GAME}`);
 
     this.timer = new GameTimer();
+    this.scene2DSeaCalf = new Scene2DSeaCalf();
 
     this.showResultEls = document.querySelectorAll(`.js-show-result`);
     this.playBtn = document.querySelector(`.js-play`);
@@ -48,6 +50,10 @@ export class Game {
 
     if (titleTargetEl) {
       titleTargetEl.beginElement();
+    }
+
+    if (this.activeGameScreen === `result`) {
+      this.scene2DSeaCalf.start();
     }
   }
 
