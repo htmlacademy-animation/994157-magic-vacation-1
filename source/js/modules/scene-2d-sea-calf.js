@@ -178,7 +178,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 500,
       delay: 800,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
   }
 
@@ -198,7 +198,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 500,
       delay: 800,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
   }
 
@@ -211,7 +211,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 500,
       delay: 800,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
 
     this.animations.push(new Animation2d({
@@ -249,7 +249,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 100,
       delay: 600,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
   }
 
@@ -278,7 +278,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 500,
       delay: 1100,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
 
     this.animations.push(new Animation2d({
@@ -287,7 +287,7 @@ export class Scene2DSeaCalf extends Scene2D {
       },
       duration: 500,
       delay: 1500,
-      easing: _.easeInQuad
+      easing: _.easeLinear
     }));
   }
 

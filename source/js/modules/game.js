@@ -1,6 +1,7 @@
 import {SCREEN_ACTIVE_SET, SCREEN_CHANGED_EVENT_TYPE, SCREEN_NAMES} from '../constants';
 import {GameTimer} from './game-timer';
 import {Scene2DSeaCalf} from './scene-2d-sea-calf';
+import {Scene2DCrocodile} from './scene-2d-crocodile';
 
 export class Game {
   constructor() {
@@ -12,6 +13,7 @@ export class Game {
 
     this.timer = new GameTimer();
     this.scene2DSeaCalf = new Scene2DSeaCalf();
+    this.scene2DCrocodile = new Scene2DCrocodile();
 
     this.showResultEls = document.querySelectorAll(`.js-show-result`);
     this.playBtn = document.querySelector(`.js-play`);
@@ -55,6 +57,10 @@ export class Game {
     if (this.activeGameScreen === `result`) {
       this.scene2DSeaCalf.start();
     }
+
+    if (this.activeGameScreen === `result3`) {
+      this.scene2DCrocodile.start();
+    }
   }
 
   emitChangeDisplayEvent(screenEl) {
@@ -77,6 +83,7 @@ export class Game {
 
   showFailScreen() {
     this.setCurrentResultScreen(SCREEN_NAMES.RESULT_NEGATIVE);
+    this.scene2DCrocodile.start();
   }
 
   hideScreens() {
@@ -95,6 +102,7 @@ export class Game {
     document.getElementById(`messages`).innerHTML = ``;
     document.getElementById(`message-field`).focus();
     this.titleFailRestart.beginElement();
+    this.scene2DCrocodile.stop();
   }
 
   showResultByButtonClick(evt) {
