@@ -1,3 +1,20 @@
+// принимает функцию расчёта времени и возвращает преобразованный вариант
+function makeEaseOut(timing) {
+  return function (timeFraction) {
+    return 1 - timing(1 - timeFraction);
+  };
+}
+
+function makeEaseInOut(timing) {
+  return function (timeFraction) {
+    if (timeFraction < 0.5) {
+      return timing(2 * timeFraction) / 2;
+    } else {
+      return (2 - timing(2 * (1 - timeFraction))) / 2;
+    }
+  };
+}
+
 function easeLinear(x) {
   return x;
 }
@@ -56,6 +73,13 @@ function easeOutElastic(x) {
   }
 }
 
+function easeInQuad(x) {
+  return 1 - Math.sin(Math.acos(x));
+}
+
+const easeOutQuad = makeEaseOut(easeInQuad);
+const easeInOutQuad = makeEaseInOut(easeInQuad);
+
 
 const _ = Object.freeze({
   easeLinear,
@@ -64,7 +88,10 @@ const _ = Object.freeze({
   easeInExpo,
   easeOutExpo,
   easeInElastic,
-  easeOutElastic
+  easeOutElastic,
+  easeInQuad,
+  easeOutQuad,
+  easeInOutQuad
 });
 
 

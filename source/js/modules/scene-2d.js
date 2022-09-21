@@ -126,11 +126,7 @@ export class Scene2D {
 
 
   drawImage(image, object) {
-    let x = object.x;
-    let y = object.y;
-    let size = object.size;
-    let opacity = object.opacity;
-    let transforms = object.transforms;
+    let {transforms, opacity, size, x, y} = object;
 
     if (opacity === 0) {
       return;
