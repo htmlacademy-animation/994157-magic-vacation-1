@@ -1,4 +1,4 @@
-import _ from '../utils/easing';
+import _ from '../../utils/easing';
 
 
 export class Animation2d {

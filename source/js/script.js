@@ -11,6 +11,7 @@ import FullPageScroll from './modules/full-page-scroll';
 import animateTypography from './modules/animate-typography';
 import awardAnimation from './modules/award-animation';
 import {Game} from './modules/game';
+import {scene3dStory} from './modules/3d/scene-3d-story';
 
 // init modules
 mobileHeight();
@@ -25,8 +26,10 @@ awardAnimation();
 
 const game = new Game();
 game.init();
+scene3dStory.init();
 
 const fullPageScroll = new FullPageScroll();
 fullPageScroll.init();
 pageLoaded();
 
+window.scene3dStory = scene3dStory;
