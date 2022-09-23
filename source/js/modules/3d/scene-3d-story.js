@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
+import {getRawShaderMaterial} from './utils';
 
 const IMAGES_URLS = Object.freeze({
   [SCREEN_NAMES.TOP]: `img/module-5/scenes-textures/scene-0.png`,
@@ -67,7 +68,7 @@ class Scene3dStory extends Scene3d {
 
     loadManager.onLoad = () => {
       textures.forEach((texture, index) => {
-        const material = new THREE.MeshBasicMaterial({map: texture});
+        const material = getRawShaderMaterial({map: {value: texture}});
         const plane = new THREE.Mesh(geometry, material);
         plane.position.x = IMAGE_WIDTH * index;
         this.scene.add(plane);
