@@ -1,6 +1,6 @@
 import {Animation2d} from './animation-2d';
 import {Scene2D} from './scene-2d.js';
-import _ from '../utils/easing';
+import _ from '../../utils/easing';
 
 
 const IMAGES_URLS = Object.freeze({

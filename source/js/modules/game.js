@@ -1,7 +1,7 @@
 import {SCREEN_ACTIVE_SET, SCREEN_CHANGED_EVENT_TYPE, SCREEN_NAMES} from '../constants';
 import {GameTimer} from './game-timer';
-import {Scene2DSeaCalf} from './scene-2d-sea-calf';
-import {Scene2DCrocodile} from './scene-2d-crocodile';
+import {Scene2DSeaCalf} from './2d/scene-2d-sea-calf';
+import {Scene2DCrocodile} from './2d/scene-2d-crocodile';
 
 export class Game {
   constructor() {

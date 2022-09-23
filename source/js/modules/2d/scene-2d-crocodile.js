@@ -1,6 +1,6 @@
 import {Scene2D} from './scene-2d';
 import {Animation2d} from './animation-2d';
-import _ from '../utils/easing';
+import _ from '../../utils/easing';
 
 const IMAGES_URLS = Object.freeze({
   crocodile: `img/module-4/lose-images/crocodile.png`,
@@ -13,17 +13,6 @@ const IMAGES_URLS = Object.freeze({
 });
 
 const OBJECTS = Object.freeze({
-  // key: {
-  //   imageId: `key`,
-  //   x: 50,
-  //   y: 57,
-  //   size: 39,
-  //   opacity: 0,
-  //   transforms: {
-  //     scaleX: 0.9,
-  //     scaleY: 0.9
-  //   }
-  // },
   crocodile: {
     imageId: `crocodile`,
     x: 49,
@@ -94,16 +83,6 @@ const OBJECTS = Object.freeze({
       translateX: -30,
     }
   },
-  // tearDrop: {
-  //   imageId: `tearDrop`,
-  //   x: 46,
-  //   y: 70,
-  //   size: 8,
-  //   transforms: {
-  //     scaleX: 0,
-  //     scaleY: 0,
-  //   }
-  // },
 });
 
 const LOCALS = Object.freeze({

@@ -1,16 +1,24 @@
 import Swiper from "swiper";
 import {AnimateTypography} from "./animate-typography";
-import {SCREEN_ACTIVE_SET, THEME_CLASS_NAMES} from '../constants';
+import {SCREEN_ACTIVE_SET, THEME_CLASS_NAMES, STORY_SLIDE_NAMES} from '../constants';
 
 export default () => {
   let storySlider;
   let currentThemeClass = THEME_CLASS_NAMES.purple;
-  let sliderContainer = document.getElementById(`story`);
-  sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
 
   const titleNode = document.querySelector(`.js-story-title`);
   const animateTitle = new AnimateTypography({selector: `.js-story-title`, node: titleNode, duration: 500, delayStep: 330, classForActivate: `active`});
   animateTitle.init();
+
+  const emitChangeDisplayEvent = (slideName) => {
+    const event = new CustomEvent(`slideChanged`, {
+      detail: {
+        slideName
+      }
+    });
+
+    document.body.dispatchEvent(event);
+  };
 
   const toggleTitleAnimation = (slideIndex) => {
     if (slideIndex > 0) {
@@ -30,15 +38,19 @@ export default () => {
     document.body.classList.add(currentThemeClass);
   };
 
-  const changeTheme = (slideIndex) => {
+  const changeThemeAndEmitChange = (slideIndex) => {
     if (slideIndex >= 6) {
       changeThemeClass(THEME_CLASS_NAMES.default);
+      emitChangeDisplayEvent(STORY_SLIDE_NAMES.AI_SONYA);
     } else if (slideIndex >= 4) {
       changeThemeClass(THEME_CLASS_NAMES.lightBlue);
+      emitChangeDisplayEvent(STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS);
     } else if (slideIndex >= 2) {
       changeThemeClass(THEME_CLASS_NAMES.blue);
+      emitChangeDisplayEvent(STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS);
     } else {
       changeThemeClass(THEME_CLASS_NAMES.purple);
+      emitChangeDisplayEvent(STORY_SLIDE_NAMES.DOG_AND_SUITCASE);
     }
   };
 
@@ -62,7 +74,7 @@ export default () => {
 
   const handleSlideChange = (slideIndex) => {
     toggleTitleAnimation(slideIndex);
-    changeTheme(slideIndex);
+    changeThemeAndEmitChange(slideIndex);
   };
 
   const setSlider = function () {
@@ -81,16 +93,6 @@ export default () => {
         },
         on: {
           slideChange: () => {
-            if (storySlider.activeIndex === 0 || storySlider.activeIndex === 1) {
-              sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
-            } else if (storySlider.activeIndex === 2 || storySlider.activeIndex === 3) {
-              sliderContainer.style.backgroundImage = `url("img/slide2.jpg"), linear-gradient(180deg, rgba(45, 54, 179, 0) 0%, #2A34B0 16.85%)`;
-            } else if (storySlider.activeIndex === 4 || storySlider.activeIndex === 5) {
-              sliderContainer.style.backgroundImage = `url("img/slide3.jpg"), linear-gradient(180deg, rgba(92, 138, 198, 0) 0%, #5183C4 16.85%)`;
-            } else if (storySlider.activeIndex === 6 || storySlider.activeIndex === 7) {
-              sliderContainer.style.backgroundImage = `url("img/slide4.jpg"), linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2F2A42 16.85%)`;
-            }
-
             handleSlideChange(storySlider.activeIndex);
           },
           resize: () => {
@@ -118,15 +120,6 @@ export default () => {
         },
         on: {
           slideChange: () => {
-            if (storySlider.activeIndex === 0) {
-              sliderContainer.style.backgroundImage = `url("img/slide1.jpg")`;
-            } else if (storySlider.activeIndex === 2) {
-              sliderContainer.style.backgroundImage = `url("img/slide2.jpg")`;
-            } else if (storySlider.activeIndex === 4) {
-              sliderContainer.style.backgroundImage = `url("img/slide3.jpg")`;
-            } else if (storySlider.activeIndex === 6) {
-              sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
-            }
             handleSlideChange(storySlider.activeIndex);
           },
           resize: () => {

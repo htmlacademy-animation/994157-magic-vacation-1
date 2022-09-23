@@ -18,3 +18,10 @@ export const SCREEN_NAMES = {
   RESULT_SUITCASE: `result2`,
   RESULT_NEGATIVE: `result3`,
 };
+
+export const STORY_SLIDE_NAMES = {
+  DOG_AND_SUITCASE: `dogAndSuitcase`,
+  PYRAMID_AND_CACTUS: `pyramidAndCactus`,
+  SNOWMAN_AND_COMPASS: `snowmanAndCompass`,
+  AI_SONYA: `aiSonya`,
+};
