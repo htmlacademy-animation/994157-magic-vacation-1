@@ -2,14 +2,29 @@ import * as THREE from 'three';
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
-import {getRawShaderMaterial} from './utils';
+import {getRawShaderMaterial} from './shaders';
 
-const IMAGES_URLS = Object.freeze({
-  [SCREEN_NAMES.TOP]: `img/module-5/scenes-textures/scene-0.png`,
-  [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: `img/module-5/scenes-textures/scene-1.png`,
-  [STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS]: `img/module-5/scenes-textures/scene-2.png`,
-  [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: `img/module-5/scenes-textures/scene-3.png`,
-  [STORY_SLIDE_NAMES.AI_SONYA]: `img/module-5/scenes-textures/scene-4.png`,
+const IMAGES = Object.freeze({
+  [SCREEN_NAMES.TOP]: {
+    image: `img/module-5/scenes-textures/scene-0.png`,
+    hueShift: 0.0,
+  },
+  [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: {
+    image: `img/module-5/scenes-textures/scene-1.png`,
+    hueShift: 0.0,
+  },
+  [STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS]: {
+    image: `img/module-5/scenes-textures/scene-2.png`,
+    hueShift: -0.25,
+  },
+  [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: {
+    image: `img/module-5/scenes-textures/scene-3.png`,
+    hueShift: 0.0,
+  },
+  [STORY_SLIDE_NAMES.AI_SONYA]: {
+    image: `img/module-5/scenes-textures/scene-4.png`,
+    hueShift: 0.0,
+  },
 });
 
 const SCENE_INDEX_BY_NAME = Object.freeze({
@@ -64,11 +79,14 @@ class Scene3dStory extends Scene3d {
     const geometry = new THREE.PlaneBufferGeometry(2048, 1024);
     const loadManager = new THREE.LoadingManager();
     const textureLoader = new THREE.TextureLoader(loadManager);
-    const textures = Object.entries(IMAGES_URLS).map(([_, imageUrl]) => textureLoader.load(imageUrl));
+    const textures = Object.entries(IMAGES).map(([_, {image, hueShift}]) => ({
+      map: textureLoader.load(image),
+      hueShift
+    }));
 
     loadManager.onLoad = () => {
       textures.forEach((texture, index) => {
-        const material = getRawShaderMaterial({map: {value: texture}});
+        const material = getRawShaderMaterial({map: {value: texture.map}, hueShift: {value: texture.hueShift}});
         const plane = new THREE.Mesh(geometry, material);
         plane.position.x = IMAGE_WIDTH * index;
         this.scene.add(plane);
@@ -95,7 +113,8 @@ class Scene3dStory extends Scene3d {
     this.setListener();
   }
 
-  resize() {}
+  resize() {
+  }
 
   render() {
     this.renderer.render(this.scene, this.camera);

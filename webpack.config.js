@@ -80,9 +80,13 @@ module.exports = {
                 require('posthtml-include')({ root: 'source' })
               ]
             }
-          }
+          },
         ]
-      }
+      },
+      {
+        test: /\.glsl$/,
+        loader: 'webpack-glsl-loader'
+      },
     ]
   },
   plugins: [
