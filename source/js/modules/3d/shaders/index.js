@@ -5,6 +5,7 @@ import fragmentShader from './fragment-shader.glsl';
 
 export const getRawShaderMaterial = (uniforms) => new THREE.RawShaderMaterial(
     {
+      transparent: true,
       uniforms,
       vertexShader,
       fragmentShader,

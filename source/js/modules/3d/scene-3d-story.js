@@ -4,6 +4,23 @@ import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 
+const IMAGE_WIDTH = 2048;
+
+const BUBBLES = [
+  {
+    center: new THREE.Vector2(0.25, 0.4),
+    radius: 0.06,
+  },
+  {
+    center: new THREE.Vector2(0.4, 0.5),
+    radius: 0.07,
+  },
+  {
+    center: new THREE.Vector2(0.5, 0.5),
+    radius: 0.04,
+  }
+];
+
 const IMAGES = Object.freeze({
   [SCREEN_NAMES.TOP]: {
     image: `img/module-5/scenes-textures/scene-0.png`,
@@ -16,6 +33,7 @@ const IMAGES = Object.freeze({
   [STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS]: {
     image: `img/module-5/scenes-textures/scene-2.png`,
     hueShift: -0.25,
+    bubbles: BUBBLES,
   },
   [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: {
     image: `img/module-5/scenes-textures/scene-3.png`,
@@ -35,8 +53,6 @@ const SCENE_INDEX_BY_NAME = Object.freeze({
   [STORY_SLIDE_NAMES.AI_SONYA]: 4,
 });
 
-const IMAGE_WIDTH = 2048;
-
 class Scene3dStory extends Scene3d {
   constructor() {
     super();
@@ -44,6 +60,7 @@ class Scene3dStory extends Scene3d {
     this.storyScreen = STORY_SLIDE_NAMES.DOG_AND_SUITCASE;
     this.updateScreen = this.updateScreen.bind(this);
     this.updateSlide = this.updateSlide.bind(this);
+    this.render = this.render.bind(this);
   }
 
   getSceneIndex(name) {
@@ -54,6 +71,7 @@ class Scene3dStory extends Scene3d {
     const sceneName = screenName === SCREEN_NAMES.STORY ? this.storyScreen : screenName;
     const sceneIndex = this.getSceneIndex(sceneName);
     this.camera.position.x = IMAGE_WIDTH * sceneIndex;
+    this.scene.children[sceneIndex].material.needsUpdate = true;
     this.render();
   }
 
@@ -68,6 +86,7 @@ class Scene3dStory extends Scene3d {
 
   updateSlide({detail}) {
     this.setCameraPosition(detail.slideName);
+    this.storyScreen = detail.slideName;
   }
 
   setListener() {
@@ -75,18 +94,31 @@ class Scene3dStory extends Scene3d {
     document.body.addEventListener(`slideChanged`, this.updateSlide);
   }
 
+  getUniforms(texture) {
+    if (texture.bubbles) {
+      return {
+        map: {value: texture.map},
+        hueShift: {value: texture.hueShift},
+        bubbles: {value: texture.bubbles},
+        hasBubbles: {value: true}
+      };
+    }
+    return {map: {value: texture.map}, hueShift: {value: texture.hueShift}, hasBubbles: {value: false}};
+  }
+
   initTexture() {
-    const geometry = new THREE.PlaneBufferGeometry(2048, 1024);
     const loadManager = new THREE.LoadingManager();
     const textureLoader = new THREE.TextureLoader(loadManager);
-    const textures = Object.entries(IMAGES).map(([_, {image, hueShift}]) => ({
+    const textures = Object.entries(IMAGES).map(([_, {image, ...other}]) => ({
       map: textureLoader.load(image),
-      hueShift
+      ...other
     }));
 
     loadManager.onLoad = () => {
       textures.forEach((texture, index) => {
-        const material = getRawShaderMaterial({map: {value: texture.map}, hueShift: {value: texture.hueShift}});
+        const geometry = new THREE.PlaneBufferGeometry(2048, 1024);
+        const material = getRawShaderMaterial(this.getUniforms(texture));
+        material.needsUpdate = true;
         const plane = new THREE.Mesh(geometry, material);
         plane.position.x = IMAGE_WIDTH * index;
         this.scene.add(plane);
@@ -111,9 +143,28 @@ class Scene3dStory extends Scene3d {
     this.camera = camera;
     this.appendRendererToDOMElement(this.renderer, document.getElementById(`animation-screen`));
     this.setListener();
+    window.addEventListener(`resize`, this.resize);
+
+    this.renderer.setAnimationLoop(() => {
+      this.render();
+    });
+  }
+
+  start() {
+    this.renderer.setAnimationLoop(() => {
+      this.render();
+    });
+  }
+
+  stop() {
+    this.renderer.setAnimationLoop(null);
   }
 
   resize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.render();
   }
 
   render() {
