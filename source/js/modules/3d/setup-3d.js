@@ -5,7 +5,7 @@ export const setup3d = ({initialWidth = 100, initialHeight = 100, far = 1000, fo
   // 1.1.1. Renderer
   const renderer = new THREE.WebGLRenderer({
     alpha: false,
-    antialias: false,
+    antialias: true,
     logarithmicDepthBuffer: true,
     powerPreference: `high-performance`
   });
