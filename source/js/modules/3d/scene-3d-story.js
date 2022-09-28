@@ -12,7 +12,7 @@ const BUBBLES = [
     radius: 0.06,
   },
   {
-    center: new THREE.Vector2(0.4, 0.5),
+    center: new THREE.Vector2(0.4, 0.4),
     radius: 0.07,
   },
   {
@@ -71,7 +71,6 @@ class Scene3dStory extends Scene3d {
     const sceneName = screenName === SCREEN_NAMES.STORY ? this.storyScreen : screenName;
     const sceneIndex = this.getSceneIndex(sceneName);
     this.camera.position.x = IMAGE_WIDTH * sceneIndex;
-    this.scene.children[sceneIndex].material.needsUpdate = true;
     this.render();
   }
 
@@ -143,7 +142,6 @@ class Scene3dStory extends Scene3d {
     this.camera = camera;
     this.appendRendererToDOMElement(this.renderer, document.getElementById(`animation-screen`));
     this.setListener();
-    window.addEventListener(`resize`, this.resize);
 
     this.renderer.setAnimationLoop(() => {
       this.render();

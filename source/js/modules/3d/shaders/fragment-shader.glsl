@@ -25,6 +25,7 @@ vec4 blendBorder(vec4 texel) {
 void drawBubble(in Bubble bubble, inout vec4 texel) {
     float imageAspectRatio = 2.0;
     float borderWidth = 0.002;
+    float bubbleRadius = bubble.radius;
     vec2 currentPoint = vec2(vUv.x * imageAspectRatio, vUv.y);
     vec2 bubbleCenter = vec2(bubble.center.x * imageAspectRatio, bubble.center.y);
 
@@ -32,18 +33,37 @@ void drawBubble(in Bubble bubble, inout vec4 texel) {
 
     vec2 shift = vec2(0, 0);
 
-    if (distance > bubble.radius) {
+    if (distance > bubbleRadius) {
         return;
     }
+
+    float factorDistorsion = (1.0 - sqrt(distance / bubbleRadius));
+    float scale = 1.2;
+    shift = (bubble.center - vUv) * factorDistorsion;
+
+    texel = texture2D(map, vUv + shift * scale);
 
     if (distance >= bubble.radius - borderWidth) {
         texel = blendBorder(texel);
-        return;
     }
 
-    shift = (bubble.center - vUv) * (1.0 - sqrt(distance / bubble.radius));
+    float glareRadius = bubble.radius * 0.8;
 
-    texel = texture2D(map, vUv + shift);
+    bool isInGlareCircle = distance >= (glareRadius - borderWidth) && distance < glareRadius;
+
+    if (isInGlareCircle) {
+        vec2 currentPointWithCenterFromBuble = currentPoint - bubbleCenter;
+        if (currentPointWithCenterFromBuble.x < 0.0) {
+            float cosinus = currentPointWithCenterFromBuble.y / length(currentPointWithCenterFromBuble);
+            float angleRad = acos(cosinus);
+            float angleDeg = degrees(angleRad);
+            // если угол в диапазоне
+            if (angleDeg > 30.0 && angleDeg < 70.0) {
+                texel = blendBorder(texel);
+                return;
+            }
+        }
+    }
 }
 
 void main() {

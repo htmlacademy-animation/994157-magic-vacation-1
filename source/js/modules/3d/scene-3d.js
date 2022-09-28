@@ -1,8 +1,12 @@
 export class Scene3d {
+  constructor() {
+    this.resize = this.resize.bind(this);
+  }
   init(width, height) {
     // Устанавливаем стартовые значения сцены
     this.width = width || window.innerWidth;
     this.height = height || window.innerHeight;
+    window.addEventListener(`resize`, this.resize);
   }
 
   appendRendererToDOMElement(renderer, targetNode) {
