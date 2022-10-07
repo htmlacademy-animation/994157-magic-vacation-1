@@ -391,10 +391,6 @@ export class Scene2DCrocodile extends Scene2D {
     const s = this.size / 100;
     this.ctx.setTransform(scale, 0, 0, scale, 47 * s, (65 + translateY + deltaCenterY) * s);
     this.ctx.beginPath();
-    // this.ctx.moveTo(47 * s, 65 * s);
-    // this.ctx.quadraticCurveTo(52 * s, 72 * s, 47 * s, 73 * s);
-    // this.ctx.quadraticCurveTo(42 * s, 72 * s, 47 * s, 65 * s);
-    // this.ctx.arc(47 * s, 70.5 * s, 2.5 * s, 0, Math.PI * 2);
     this.ctx.moveTo(0, -deltaCenterY * s);
     this.ctx.quadraticCurveTo(5 * s, (7 - deltaCenterY) * s, 0, (8 - deltaCenterY) * s);
     this.ctx.quadraticCurveTo(-5 * s, (7 - deltaCenterY) * s, 0, -deltaCenterY * s);

@@ -1,6 +1,9 @@
 precision mediump float;
 uniform sampler2D map;
 varying vec2 vUv;
+
+uniform bool hasHueShift;
+
 uniform float hueShift;
 
 struct Bubble {
@@ -12,9 +15,10 @@ uniform Bubble bubbles[3];
 uniform bool hasBubbles;
 
 vec3 shiftColorHue(vec3 color, float hue) {
-    const vec3 k = vec3(0.57735, 0.57735, 0.57735);
+    const vec3 k = vec3(0.57735);
     float cosAngle = cos(hue);
-    return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
+    float sinAngle = sin(hue);
+    return vec3(color * cosAngle + cross(k, color) * sinAngle + k * dot(k, color) * (1.0 - cosAngle));
 }
 
 vec4 blendBorder(vec4 texel) {
@@ -75,7 +79,7 @@ void main() {
         }
     }
 
-    if (hueShift != 0.0) {
+    if (hasHueShift == true) {
         vec3 shifted = shiftColorHue(texel.rgb, hueShift);
         gl_FragColor = vec4(shifted.rgb, 1);
     }
