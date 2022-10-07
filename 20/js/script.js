@@ -62192,8 +62192,6 @@ class Scene3dStory extends _scene_3d__WEBPACK_IMPORTED_MODULE_1__["Scene3d"] {
     };
   }
 
-  // export const tick = (from, to, progress) => from + progress * (to - from);
-
   initAnimations() {
     const maxHueShift = 0.25;
     let hueShiftDegrees = maxHueShift;
