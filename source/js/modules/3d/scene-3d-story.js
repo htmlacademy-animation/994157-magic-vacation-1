@@ -9,16 +9,19 @@ const IMAGE_WIDTH = 2048;
 
 const BUBBLES = [
   {
-    center: new THREE.Vector2(0.25, 0.4),
+    center: new THREE.Vector2(0.25, 0),
     radius: 0.06,
+    delay: 600,
   },
   {
-    center: new THREE.Vector2(0.4, 0.4),
+    center: new THREE.Vector2(0.4, 0),
     radius: 0.07,
+    delay: 0,
   },
   {
-    center: new THREE.Vector2(0.5, 0.5),
+    center: new THREE.Vector2(0.5, 0),
     radius: 0.04,
+    delay: 1000,
   }
 ];
 
@@ -138,11 +141,12 @@ class Scene3dStory extends Scene3d {
         plane.position.x = IMAGE_WIDTH * index;
         this.scene.add(plane);
       });
+      this.initAnimations();
       this.render();
     };
   }
 
-  initAnimations() {
+  initHueShiftAnimation() {
     const maxHueShift = 0.25;
     let hueShiftDegrees = maxHueShift;
     const halfPi = Math.PI / 2;
@@ -164,6 +168,37 @@ class Scene3dStory extends Scene3d {
     }));
   }
 
+  initBubblesAnimations() {
+    const getAmplitude = (progress) => {
+      return Math.sin(20 * progress) * Math.exp(-0.5 * progress) / 30;
+    };
+
+    BUBBLES.forEach((bubble, index) => {
+      this.animations.push(new Animation2d({
+        func: (progress) => {
+          const amplitudeX = getAmplitude(progress);
+          const cloned = bubble.center.clone();
+
+          const currentX = bubble.center.getComponent(0);
+          cloned.setX(currentX + amplitudeX);
+          cloned.setY(progress);
+
+          const currentBubbles = this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.bubbles.value;
+          currentBubbles[index] = {center: cloned, radius: bubble.radius};
+          this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.bubbles.value = currentBubbles;
+          this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].needsUpdate = true;
+        },
+        duration: 2000,
+        delay: bubble.delay,
+      }));
+    });
+  }
+
+  initAnimations() {
+    this.initHueShiftAnimation();
+    this.initBubblesAnimations();
+  }
+
   startAnimations() {
     this.animations.forEach((anim) => {
       anim.start();
@@ -179,7 +214,6 @@ class Scene3dStory extends Scene3d {
   init() {
     super.init();
     this.initTexture();
-    this.initAnimations();
 
     const {
       renderer,
