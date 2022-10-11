@@ -5,24 +5,63 @@ import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation2d} from '../2d/animation-2d';
 
-const IMAGE_WIDTH = 2048;
+const IMAGE_WIDTH = 1024;
+
+const CAMERA_POSITION = 750;
 
 const BUBBLES = [
   {
-    center: new THREE.Vector2(0.25, 0),
+    center: new THREE.Vector2(0.25, -1),
     radius: 0.06,
     delay: 600,
   },
   {
-    center: new THREE.Vector2(0.4, 0),
+    center: new THREE.Vector2(0.4, -1),
     radius: 0.07,
     delay: 0,
   },
   {
-    center: new THREE.Vector2(0.5, 0),
+    center: new THREE.Vector2(0.5, -1),
     radius: 0.04,
     delay: 1000,
   }
+];
+
+const LIGHTS = [
+  {
+    type: `DirectionalLight`,
+    color: `rgb(255, 255, 255)`,
+    intensity: 0.84,
+    position: {
+      x: 0,
+      y: CAMERA_POSITION * Math.tan(-15 * THREE.Math.DEG2RAD),
+      z: CAMERA_POSITION,
+    }
+  },
+  {
+    type: `PointLight`,
+    color: `rgb(246, 242, 255)`,
+    intensity: 0.60,
+    position: {
+      x: -785,
+      y: -350,
+      z: -710,
+    },
+    decay: 2.0,
+    distance: 975,
+  },
+  {
+    type: `PointLight`,
+    color: `rgb(245, 254, 255)`,
+    intensity: 0.95,
+    position: {
+      x: 730,
+      y: 800,
+      z: -985
+    },
+    decay: 2.0,
+    distance: 975,
+  },
 ];
 
 const IMAGES = Object.freeze({
@@ -133,7 +172,7 @@ class Scene3dStory extends Scene3d {
 
     loadManager.onLoad = () => {
       textures.forEach((texture, index) => {
-        const geometry = new THREE.PlaneBufferGeometry(2048, 1024);
+        const geometry = new THREE.PlaneBufferGeometry(1024, 512);
         const material = getRawShaderMaterial(this.getUniforms(texture));
         material.needsUpdate = true;
         this.materials[texture.name] = material;
@@ -181,7 +220,7 @@ class Scene3dStory extends Scene3d {
 
           const currentX = bubble.center.getComponent(0);
           cloned.setX(currentX + amplitudeX);
-          cloned.setY(progress);
+          cloned.setY(progress + 0.05);
 
           const currentBubbles = this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.bubbles.value;
           currentBubbles[index] = {center: cloned, radius: bubble.radius};
@@ -211,6 +250,49 @@ class Scene3dStory extends Scene3d {
     });
   }
 
+  getSphere() {
+    const geometry = new THREE.SphereGeometry(100, 50, 50);
+
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x000000,
+      metalness: 0.05,
+      emissive: 0x0,
+      roughness: 0.5
+    });
+
+    return new THREE.Mesh(geometry, material);
+  }
+
+  getLight() {
+    const light = new THREE.Group();
+    const helper = new THREE.Group();
+
+    LIGHTS.forEach(({type, color, intensity, position, distance, decay}) => {
+      const lightColor = new THREE.Color(color);
+      if (type === `DirectionalLight`) {
+        const lightUnit = new THREE.DirectionalLight(lightColor, intensity);
+        lightUnit.target.position.set(...Object.values(position));
+        this.scene.add(lightUnit.target);
+        light.add(lightUnit);
+        helper.add(new THREE.DirectionalLightHelper(lightUnit));
+      } else {
+        const lightUnit = new THREE.PointLight(lightColor, intensity, distance, decay);
+        lightUnit.position.set(...Object.values(position));
+        helper.add(new THREE.PointLightHelper(lightUnit, 10));
+        light.add(lightUnit);
+      }
+
+      this.scene.add(helper);
+    });
+    return light;
+  }
+
+  setLight() {
+    const light = this.getLight();
+    light.position.z = this.camera.position.z;
+    this.scene.add(light);
+  }
+
   init() {
     super.init();
     this.initTexture();
@@ -219,14 +301,19 @@ class Scene3dStory extends Scene3d {
       renderer,
       scene,
       camera
-    } = setup3d({initialWidth: this.width, initialHeight: this.height});
-    camera.position.z = 1000;
+    } = setup3d({initialWidth: this.width, initialHeight: this.height, fov: 35});
+    const canvas = document.getElementById(`animation-screen`);
+    camera.position.z = CAMERA_POSITION;
     scene.add(camera);
     this.renderer = renderer;
     this.scene = scene;
     this.camera = camera;
-    this.appendRendererToDOMElement(this.renderer, document.getElementById(`animation-screen`));
+    this.appendRendererToDOMElement(this.renderer, canvas);
     this.setListener();
+    this.addDeveloperHelpers({camera: this.camera, canvas, scene});
+
+    this.scene.add(this.getSphere());
+    this.setLight();
 
     this.renderer.setAnimationLoop(() => {
       this.render();
@@ -248,9 +335,23 @@ class Scene3dStory extends Scene3d {
       return;
     }
     this.resizeInProgress = true;
-    this.camera.aspect = window.innerWidth / window.innerHeight;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (height < 1 || width < 1) {
+      return;
+    }
+
+    if (width > height) {
+      this.camera.fov = 35;
+    } else {
+      this.camera.fov = (32 * height) / Math.min(width * 1.3, height);
+    }
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // 3.3. Renderer resize
+    this.renderer.setSize(width, height);
     this.render();
   }
 
