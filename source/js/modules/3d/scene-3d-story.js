@@ -4,6 +4,8 @@ import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation2d} from '../2d/animation-2d';
+import {pyramidAndCactusRoom} from './rooms/pyramidAndCactusRoom/pyramidAndCactusRoom';
+import {showmanAndCompassRoom} from './rooms/showmanAndCompassRoom/showmanAndCompassRoom';
 
 const IMAGE_WIDTH = 1024;
 
@@ -78,10 +80,12 @@ const IMAGES = Object.freeze({
     hasHueShift: true,
     hueShift: 0,
     bubbles: BUBBLES,
+    room: pyramidAndCactusRoom,
   },
   [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: {
     image: `img/module-5/scenes-textures/scene-3.png`,
     hasHueShift: false,
+    room: showmanAndCompassRoom,
   },
   [STORY_SLIDE_NAMES.AI_SONYA]: {
     image: `img/module-5/scenes-textures/scene-4.png`,
@@ -178,6 +182,10 @@ class Scene3dStory extends Scene3d {
         this.materials[texture.name] = material;
         const plane = new THREE.Mesh(geometry, material);
         plane.position.x = IMAGE_WIDTH * index;
+        if (texture.room) {
+          texture.room.position.x = plane.position.x;
+          this.scene.add(texture.room);
+        }
         this.scene.add(plane);
       });
       this.initAnimations();
@@ -250,19 +258,6 @@ class Scene3dStory extends Scene3d {
     });
   }
 
-  getSphere() {
-    const geometry = new THREE.SphereGeometry(100, 50, 50);
-
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x000000,
-      metalness: 0.05,
-      emissive: 0x0,
-      roughness: 0.5
-    });
-
-    return new THREE.Mesh(geometry, material);
-  }
-
   getLight() {
     const light = new THREE.Group();
     const helper = new THREE.Group();
@@ -271,7 +266,9 @@ class Scene3dStory extends Scene3d {
       const lightColor = new THREE.Color(color);
       if (type === `DirectionalLight`) {
         const lightUnit = new THREE.DirectionalLight(lightColor, intensity);
-        lightUnit.target.position.set(...Object.values(position));
+        // todo: разобраться со светом
+        // lightUnit.target.position.set(...Object.values(position));
+        lightUnit.position.set(...Object.values(position));
         this.scene.add(lightUnit.target);
         light.add(lightUnit);
         helper.add(new THREE.DirectionalLightHelper(lightUnit));
@@ -312,7 +309,6 @@ class Scene3dStory extends Scene3d {
     this.setListener();
     this.addDeveloperHelpers({camera: this.camera, canvas, scene});
 
-    this.scene.add(this.getSphere());
     this.setLight();
 
     this.renderer.setAnimationLoop(() => {
