@@ -4,102 +4,8 @@ import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation2d} from '../2d/animation-2d';
-import {pyramidAndCactusRoom} from './rooms/pyramidAndCactusRoom/pyramidAndCactusRoom';
-import {showmanAndCompassRoom} from './rooms/showmanAndCompassRoom/showmanAndCompassRoom';
-
-const IMAGE_WIDTH = 1024;
-
-const CAMERA_POSITION = 750;
-
-const BUBBLES = [
-  {
-    center: new THREE.Vector2(0.25, -1),
-    radius: 0.06,
-    delay: 600,
-  },
-  {
-    center: new THREE.Vector2(0.4, -1),
-    radius: 0.07,
-    delay: 0,
-  },
-  {
-    center: new THREE.Vector2(0.5, -1),
-    radius: 0.04,
-    delay: 1000,
-  }
-];
-
-const LIGHTS = [
-  {
-    type: `DirectionalLight`,
-    color: `rgb(255, 255, 255)`,
-    intensity: 0.84,
-    position: {
-      x: 0,
-      y: CAMERA_POSITION * Math.tan(-15 * THREE.Math.DEG2RAD),
-      z: CAMERA_POSITION,
-    }
-  },
-  {
-    type: `PointLight`,
-    color: `rgb(246, 242, 255)`,
-    intensity: 0.60,
-    position: {
-      x: -785,
-      y: -350,
-      z: -710,
-    },
-    decay: 2.0,
-    distance: 975,
-  },
-  {
-    type: `PointLight`,
-    color: `rgb(245, 254, 255)`,
-    intensity: 0.95,
-    position: {
-      x: 730,
-      y: 800,
-      z: -985
-    },
-    decay: 2.0,
-    distance: 975,
-  },
-];
-
-const IMAGES = Object.freeze({
-  [SCREEN_NAMES.TOP]: {
-    image: `img/module-5/scenes-textures/scene-0.png`,
-    hasHueShift: false,
-  },
-  [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: {
-    image: `img/module-5/scenes-textures/scene-1.png`,
-    hasHueShift: false,
-  },
-  [STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS]: {
-    image: `img/module-5/scenes-textures/scene-2.png`,
-    hasHueShift: true,
-    hueShift: 0,
-    bubbles: BUBBLES,
-    room: pyramidAndCactusRoom,
-  },
-  [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: {
-    image: `img/module-5/scenes-textures/scene-3.png`,
-    hasHueShift: false,
-    room: showmanAndCompassRoom,
-  },
-  [STORY_SLIDE_NAMES.AI_SONYA]: {
-    image: `img/module-5/scenes-textures/scene-4.png`,
-    hasHueShift: false,
-  },
-});
-
-const SCENE_INDEX_BY_NAME = Object.freeze({
-  [SCREEN_NAMES.TOP]: 0,
-  [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: 1,
-  [STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS]: 2,
-  [STORY_SLIDE_NAMES.SNOWMAN_AND_COMPASS]: 3,
-  [STORY_SLIDE_NAMES.AI_SONYA]: 4,
-});
+import {IMAGE_WIDTH, BUBBLES, CAMERA_POSITION, SCENE_INDEX_BY_NAME, LIGHTS, IMAGES, SVG_SHAPES} from './consts';
+import {SvgObjectCreator, SvgObjectsLoader} from './svg';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -109,6 +15,7 @@ class Scene3dStory extends Scene3d {
     this.resizeInProgress = false;
     this.animations = [];
     this.materials = {};
+    this.svgObjectsLoader = new SvgObjectsLoader(SVG_SHAPES);
     this.updateScreen = this.updateScreen.bind(this);
     this.updateSlide = this.updateSlide.bind(this);
     this.render = this.render.bind(this);
@@ -165,7 +72,38 @@ class Scene3dStory extends Scene3d {
     return {map: {value: texture.map}, hasHueShift: {value: false}, hasBubbles: {value: false}};
   }
 
-  initTexture() {
+  addSceneItem(texture, index) {
+    const geometry = new THREE.PlaneBufferGeometry(1024, 512);
+    const material = getRawShaderMaterial(this.getUniforms(texture));
+    material.needsUpdate = true;
+    this.materials[texture.name] = material;
+    const plane = new THREE.Mesh(geometry, material);
+    plane.position.x = IMAGE_WIDTH * index;
+
+    // room
+    if (texture.room) {
+      texture.room.position.x = plane.position.x;
+      this.scene.add(texture.room);
+    }
+
+    // svgShapes
+    if (texture.svgShapes) {
+      const svgGroup = new THREE.Group();
+      texture.svgShapes.forEach((shape) => {
+        const paths = this.svgObjectsLoader.getPaths(shape.name);
+
+        const svgObject = new SvgObjectCreator({...shape, paths});
+        svgGroup.add(svgObject);
+      });
+
+      svgGroup.position.x = plane.position.x;
+      this.scene.add(svgGroup);
+    }
+
+    this.scene.add(plane);
+  }
+
+  initTextures() {
     const loadManager = new THREE.LoadingManager();
     const textureLoader = new THREE.TextureLoader(loadManager);
     const textures = Object.entries(IMAGES).map(([name, {image, ...other}]) => ({
@@ -176,17 +114,7 @@ class Scene3dStory extends Scene3d {
 
     loadManager.onLoad = () => {
       textures.forEach((texture, index) => {
-        const geometry = new THREE.PlaneBufferGeometry(1024, 512);
-        const material = getRawShaderMaterial(this.getUniforms(texture));
-        material.needsUpdate = true;
-        this.materials[texture.name] = material;
-        const plane = new THREE.Mesh(geometry, material);
-        plane.position.x = IMAGE_WIDTH * index;
-        if (texture.room) {
-          texture.room.position.x = plane.position.x;
-          this.scene.add(texture.room);
-        }
-        this.scene.add(plane);
+        this.addSceneItem(texture, index);
       });
       this.initAnimations();
       this.render();
@@ -290,10 +218,16 @@ class Scene3dStory extends Scene3d {
     this.scene.add(light);
   }
 
+  initScreenObjects() {
+    this.svgObjectsLoader.createMap().then(() => {
+      this.initTextures();
+      // eslint-disable-next-line no-console
+    }).catch((e) => console.warn(e));
+  }
+
   init() {
     super.init();
-    this.initTexture();
-
+    this.initScreenObjects();
     const {
       renderer,
       scene,
