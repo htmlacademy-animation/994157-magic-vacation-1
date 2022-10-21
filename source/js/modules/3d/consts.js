@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
-import {pyramidAndCactusRoom, showmanAndCompassRoom} from './rooms';
+import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom} from './rooms';
 
 export const IMAGE_WIDTH = 1024;
 
@@ -162,6 +162,7 @@ export const IMAGES = Object.freeze({
   [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: {
     image: `img/module-5/scenes-textures/scene-1.png`,
     hasHueShift: false,
+    room: dogAndSuitcaseRoom,
     svgShapes: [
       {
         name: `flower`,
