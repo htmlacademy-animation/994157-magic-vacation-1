@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {snowMan} from './snowman';
+import {road} from './road';
 
 class ShowmanAndCompassRoom extends THREE.Group {
   constructor() {
@@ -13,7 +14,10 @@ class ShowmanAndCompassRoom extends THREE.Group {
         new THREE.Euler(20 * THREE.Math.DEG2RAD, 60 * THREE.Math.DEG2RAD, 0),
         `XYZ`
     );
-    this.add(snowMan);
+    road.scale.set(0.7, 0.7, 0.7);
+    road.position.set(-10, -100, -720);
+    road.rotation.copy(new THREE.Euler(15 * THREE.Math.DEG2RAD, 45 * THREE.Math.DEG2RAD, 180 * THREE.Math.DEG2RAD), `XYZ`);
+    this.add(snowMan, road);
   }
 }
 

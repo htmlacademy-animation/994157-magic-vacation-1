@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export const setup3d = ({initialWidth = 100, initialHeight = 100, far = 5500, fov = 45}) => {
+export const setup3d = ({initialWidth = 100, initialHeight = 100, far = 15500, fov = 45}) => {
   //
   // 1.1.1. Renderer
   const renderer = new THREE.WebGLRenderer({
