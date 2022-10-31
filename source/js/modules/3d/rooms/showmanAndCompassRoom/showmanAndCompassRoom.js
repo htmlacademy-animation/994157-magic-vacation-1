@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import {snowMan} from './snowman';
 import {road} from './road';
+import {BaseSceneItem} from '../baseSceneItem';
 
-class ShowmanAndCompassRoom extends THREE.Group {
+class ShowmanAndCompassRoom extends BaseSceneItem {
   constructor() {
     super();
     this.addObjects();

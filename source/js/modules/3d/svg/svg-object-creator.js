@@ -27,7 +27,7 @@ export class SvgObjectCreator extends BaseObject {
 
   create() {
     // realThickness = relativeThickness * realHeight / relativeHeight
-    const {paths, settings, placement} = this.object;
+    const {paths, settings, placement, material} = this.object;
     const geometrySettings = {
       steps: 2,
       depth: settings.depth,
@@ -39,9 +39,9 @@ export class SvgObjectCreator extends BaseObject {
     };
 
     for (const path of paths) {
-      const material = new THREE.MeshStandardMaterial({
-        color: path.color,
+      const meshMaterial = new THREE.MeshStandardMaterial({
         side: THREE.DoubleSide,
+        ...material
       });
 
       const shapes = path.toShapes();
@@ -49,7 +49,7 @@ export class SvgObjectCreator extends BaseObject {
       for (const shape of shapes) {
         const geometry = new THREE.ExtrudeGeometry(shape, geometrySettings);
 
-        const mesh = new THREE.Mesh(geometry, material);
+        const mesh = new THREE.Mesh(geometry, meshMaterial);
         this.addAxisToNode(mesh);
         this.add(mesh);
       }
