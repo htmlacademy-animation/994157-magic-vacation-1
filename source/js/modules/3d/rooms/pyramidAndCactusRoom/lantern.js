@@ -1,6 +1,8 @@
 import {BaseObject} from '../baseObject';
 import * as THREE from 'three';
 import {getConeRadius} from '../../utils';
+import {COLORS_MAP} from '../../config/colors';
+import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 
 class Lantern extends BaseObject {
   constructor() {
@@ -10,43 +12,63 @@ class Lantern extends BaseObject {
       widthTop: 45,
       widthBottom: 57,
       height: 6,
-      color: `#1271F3`,
       radialSegments: 4,
+      material: {
+        color: COLORS_MAP.Blue,
+        flatShading: true,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.lightBox = {
       widthTop: 42,
       widthBottom: 34,
       height: 60,
-      color: `#90B0F9`,
       radialSegments: 4,
+      material: {
+        flatShading: true,
+        color: COLORS_MAP.LightBlue,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.lightBoxBottom = {
       width: 37,
       height: 4,
-      color: `#1271F3`,
+      material: {
+        color: COLORS_MAP.Blue,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.column = {
       height: 230,
       radius: 7,
       radialSegments: 20,
-      color: `#1271F3`,
+      material: {
+        color: COLORS_MAP.Blue,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.sphere = {
       height: 16,
       radius: 16,
       segments: 20,
-      color: `#1271F3`,
+      material: {
+        color: COLORS_MAP.Blue,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.foot = {
       height: 120,
       radius: 16,
       radialSegments: 20,
-      color: `#1271F3`,
+      material: {
+        color: COLORS_MAP.Blue,
+        ...MATERIAL_REFLECTIVITY.soft
+      },
     };
 
     this.addObject();
@@ -64,7 +86,7 @@ class Lantern extends BaseObject {
     );
     const lightBoxBottomMesh = new THREE.Mesh(
         lightBoxBottom,
-        this.createMaterial({color: this.lightBoxBottom.color})
+        this.createMaterial(this.lightBoxBottom.material)
     );
 
     // светильник
@@ -76,7 +98,7 @@ class Lantern extends BaseObject {
     );
     const boxMesh = new THREE.Mesh(
         box,
-        this.createMaterial({color: this.lightBox.color, flatShading: true})
+        this.createMaterial(this.lightBox.material)
     );
 
     boxMesh.position.set(0, this.lightBox.height / 2 + this.lightBoxBottom.height / 2, 0);
@@ -95,7 +117,7 @@ class Lantern extends BaseObject {
     );
     const lightBoxTopMesh = new THREE.Mesh(
         lightBoxTop,
-        this.createMaterial({color: this.lightBoxTop.color, flatShading: true})
+        this.createMaterial(this.lightBoxTop.material)
     );
 
     lightBoxTopMesh.position.set(0, this.lightBox.height + this.lightBoxBottom.height, 0);
@@ -122,7 +144,7 @@ class Lantern extends BaseObject {
     );
     const columnMesh = new THREE.Mesh(
         column,
-        this.createMaterial({color: this.column.color})
+        this.createMaterial(this.column.material)
     );
     this.addAxisToNode(columnMesh);
 
@@ -135,7 +157,7 @@ class Lantern extends BaseObject {
     );
     const footMesh = new THREE.Mesh(
         foot,
-        this.createMaterial({color: this.foot.color})
+        this.createMaterial(this.foot.material)
     );
 
     const halfSphere = new THREE.SphereGeometry(
@@ -149,7 +171,7 @@ class Lantern extends BaseObject {
     );
     const halfSphereMesh = new THREE.Mesh(
         halfSphere,
-        this.createMaterial({color: this.sphere.color})
+        this.createMaterial(this.sphere.material)
     );
 
     halfSphereMesh.position.set(0, this.foot.height / 2, 0);

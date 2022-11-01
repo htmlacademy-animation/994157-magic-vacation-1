@@ -20,9 +20,9 @@ export class Scene3d {
   }
 
   addDeveloperHelpers({camera, canvas, scene}) {
-    const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0, 5, 0);
-    controls.update();
+    this.orbitControls = new OrbitControls(camera, canvas);
+    this.orbitControls.target.set(0, 5, 0);
+    this.orbitControls.update();
     const helpers = new THREE.Group();
     helpers.add(new THREE.AxesHelper(5000));
     scene.add(helpers);

@@ -1,20 +1,16 @@
-import * as THREE from 'three';
 import {BaseObject} from '../baseObject';
-import {getConeRadius} from '../../utils';
+import * as THREE from 'three';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 
-class Pyramid extends BaseObject {
+class BehindKeyhole extends BaseObject {
   constructor() {
     super();
 
     this.data = {
-      height: 280,
-      radius: getConeRadius(250),
-      radialSegments: 4,
       material: {
-        color: COLORS_MAP.Blue,
-        ...MATERIAL_REFLECTIVITY.soft
+        color: COLORS_MAP.Purple,
+        ...MATERIAL_REFLECTIVITY.basic
       }
     };
 
@@ -23,17 +19,13 @@ class Pyramid extends BaseObject {
 
   addObject() {
     const material = this.createMaterial(this.data.material);
-    const cone = new THREE.ConeBufferGeometry(
-        this.data.radius,
-        this.data.height,
-        this.data.radialSegments
-    );
+    const geometry = new THREE.PlaneGeometry(300, 300);
     const mesh = new THREE.Mesh(
-        cone,
+        geometry,
         material);
     this.addAxisToNode(mesh);
     this.add(mesh);
   }
 }
 
-export const pyramid = new Pyramid();
+export const behindKeyhole = new BehindKeyhole();

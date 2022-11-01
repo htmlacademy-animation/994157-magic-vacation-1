@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import {BaseObject} from '../baseObject';
+import {COLORS_MAP} from '../../config/colors';
+import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 
 class Snowman extends BaseObject {
   constructor() {
@@ -9,18 +11,27 @@ class Snowman extends BaseObject {
       radius: 18,
       height: 75,
       radialSegments: 20,
-      color: `#F84201`,
+      material: {
+        color: COLORS_MAP.Orange,
+        ...MATERIAL_REFLECTIVITY.soft
+      }
     };
 
     this.smallBall = {
       radius: 44,
       segments: 20,
-      color: `#B1CFF3`,
+      material: {
+        color: COLORS_MAP.SnowColor,
+        ...MATERIAL_REFLECTIVITY.strong
+      }
     };
     this.bigBall = {
       radius: 75,
       segments: 20,
-      color: `#B1CFF3`,
+      material: {
+        color: COLORS_MAP.SnowColor,
+        ...MATERIAL_REFLECTIVITY.strong
+      }
     };
 
     this.addObjects();
@@ -32,7 +43,7 @@ class Snowman extends BaseObject {
         this.smallBall.segments,
         this.smallBall.segments
     );
-    const material = this.createMaterial({color: this.smallBall.color});
+    const material = this.createMaterial(this.smallBall.material);
     return new THREE.Mesh(
         sphere,
         material
@@ -45,7 +56,7 @@ class Snowman extends BaseObject {
         this.nose.height,
         this.nose.radialSegments
     );
-    const material = this.createMaterial({color: this.nose.color});
+    const material = this.createMaterial(this.nose.material);
     return new THREE.Mesh(
         cone,
         material
@@ -73,7 +84,7 @@ class Snowman extends BaseObject {
         this.bigBall.segments,
         this.bigBall.segments
     );
-    const material = this.createMaterial({color: this.bigBall.color});
+    const material = this.createMaterial(this.bigBall.material);
     const mesh = new THREE.Mesh(
         sphere,
         material

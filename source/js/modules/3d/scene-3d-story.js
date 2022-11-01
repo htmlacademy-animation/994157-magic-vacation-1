@@ -4,8 +4,12 @@ import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation2d} from '../2d/animation-2d';
-import {IMAGE_WIDTH, BUBBLES, CAMERA_POSITION, SCENE_INDEX_BY_NAME, LIGHTS, IMAGES, SVG_SHAPES} from './consts';
-import {SvgObjectCreator, SvgObjectsLoader} from './svg';
+import {IMAGE_WIDTH, CAMERA_POSITION} from './consts';
+import {SvgObjectsLoader} from './svg';
+import {SVG_SHAPES} from './config/svg-shapes';
+import {LIGHTS} from './config/lights';
+import {SCENE_INDEX_BY_NAME, SCENES} from './config/scenes';
+import {BUBBLES} from './config/bubbles';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -30,6 +34,9 @@ class Scene3dStory extends Scene3d {
     const sceneName = screenName === SCREEN_NAMES.STORY ? this.storyScreen : screenName;
     const sceneIndex = this.getSceneIndex(sceneName);
     this.camera.position.x = IMAGE_WIDTH * sceneIndex;
+
+    this.orbitControls.target.set(this.camera.position.x, 5, 0);
+    this.orbitControls.update();
 
     if (sceneName === STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS) {
       this.startAnimations();
@@ -82,22 +89,10 @@ class Scene3dStory extends Scene3d {
 
     // room
     if (texture.room) {
-      texture.room.position.x = plane.position.x;
-      this.scene.add(texture.room);
-    }
-
-    // svgShapes
-    if (texture.svgShapes) {
-      const svgGroup = new THREE.Group();
-      texture.svgShapes.forEach((shape) => {
-        const paths = this.svgObjectsLoader.getPaths(shape.name);
-
-        const svgObject = new SvgObjectCreator({...shape, paths});
-        svgGroup.add(svgObject);
-      });
-
-      svgGroup.position.x = plane.position.x;
-      this.scene.add(svgGroup);
+      const room = texture.room;
+      room.addSvgShapes(this.svgObjectsLoader);
+      room.position.x = plane.position.x;
+      this.scene.add(room);
     }
 
     this.scene.add(plane);
@@ -106,7 +101,7 @@ class Scene3dStory extends Scene3d {
   initTextures() {
     const loadManager = new THREE.LoadingManager();
     const textureLoader = new THREE.TextureLoader(loadManager);
-    const textures = Object.entries(IMAGES).map(([name, {image, ...other}]) => ({
+    const textures = Object.entries(SCENES).map(([name, {image, ...other}]) => ({
       name,
       map: textureLoader.load(image),
       ...other
