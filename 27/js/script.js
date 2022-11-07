@@ -65581,12 +65581,17 @@ const CAMERA_POSITION = 750;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "aiSonyaRoom", function() { return aiSonyaRoom; });
-/* harmony import */ var _saturn__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../saturn */ "./source/js/modules/3d/rooms/saturn.js");
-/* harmony import */ var _baseSceneItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../baseSceneItem */ "./source/js/modules/3d/rooms/baseSceneItem.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _saturn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../saturn */ "./source/js/modules/3d/rooms/saturn.js");
+/* harmony import */ var _rug_rug__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../rug/rug */ "./source/js/modules/3d/rooms/rug/rug.js");
+/* harmony import */ var _baseSceneItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../baseSceneItem */ "./source/js/modules/3d/rooms/baseSceneItem.js");
 
 
 
-class AiSonyaRoom extends _baseSceneItem__WEBPACK_IMPORTED_MODULE_1__["BaseSceneItem"] {
+
+
+
+class AiSonyaRoom extends _baseSceneItem__WEBPACK_IMPORTED_MODULE_3__["BaseSceneItem"] {
   constructor() {
     super();
 
@@ -65594,10 +65599,15 @@ class AiSonyaRoom extends _baseSceneItem__WEBPACK_IMPORTED_MODULE_1__["BaseScene
   }
 
   addObject() {
-    const saturn = new _saturn__WEBPACK_IMPORTED_MODULE_0__["Saturn"]({isShadowed: true});
+    const saturn = new _saturn__WEBPACK_IMPORTED_MODULE_1__["Saturn"]({isShadowed: true});
     saturn.scale.set(0.9, 0.9, 0.9);
     saturn.position.set(85, 220, -540);
-    this.add(saturn);
+
+    const rug = new _rug_rug__WEBPACK_IMPORTED_MODULE_2__["Rug"](true);
+    rug.scale.set(0.7, 0.7, 0.7);
+    rug.position.set(-20, 0, -540);
+    rug.rotation.copy(new three__WEBPACK_IMPORTED_MODULE_0__["Euler"](20 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 45 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 180 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD), `XYZ`);
+    this.add(saturn, rug);
   }
 }
 
@@ -65693,7 +65703,7 @@ class BaseSceneItem extends three__WEBPACK_IMPORTED_MODULE_0__["Group"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dogAndSuitcaseRoom", function() { return dogAndSuitcaseRoom; });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _rug_rug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rug/rug */ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/rug.js");
+/* harmony import */ var _rug_rug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../rug/rug */ "./source/js/modules/3d/rooms/rug/rug.js");
 /* harmony import */ var _saturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../saturn */ "./source/js/modules/3d/rooms/saturn.js");
 /* harmony import */ var _config_colors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../config/colors */ "./source/js/modules/3d/config/colors.js");
 /* harmony import */ var _config_material_reflectivity__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../config/material-reflectivity */ "./source/js/modules/3d/config/material-reflectivity.js");
@@ -65728,140 +65738,19 @@ class DogAndSuitcaseRoom extends _baseSceneItem__WEBPACK_IMPORTED_MODULE_5__["Ba
   }
 
   addObject() {
-    _rug_rug__WEBPACK_IMPORTED_MODULE_1__["rug"].scale.set(0.7, 0.7, 0.7);
-    _rug_rug__WEBPACK_IMPORTED_MODULE_1__["rug"].position.set(-20, 0, -540);
-    _rug_rug__WEBPACK_IMPORTED_MODULE_1__["rug"].rotation.copy(new three__WEBPACK_IMPORTED_MODULE_0__["Euler"](20 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 45 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 180 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD), `XYZ`);
+    const rug = new _rug_rug__WEBPACK_IMPORTED_MODULE_1__["Rug"]();
+    rug.scale.set(0.7, 0.7, 0.7);
+    rug.position.set(-20, 0, -540);
+    rug.rotation.copy(new three__WEBPACK_IMPORTED_MODULE_0__["Euler"](20 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 45 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD, 180 * three__WEBPACK_IMPORTED_MODULE_0__["Math"].DEG2RAD), `XYZ`);
     const saturn = new _saturn__WEBPACK_IMPORTED_MODULE_2__["Saturn"]({isShadowed: false});
     saturn.scale.set(0.9, 0.9, 0.9);
     saturn.position.set(55, 220, -540);
-    this.add(_rug_rug__WEBPACK_IMPORTED_MODULE_1__["rug"], saturn);
+    this.add(rug, saturn);
   }
 }
 
 const dogAndSuitcaseRoom = new DogAndSuitcaseRoom();
 
-
-/***/ }),
-
-/***/ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/RugMaterial.js":
-/*!**************************************************************************!*\
-  !*** ./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/RugMaterial.js ***!
-  \**************************************************************************/
-/*! exports provided: RugMaterial */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RugMaterial", function() { return RugMaterial; });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shader/vertex-shader.glsl */ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/vertex-shader.glsl");
-/* harmony import */ var _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shader/fragment-shader.glsl */ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/fragment-shader.glsl");
-/* harmony import */ var _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-
-class RugMaterial extends three__WEBPACK_IMPORTED_MODULE_0__["MeshStandardMaterial"] {
-  constructor({
-    firstColor,
-    secondColor
-  }) {
-    super();
-    this.uniforms = {
-      firstColor: {value: new three__WEBPACK_IMPORTED_MODULE_0__["Color"](firstColor)},
-      secondColor: {value: new three__WEBPACK_IMPORTED_MODULE_0__["Color"](secondColor)}
-    };
-  }
-
-  onBeforeCompile(shader) {
-    shader.uniforms = {
-      ...shader.uniforms,
-      ...this.uniforms,
-    };
-
-    shader.vertexShader = _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1___default.a;
-
-    shader.fragmentShader = _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2___default.a;
-  }
-}
-
-
-/***/ }),
-
-/***/ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/rug.js":
-/*!******************************************************************!*\
-  !*** ./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/rug.js ***!
-  \******************************************************************/
-/*! exports provided: rug */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rug", function() { return rug; });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _latheObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../latheObject */ "./source/js/modules/3d/rooms/latheObject.js");
-/* harmony import */ var _RugMaterial__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RugMaterial */ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/RugMaterial.js");
-/* harmony import */ var _config_colors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../config/colors */ "./source/js/modules/3d/config/colors.js");
-
-
-
-
-
-class Rug extends _latheObject__WEBPACK_IMPORTED_MODULE_1__["LatheObject"] {
-  constructor() {
-    super();
-
-    this.data = {
-      width: 180,
-      height: 3,
-      radius: 763,
-      degree: {
-        from: 16,
-        to: 74,
-      },
-      color: `#A481D1`,
-      segments: 30,
-    };
-
-    this.addObject();
-  }
-
-  addObject() {
-    const material = new _RugMaterial__WEBPACK_IMPORTED_MODULE_2__["RugMaterial"]({firstColor: _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].LightPurple, secondColor: _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].AdditionalPurple});
-    const geometry = this.createLatheGeometry(this.data);
-    const mesh = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](
-        geometry,
-        material);
-    this.addAxisToNode(mesh);
-    this.add(mesh);
-  }
-}
-
-const rug = new Rug();
-
-
-/***/ }),
-
-/***/ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/fragment-shader.glsl":
-/*!***************************************************************************************!*\
-  !*** ./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/fragment-shader.glsl ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "#define STANDARD\n#ifdef PHYSICAL\n#define REFLECTIVITY\n#define CLEARCOAT\n#define TRANSPARENCY\n#endif\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifdef TRANSPARENCY\nuniform float transparency;\n#endif\n#ifdef REFLECTIVITY\nuniform float reflectivity;\n#endif\n#ifdef CLEARCOAT\nuniform float clearcoat;\nuniform float clearcoatRoughness;\n#endif\n#ifdef USE_SHEEN\nuniform vec3 sheen;\n#endif\nvarying vec3 vViewPosition;\nvarying vec2 vUv;\nuniform vec3 firstColor;\nuniform vec3 secondColor;\n#ifndef FLAT_SHADED\nvarying vec3 vNormal;\n#ifdef USE_TANGENT\nvarying vec3 vTangent;\nvarying vec3 vBitangent;\n#endif\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_physical_pars_fragment>\n#include <fog_pars_fragment>\n#include <lights_pars_begin>\n#include <lights_physical_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <clearcoat_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n#include <clipping_planes_fragment>\nvec4 diffuseColor = vec4( diffuse, opacity );\nReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\nvec3 totalEmissiveRadiance = emissive;\n#include <logdepthbuf_fragment>\nvec4 texelColor = vec4(firstColor, 1.0);\nif (vUv.x > 1.0 / 7.0 && vUv.x < 2.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\nif (vUv.x > 3.0 / 7.0 && vUv.x < 4.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\nif (vUv.x > 5.0 / 7.0 && vUv.x < 6.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\ntexelColor = mapTexelToLinear( texelColor );\ndiffuseColor *= texelColor;\n#include <color_fragment>\n#include <alphamap_fragment>\n#include <alphatest_fragment>\n#include <roughnessmap_fragment>\n#include <metalnessmap_fragment>\n#include <normal_fragment_begin>\n#include <normal_fragment_maps>\n#include <clearcoat_normal_fragment_begin>\n#include <clearcoat_normal_fragment_maps>\n#include <emissivemap_fragment>\n#include <lights_physical_fragment>\n#include <lights_fragment_begin>\n#include <lights_fragment_maps>\n#include <lights_fragment_end>\n#include <aomap_fragment>\nvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n#ifdef TRANSPARENCY\ndiffuseColor.a *= saturate( 1. - transparency + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) );\n#endif\ngl_FragColor = vec4( outgoingLight, diffuseColor.a );\n#include <tonemapping_fragment>\n#include <encodings_fragment>\n#include <fog_fragment>\n#include <premultiplied_alpha_fragment>\n#include <dithering_fragment>\n}\n"
-
-/***/ }),
-
-/***/ "./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/vertex-shader.glsl":
-/*!*************************************************************************************!*\
-  !*** ./source/js/modules/3d/rooms/dogAndSuitcaseRoom/rug/shader/vertex-shader.glsl ***!
-  \*************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "#define STANDARD\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\nvarying vec3 vNormal;\n#ifdef USE_TANGENT\nvarying vec3 vTangent;\nvarying vec3 vBitangent;\n#endif\n#endif\n#include <common>\nvarying vec2 vUv;\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n#include <uv2_vertex>\n#include <color_vertex>\n#include <beginnormal_vertex>\n#include <morphnormal_vertex>\n#include <skinbase_vertex>\n#include <skinnormal_vertex>\n#include <defaultnormal_vertex>\nvUv = uv;\n#ifndef FLAT_SHADED\nvNormal = normalize( transformedNormal );\n#ifdef USE_TANGENT\nvTangent = normalize( transformedTangent );\nvBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );\n#endif\n#endif\n#include <begin_vertex>\n#include <morphtarget_vertex>\n#include <skinning_vertex>\n#include <displacementmap_vertex>\n#include <project_vertex>\n#include <logdepthbuf_vertex>\n#include <clipping_planes_vertex>\nvViewPosition = - mvPosition.xyz;\n#include <worldpos_vertex>\n#include <shadowmap_vertex>\n#include <fog_vertex>\n}\n"
 
 /***/ }),
 
@@ -66492,6 +66381,127 @@ class PyramidAndCactusRoom extends _baseSceneItem__WEBPACK_IMPORTED_MODULE_3__["
 
 const pyramidAndCactusRoom = new PyramidAndCactusRoom();
 
+
+/***/ }),
+
+/***/ "./source/js/modules/3d/rooms/rug/RugMaterial.js":
+/*!*******************************************************!*\
+  !*** ./source/js/modules/3d/rooms/rug/RugMaterial.js ***!
+  \*******************************************************/
+/*! exports provided: RugMaterial */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RugMaterial", function() { return RugMaterial; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shader/vertex-shader.glsl */ "./source/js/modules/3d/rooms/rug/shader/vertex-shader.glsl");
+/* harmony import */ var _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shader/fragment-shader.glsl */ "./source/js/modules/3d/rooms/rug/shader/fragment-shader.glsl");
+/* harmony import */ var _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+class RugMaterial extends three__WEBPACK_IMPORTED_MODULE_0__["MeshStandardMaterial"] {
+  constructor({
+    firstColor,
+    secondColor
+  }) {
+    super();
+    this.uniforms = {
+      firstColor: {value: new three__WEBPACK_IMPORTED_MODULE_0__["Color"](firstColor)},
+      secondColor: {value: new three__WEBPACK_IMPORTED_MODULE_0__["Color"](secondColor)}
+    };
+  }
+
+  onBeforeCompile(shader) {
+    shader.uniforms = {
+      ...shader.uniforms,
+      ...this.uniforms,
+    };
+
+    shader.vertexShader = _shader_vertex_shader_glsl__WEBPACK_IMPORTED_MODULE_1___default.a;
+
+    shader.fragmentShader = _shader_fragment_shader_glsl__WEBPACK_IMPORTED_MODULE_2___default.a;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/modules/3d/rooms/rug/rug.js":
+/*!***********************************************!*\
+  !*** ./source/js/modules/3d/rooms/rug/rug.js ***!
+  \***********************************************/
+/*! exports provided: Rug */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Rug", function() { return Rug; });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _latheObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../latheObject */ "./source/js/modules/3d/rooms/latheObject.js");
+/* harmony import */ var _RugMaterial__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RugMaterial */ "./source/js/modules/3d/rooms/rug/RugMaterial.js");
+/* harmony import */ var _config_colors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../config/colors */ "./source/js/modules/3d/config/colors.js");
+
+
+
+
+
+class Rug extends _latheObject__WEBPACK_IMPORTED_MODULE_1__["LatheObject"] {
+  constructor(isDark) {
+    super();
+
+    this.data = {
+      width: 180,
+      height: 3,
+      radius: 763,
+      degree: {
+        from: 16,
+        to: 74,
+      },
+      firstColor: isDark ? _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].ShadowedLightPurple : _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].LightPurple,
+      secondColor: isDark ? _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].ShadowedAdditionalPurple : _config_colors__WEBPACK_IMPORTED_MODULE_3__["COLORS_MAP"].AdditionalPurple,
+      segments: 30,
+    };
+
+    this.addObject();
+  }
+
+  addObject() {
+    const material = new _RugMaterial__WEBPACK_IMPORTED_MODULE_2__["RugMaterial"]({firstColor: this.data.firstColor, secondColor: this.data.secondColor});
+    const geometry = this.createLatheGeometry(this.data);
+    const mesh = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](
+        geometry,
+        material);
+    this.addAxisToNode(mesh);
+    this.add(mesh);
+  }
+}
+
+
+/***/ }),
+
+/***/ "./source/js/modules/3d/rooms/rug/shader/fragment-shader.glsl":
+/*!********************************************************************!*\
+  !*** ./source/js/modules/3d/rooms/rug/shader/fragment-shader.glsl ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#define STANDARD\n#ifdef PHYSICAL\n#define REFLECTIVITY\n#define CLEARCOAT\n#define TRANSPARENCY\n#endif\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifdef TRANSPARENCY\nuniform float transparency;\n#endif\n#ifdef REFLECTIVITY\nuniform float reflectivity;\n#endif\n#ifdef CLEARCOAT\nuniform float clearcoat;\nuniform float clearcoatRoughness;\n#endif\n#ifdef USE_SHEEN\nuniform vec3 sheen;\n#endif\nvarying vec3 vViewPosition;\nvarying vec2 vUv;\nuniform vec3 firstColor;\nuniform vec3 secondColor;\n#ifndef FLAT_SHADED\nvarying vec3 vNormal;\n#ifdef USE_TANGENT\nvarying vec3 vTangent;\nvarying vec3 vBitangent;\n#endif\n#endif\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_physical_pars_fragment>\n#include <fog_pars_fragment>\n#include <lights_pars_begin>\n#include <lights_physical_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <clearcoat_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n#include <clipping_planes_fragment>\nvec4 diffuseColor = vec4( diffuse, opacity );\nReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\nvec3 totalEmissiveRadiance = emissive;\n#include <logdepthbuf_fragment>\nvec4 texelColor = vec4(firstColor, 1.0);\nif (vUv.x > 1.0 / 7.0 && vUv.x < 2.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\nif (vUv.x > 3.0 / 7.0 && vUv.x < 4.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\nif (vUv.x > 5.0 / 7.0 && vUv.x < 6.0 / 7.0) {\ntexelColor = vec4(secondColor, 1.0);\n}\ntexelColor = mapTexelToLinear( texelColor );\ndiffuseColor *= texelColor;\n#include <color_fragment>\n#include <alphamap_fragment>\n#include <alphatest_fragment>\n#include <roughnessmap_fragment>\n#include <metalnessmap_fragment>\n#include <normal_fragment_begin>\n#include <normal_fragment_maps>\n#include <clearcoat_normal_fragment_begin>\n#include <clearcoat_normal_fragment_maps>\n#include <emissivemap_fragment>\n#include <lights_physical_fragment>\n#include <lights_fragment_begin>\n#include <lights_fragment_maps>\n#include <lights_fragment_end>\n#include <aomap_fragment>\nvec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;\n#ifdef TRANSPARENCY\ndiffuseColor.a *= saturate( 1. - transparency + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) );\n#endif\ngl_FragColor = vec4( outgoingLight, diffuseColor.a );\n#include <tonemapping_fragment>\n#include <encodings_fragment>\n#include <fog_fragment>\n#include <premultiplied_alpha_fragment>\n#include <dithering_fragment>\n}\n"
+
+/***/ }),
+
+/***/ "./source/js/modules/3d/rooms/rug/shader/vertex-shader.glsl":
+/*!******************************************************************!*\
+  !*** ./source/js/modules/3d/rooms/rug/shader/vertex-shader.glsl ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#define STANDARD\nvarying vec3 vViewPosition;\n#ifndef FLAT_SHADED\nvarying vec3 vNormal;\n#ifdef USE_TANGENT\nvarying vec3 vTangent;\nvarying vec3 vBitangent;\n#endif\n#endif\n#include <common>\nvarying vec2 vUv;\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n#include <uv2_vertex>\n#include <color_vertex>\n#include <beginnormal_vertex>\n#include <morphnormal_vertex>\n#include <skinbase_vertex>\n#include <skinnormal_vertex>\n#include <defaultnormal_vertex>\nvUv = uv;\n#ifndef FLAT_SHADED\nvNormal = normalize( transformedNormal );\n#ifdef USE_TANGENT\nvTangent = normalize( transformedTangent );\nvBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );\n#endif\n#endif\n#include <begin_vertex>\n#include <morphtarget_vertex>\n#include <skinning_vertex>\n#include <displacementmap_vertex>\n#include <project_vertex>\n#include <logdepthbuf_vertex>\n#include <clipping_planes_vertex>\nvViewPosition = - mvPosition.xyz;\n#include <worldpos_vertex>\n#include <shadowmap_vertex>\n#include <fog_vertex>\n}\n"
 
 /***/ }),
 
