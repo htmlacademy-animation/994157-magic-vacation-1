@@ -1,4 +1,4 @@
-import {BaseObject} from './baseObject';
+import {BaseObject} from './base-object';
 import * as THREE from 'three';
 
 export class LatheObject extends BaseObject {

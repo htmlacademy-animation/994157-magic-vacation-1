@@ -1,4 +1,4 @@
-import {BaseObject} from '../baseObject';
+import {BaseObject} from '../../components/base-object';
 import * as THREE from 'three';
 import {getConeRadius} from '../../utils';
 import {COLORS_MAP} from '../../config/colors';

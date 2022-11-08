@@ -1,8 +1,8 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
-import {Saturn} from '../saturn';
-import {Rug} from '../rug/rug';
-import {BaseSceneItem} from '../baseSceneItem';
+import {Saturn} from '../../components/saturn';
+import {Rug} from '../../components/rug/rug';
+import {BaseSceneItem} from '../../components/base-scene-item';
 
 class AiSonyaRoom extends BaseSceneItem {
   constructor() {

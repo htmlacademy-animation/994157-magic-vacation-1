@@ -1,6 +1,6 @@
-import {BaseObject} from './baseObject';
+import {BaseObject} from './base-object';
 import * as THREE from 'three';
-import {LatheObject} from './latheObject';
+import {LatheObject} from './lathe-object';
 import {COLORS_MAP} from '../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../config/material-reflectivity';
 

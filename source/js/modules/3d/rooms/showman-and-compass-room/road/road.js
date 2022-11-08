@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {LatheObject} from '../../latheObject';
+import {LatheObject} from '../../../components/lathe-object';
 import {COLORS_MAP} from '../../../config/colors';
-import {RoadMaterial} from './RoadMaterial';
+import {RoadMaterial} from './road-material';
 
 class Road extends LatheObject {
   constructor() {

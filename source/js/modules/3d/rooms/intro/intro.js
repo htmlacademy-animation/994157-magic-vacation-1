@@ -1,7 +1,7 @@
-import {BaseSceneItem} from '../baseSceneItem';
+import {BaseSceneItem} from '../../components/base-scene-item';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
-import {behindKeyhole} from './behindKeyhole';
+import {behindKeyhole} from './behind-keyhole';
 
 class Intro extends BaseSceneItem {
   constructor() {
@@ -120,11 +120,71 @@ class Intro extends BaseSceneItem {
       }
     ];
 
+    this.models = [
+      {
+        name: `airplane`,
+        type: `obj`,
+        placement: {
+          scale: 0.5,
+          position: {
+            x: 70,
+            y: 80,
+            z: 100
+          },
+          rotate: {
+            x: 90,
+            y: 140,
+            z: -30
+          },
+        },
+        material: {
+          ...MATERIAL_REFLECTIVITY.soft,
+          color: COLORS_MAP.White,
+        },
+        path: `../../../../../3d/module-6/scene-0-objects/airplane.obj`,
+      },
+      {
+        name: `suitcase`,
+        type: `gltf`,
+        placement: {
+          scale: 0.5,
+          position: {
+            x: 50,
+            y: -150,
+            z: 30
+          },
+          rotate: {
+            x: 25,
+            y: -30,
+            z: 0
+          },
+        },
+        path: `../../../../../3d/module-6/scene-0-objects/suitcase.gltf`,
+      },
+      {
+        name: `watermelon`,
+        type: `gltf`,
+        placement: {
+          position: {
+            x: -250,
+            y: 0,
+            z: 40
+          },
+          rotate: {
+            x: 0,
+            y: 0,
+            z: 130
+          },
+        },
+        path: `../../../../../3d/module-6/scene-0-objects/watermelon.gltf`,
+      }];
+
     this.addObjects();
   }
 
 
   addObjects() {
+    this.addModels();
     behindKeyhole.position.set(0, 0, -260);
     this.add(behindKeyhole);
   }

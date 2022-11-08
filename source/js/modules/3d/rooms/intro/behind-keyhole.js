@@ -1,4 +1,4 @@
-import {BaseObject} from '../baseObject';
+import {BaseObject} from '../../components/base-object';
 import * as THREE from 'three';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
