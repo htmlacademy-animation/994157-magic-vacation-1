@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import {LatheObject} from '../latheObject';
+import {RugMaterial} from './RugMaterial';
+import {COLORS_MAP} from '../../config/colors';
 
-class Rug extends LatheObject {
-  constructor() {
+export class Rug extends LatheObject {
+  constructor(isDark) {
     super();
 
     this.data = {
@@ -13,7 +15,8 @@ class Rug extends LatheObject {
         from: 16,
         to: 74,
       },
-      color: `#A481D1`,
+      firstColor: isDark ? COLORS_MAP.ShadowedLightPurple : COLORS_MAP.LightPurple,
+      secondColor: isDark ? COLORS_MAP.ShadowedAdditionalPurple : COLORS_MAP.AdditionalPurple,
       segments: 30,
     };
 
@@ -21,7 +24,7 @@ class Rug extends LatheObject {
   }
 
   addObject() {
-    const material = this.createMaterial({color: this.data.color});
+    const material = new RugMaterial({firstColor: this.data.firstColor, secondColor: this.data.secondColor});
     const geometry = this.createLatheGeometry(this.data);
     const mesh = new THREE.Mesh(
         geometry,
@@ -30,5 +33,3 @@ class Rug extends LatheObject {
     this.add(mesh);
   }
 }
-
-export const rug = new Rug();
