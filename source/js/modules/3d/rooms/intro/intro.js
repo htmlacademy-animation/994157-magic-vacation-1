@@ -141,7 +141,7 @@ class Intro extends BaseSceneItem {
           ...MATERIAL_REFLECTIVITY.soft,
           color: COLORS_MAP.White,
         },
-        path: `../../../../../3d/module-6/scene-0-objects/airplane.obj`,
+        path: `3d/module-6/scene-0-objects/airplane.obj`,
       },
       {
         name: `suitcase`,
@@ -159,7 +159,7 @@ class Intro extends BaseSceneItem {
             z: 0
           },
         },
-        path: `../../../../../3d/module-6/scene-0-objects/suitcase.gltf`,
+        path: `3d/module-6/scene-0-objects/suitcase.gltf`,
       },
       {
         name: `watermelon`,
@@ -176,7 +176,7 @@ class Intro extends BaseSceneItem {
             z: 130
           },
         },
-        path: `../../../../../3d/module-6/scene-0-objects/watermelon.gltf`,
+        path: `3d/module-6/scene-0-objects/watermelon.gltf`,
       }];
 
     this.addObjects();
