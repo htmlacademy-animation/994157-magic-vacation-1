@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {snowMan} from './snowman';
 import {road} from './road/road';
-import {BaseSceneItem} from '../baseSceneItem';
+import {BaseSceneItem} from '../../components/base-scene-item';
 
 class ShowmanAndCompassRoom extends BaseSceneItem {
   constructor() {

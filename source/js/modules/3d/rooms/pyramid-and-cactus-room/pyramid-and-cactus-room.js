@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {pyramid} from './pyramid';
 import {lantern} from './lantern';
-import {BaseSceneItem} from '../baseSceneItem';
+import {BaseSceneItem} from '../../components/base-scene-item';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 

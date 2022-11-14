@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {BaseObject} from '../rooms/baseObject';
+import {BaseObject} from '../components/base-object';
 
 export class SvgObjectCreator extends BaseObject {
   constructor(objectWithSettings) {
@@ -7,22 +7,6 @@ export class SvgObjectCreator extends BaseObject {
     this.object = objectWithSettings;
 
     this.create();
-  }
-
-  place(placement) {
-    const {position, rotate} = placement;
-
-    if (position) {
-      this.position.set(...Object.values(position));
-    }
-
-    if (rotate) {
-      const {x = 0, y = 0, z = 0} = rotate;
-      this.rotation.copy(
-          new THREE.Euler(x * THREE.Math.DEG2RAD, y * THREE.Math.DEG2RAD, z * THREE.Math.DEG2RAD),
-          `XYZ`
-      );
-    }
   }
 
   create() {
@@ -39,10 +23,8 @@ export class SvgObjectCreator extends BaseObject {
     };
 
     for (const path of paths) {
-      const meshMaterial = new THREE.MeshStandardMaterial({
-        side: THREE.DoubleSide,
-        ...material
-      });
+      const meshMaterial = this.createMaterial({side: THREE.DoubleSide,
+        ...material});
 
       const shapes = path.toShapes();
 

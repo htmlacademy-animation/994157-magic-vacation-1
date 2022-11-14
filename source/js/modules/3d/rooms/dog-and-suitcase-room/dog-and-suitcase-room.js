@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import {Rug} from '../rug/rug';
-import {Saturn} from '../saturn';
+import {Rug} from '../../components/rug/rug';
+import {Saturn} from '../../components/saturn';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
-import {BaseSceneItem} from '../baseSceneItem';
+import {BaseSceneItem} from '../../components/base-scene-item';
 
 class DogAndSuitcaseRoom extends BaseSceneItem {
   constructor() {
