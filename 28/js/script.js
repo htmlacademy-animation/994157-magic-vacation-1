@@ -70539,7 +70539,7 @@ class Intro extends _components_base_scene_item__WEBPACK_IMPORTED_MODULE_0__["Ba
           ..._config_material_reflectivity__WEBPACK_IMPORTED_MODULE_2__["MATERIAL_REFLECTIVITY"].soft,
           color: _config_colors__WEBPACK_IMPORTED_MODULE_1__["COLORS_MAP"].White,
         },
-        path: `../../../../../3d/module-6/scene-0-objects/airplane.obj`,
+        path: `3d/module-6/scene-0-objects/airplane.obj`,
       },
       {
         name: `suitcase`,
@@ -70557,7 +70557,7 @@ class Intro extends _components_base_scene_item__WEBPACK_IMPORTED_MODULE_0__["Ba
             z: 0
           },
         },
-        path: `../../../../../3d/module-6/scene-0-objects/suitcase.gltf`,
+        path: `3d/module-6/scene-0-objects/suitcase.gltf`,
       },
       {
         name: `watermelon`,
@@ -70574,7 +70574,7 @@ class Intro extends _components_base_scene_item__WEBPACK_IMPORTED_MODULE_0__["Ba
             z: 130
           },
         },
-        path: `../../../../../3d/module-6/scene-0-objects/watermelon.gltf`,
+        path: `3d/module-6/scene-0-objects/watermelon.gltf`,
       }];
 
     this.addObjects();
