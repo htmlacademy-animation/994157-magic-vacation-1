@@ -2,6 +2,7 @@ import {BaseSceneItem} from '../../components/base-scene-item';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 import {behindKeyhole} from './behind-keyhole';
+import {Saturn} from '../../components/saturn';
 
 class Intro extends BaseSceneItem {
   constructor() {
@@ -16,13 +17,14 @@ class Intro extends BaseSceneItem {
         },
         placement: {
           position: {
-            x: -180,
-            y: 150,
-            z: 0
+            x: -460,
+            y: 270,
+            z: 140
           },
           rotate: {
-            y: 45,
-            z: 135,
+            x: 355,
+            y: 30,
+            z: 206,
           }
         },
         material: {
@@ -39,13 +41,14 @@ class Intro extends BaseSceneItem {
         },
         placement: {
           position: {
-            x: 180,
-            y: 150,
-            z: 0
+            x: -320,
+            y: -20,
+            z: 90
           },
           rotate: {
-            y: -45,
-            z: 135,
+            x: 350,
+            y: 40,
+            z: 18,
           }
         },
         material: {
@@ -62,13 +65,14 @@ class Intro extends BaseSceneItem {
         },
         placement: {
           position: {
-            x: 180,
-            y: -150,
-            z: 0
+            x: 140,
+            y: -260,
+            z: 50
           },
           rotate: {
-            y: 45,
-            z: 135,
+            x: 310,
+            y: 184,
+            z: 160,
           }
         },
         material: {
@@ -85,13 +89,14 @@ class Intro extends BaseSceneItem {
         },
         placement: {
           position: {
-            x: -180,
-            y: -150,
-            z: 0
+            x: 500,
+            y: 290,
+            z: 100
           },
           rotate: {
-            y: -45,
-            z: 135,
+            x: 350,
+            y: 140,
+            z: 248,
           }
         },
         material: {
@@ -103,14 +108,14 @@ class Intro extends BaseSceneItem {
         name: `keyhole`,
         settings: {
           height: 2000,
-          depth: 20,
+          depth: 4,
           cap: 2
         },
         placement: {
           position: {
             x: 1000,
             y: 1000,
-            z: -250
+            z: 0
           }
         },
         material: {
@@ -125,16 +130,15 @@ class Intro extends BaseSceneItem {
         name: `airplane`,
         type: `obj`,
         placement: {
-          scale: 0.5,
           position: {
-            x: 70,
-            y: 80,
-            z: 100
+            x: 190,
+            y: 120,
+            z: 70
           },
           rotate: {
-            x: 90,
+            x: 50,
             y: 140,
-            z: -30
+            z: 0
           },
         },
         material: {
@@ -147,16 +151,16 @@ class Intro extends BaseSceneItem {
         name: `suitcase`,
         type: `gltf`,
         placement: {
-          scale: 0.5,
+          scale: 0.4,
           position: {
-            x: 50,
-            y: -150,
-            z: 30
+            x: -60,
+            y: -120,
+            z: 150
           },
           rotate: {
-            x: 25,
-            y: -30,
-            z: 0
+            x: 35,
+            y: 220,
+            z: 20
           },
         },
         path: `3d/module-6/scene-0-objects/suitcase.gltf`,
@@ -166,18 +170,33 @@ class Intro extends BaseSceneItem {
         type: `gltf`,
         placement: {
           position: {
-            x: -250,
-            y: 0,
-            z: 40
+            x: -600,
+            y: -240,
+            z: 200
           },
           rotate: {
-            x: 0,
-            y: 0,
-            z: 130
+            x: 17,
+            y: 189,
+            z: 45
           },
+          scale: 1.8
         },
         path: `3d/module-6/scene-0-objects/watermelon.gltf`,
       }];
+
+    this.saturnPlacement = {
+      scale: 0.5,
+      position: {
+        x: 350,
+        y: -120,
+        z: 140
+      },
+      rotate: {
+        x: -10,
+        y: 0,
+        z: 10,
+      }
+    };
 
     this.addObjects();
   }
@@ -185,8 +204,11 @@ class Intro extends BaseSceneItem {
 
   addObjects() {
     this.addModels();
-    behindKeyhole.position.set(0, 0, -260);
-    this.add(behindKeyhole);
+    behindKeyhole.position.set(0, 0, -10);
+
+    const saturn = new Saturn({isShadowed: false, withMoon: false});
+    saturn.place(this.saturnPlacement);
+    this.add(behindKeyhole, saturn);
   }
 }
 
