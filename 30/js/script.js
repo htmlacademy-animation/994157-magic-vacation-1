@@ -71690,6 +71690,7 @@ class Scene3dStory extends _scene_3d__WEBPACK_IMPORTED_MODULE_1__["Scene3d"] {
     this.setCameraPosition(screenName);
   }
 
+  // todo: разобраться с позицией камеры
   updateSlide({detail}) {
     this.setCameraPosition(detail.slideName);
     this.storyScreen = detail.slideName;
