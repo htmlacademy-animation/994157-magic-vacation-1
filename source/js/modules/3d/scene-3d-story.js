@@ -56,6 +56,7 @@ class Scene3dStory extends Scene3d {
     this.setCameraPosition(screenName);
   }
 
+  // todo: разобраться с позицией камеры
   updateSlide({detail}) {
     this.setCameraPosition(detail.slideName);
     this.storyScreen = detail.slideName;
