@@ -4,12 +4,13 @@ import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation2d} from '../2d/animation-2d';
-import {IMAGE_WIDTH, CAMERA_POSITION} from './consts';
+import {IMAGE_WIDTH} from './consts';
 import {SvgObjectsLoader} from './svg';
 import {SVG_SHAPES} from './config/svg-shapes';
 import {LIGHTS} from './config/lights';
 import {SCENE_INDEX_BY_NAME, SCENES} from './config/scenes';
 import {BUBBLES} from './config/bubbles';
+import {Apartment} from './rooms/apartment';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -184,22 +185,40 @@ class Scene3dStory extends Scene3d {
   getLight() {
     const light = new THREE.Group();
     const helper = new THREE.Group();
-
+    // todo: разобраться со светом
     LIGHTS.forEach(({type, color, intensity, position, distance, decay}) => {
       const lightColor = new THREE.Color(color);
-      if (type === `DirectionalLight`) {
-        const lightUnit = new THREE.DirectionalLight(lightColor, intensity);
-        // todo: разобраться со светом
-        // lightUnit.target.position.set(...Object.values(position));
-        lightUnit.position.set(...Object.values(position));
-        this.scene.add(lightUnit.target);
-        light.add(lightUnit);
-        helper.add(new THREE.DirectionalLightHelper(lightUnit));
-      } else {
-        const lightUnit = new THREE.PointLight(lightColor, intensity, distance, decay);
-        lightUnit.position.set(...Object.values(position));
-        helper.add(new THREE.PointLightHelper(lightUnit, 10));
-        light.add(lightUnit);
+      switch (type) {
+        case `DirectionalLight`: {
+          const lightUnit = new THREE.DirectionalLight(lightColor, intensity);
+          // const lightTarget = new THREE.Object3D();
+          // lightTarget.position.set(...Object.values(position));
+          // lightUnit.target = lightTarget;
+          // this.scene.add(lightTarget);
+          // light.add(lightUnit);
+          lightUnit.position.set(...Object.values(position));
+          this.scene.add(lightUnit.target);
+          light.add(lightUnit);
+          helper.add(new THREE.DirectionalLightHelper(lightUnit));
+          break;
+        }
+
+        case `AmbientLight`: {
+          const lightUnit = new THREE.AmbientLight(color);
+          light.add(lightUnit);
+          break;
+        }
+
+        case `PointLight`: {
+          const lightUnit = new THREE.PointLight(lightColor, intensity, distance, decay);
+          lightUnit.position.set(...Object.values(position));
+          helper.add(new THREE.PointLightHelper(lightUnit, 10));
+          light.add(lightUnit);
+          break;
+        }
+
+        default:
+          break;
       }
 
       this.scene.add(helper);
@@ -213,9 +232,28 @@ class Scene3dStory extends Scene3d {
     this.scene.add(light);
   }
 
+  addSceneObject(object) {
+    this.scene.add(object);
+    this.render();
+  }
+
+  addApartment() {
+    const positionZ = 2550;
+    const positionY = 800;
+    this.camera.position.set(0, positionY, positionZ);
+    this.orbitControls.target.set(0,
+        positionY - positionZ * Math.tan(15 * THREE.Math.DEG2RAD),
+        0);
+    this.orbitControls.update();
+    const apartment = new Apartment(this.svgObjectsLoader);
+    apartment.rotateY(-1 * Math.PI / 4);
+    this.addSceneObject(apartment);
+  }
+
   initScreenObjects() {
     this.svgObjectsLoader.createMap().then(() => {
-      this.initTextures();
+      // this.initTextures();
+      this.addApartment();
       // eslint-disable-next-line no-console
     }).catch((e) => console.warn(e));
   }
@@ -229,7 +267,7 @@ class Scene3dStory extends Scene3d {
       camera
     } = setup3d({initialWidth: this.width, initialHeight: this.height, fov: 35});
     const canvas = document.getElementById(`animation-screen`);
-    camera.position.z = CAMERA_POSITION;
+    // camera.position.z = CAMERA_POSITION;
     scene.add(camera);
     this.renderer = renderer;
     this.scene = scene;

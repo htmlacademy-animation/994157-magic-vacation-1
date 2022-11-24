@@ -30,4 +30,13 @@ export class BaseSceneItem extends THREE.Group {
 
     this.add(groupModel);
   }
+
+  addModel(model) {
+    const modelItem = new ModelObjectCreator(model);
+    this.add(modelItem);
+  }
+
+  addObject(item) {
+    this.add(item);
+  }
 }
