@@ -5,8 +5,9 @@ import {COLORS_MAP} from '../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../config/material-reflectivity';
 
 export class Saturn extends BaseObject {
-  constructor({isShadowed}) {
+  constructor({isShadowed, withMoon = true}) {
     super();
+    this.withMoon = withMoon;
 
     this.planet = {
       radius: 60,
@@ -99,10 +100,14 @@ export class Saturn extends BaseObject {
 
   addObject() {
     const planet = this.createPlanet();
-    const moon = this.createMoon();
-    const wire = this.createWire();
-    wire.position.set(0, this.wire.height / 2, 0);
-    moon.position.set(0, 120, 0);
-    this.add(planet, moon, wire);
+    this.add(planet);
+
+    if (this.withMoon) {
+      const moon = this.createMoon();
+      const wire = this.createWire();
+      wire.position.set(0, this.wire.height / 2, 0);
+      moon.position.set(0, 120, 0);
+      this.add(moon, wire);
+    }
   }
 }
