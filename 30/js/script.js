@@ -71261,7 +71261,7 @@ class Room extends _components_base_scene_item__WEBPACK_IMPORTED_MODULE_1__["Bas
 
   addFloor(floorMaterial) {
     const obj = new _components_base_object__WEBPACK_IMPORTED_MODULE_2__["BaseObject"]();
-    const geometry = new three__WEBPACK_IMPORTED_MODULE_0__["CircleGeometry"](1350, 32, 0, Math.PI / 2);
+    const geometry = new three__WEBPACK_IMPORTED_MODULE_0__["CircleGeometry"](2000, 32, 0, Math.PI / 2);
     const material = obj.createMaterial(floorMaterial);
     const floor = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](geometry, material);
 
