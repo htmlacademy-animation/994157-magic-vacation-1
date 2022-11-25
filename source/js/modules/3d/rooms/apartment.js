@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom} from '../rooms';
+import {BaseSceneItem} from '../components/base-scene-item';
 
-export class Apartment extends THREE.Group {
+export class Apartment extends BaseSceneItem {
   constructor(svgObjectsLoader) {
     super();
     this.svgObjectsLoader = svgObjectsLoader;
@@ -25,7 +26,31 @@ export class Apartment extends THREE.Group {
       }
     ];
 
-    this.addRooms();
+    this.models = [
+      {
+        name: `suitcase`,
+        type: `gltf`,
+        placement: {
+          position: {
+            x: 300,
+            y: 0,
+            z: 790
+          },
+          rotate: {
+            x: 0,
+            y: 20,
+            z: 0
+          },
+        },
+        shadow: {
+          receiveShadow: true,
+          castShadow: true,
+        },
+        path: `3d/module-6/scene-0-objects/suitcase.gltf`,
+      },
+    ];
+
+    this.create();
   }
 
   addRooms() {
@@ -34,5 +59,10 @@ export class Apartment extends THREE.Group {
       item.rotateY(rotateY);
       this.add(item);
     });
+  }
+
+  create() {
+    this.addRooms();
+    this.addModels();
   }
 }

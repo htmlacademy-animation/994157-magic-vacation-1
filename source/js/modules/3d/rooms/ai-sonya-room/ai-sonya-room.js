@@ -37,10 +37,32 @@ class AiSonyaRoom extends Room {
       }
     ];
 
+    this.models = [
+      {
+        name: `sonya`,
+        type: `gltf`,
+        placement: {
+          position: {
+            x: 440,
+            y: 120,
+            z: 280
+          },
+        },
+        shadow: {
+          castShadow: true,
+        },
+        path: `3d/module-6/rooms-scenes/objects/sonya.gltf`
+      }
+    ];
+
     const staticObject = {
       name: `scene1-static-output-4`,
       type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf`
+      path: `3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf`,
+      shadow: {
+        receiveShadow: true,
+        castShadow: true,
+      },
     };
 
     const wallMaterial = {
@@ -81,6 +103,7 @@ class AiSonyaRoom extends Room {
   }
 
   addObjects() {
+    this.addModels();
     this.addSaturn();
     this.addRug();
   }

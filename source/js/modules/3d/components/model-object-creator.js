@@ -22,15 +22,16 @@ export class ModelObjectCreator extends BaseObject {
 
   loadModel(callback) {
     const onComplete = (obj3d) => {
-      if (this.object.material) {
-        const material = this.createMaterial(this.object.material);
-
-        obj3d.traverse((child) => {
-          if (child.isMesh) {
-            child.material = material;
+      obj3d.traverse((child) => {
+        if (child.isMesh) {
+          if (this.object.material) {
+            child.material = this.createMaterial(this.object.material);
           }
-        });
-      }
+          if (this.object.shadow) {
+            this.addShadow(this.object.shadow, child);
+          }
+        }
+      });
 
       if (typeof callback === `function`) {
         callback.call(null, obj3d);

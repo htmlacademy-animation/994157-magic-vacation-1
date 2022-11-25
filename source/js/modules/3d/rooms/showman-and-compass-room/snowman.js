@@ -44,10 +44,14 @@ class Snowman extends BaseObject {
         this.smallBall.segments
     );
     const material = this.createMaterial(this.smallBall.material);
-    return new THREE.Mesh(
+    const mesh = new THREE.Mesh(
         sphere,
         material
     );
+
+    mesh.castShadow = true;
+
+    return mesh;
   }
 
   getNoseMesh() {
@@ -57,10 +61,14 @@ class Snowman extends BaseObject {
         this.nose.radialSegments
     );
     const material = this.createMaterial(this.nose.material);
-    return new THREE.Mesh(
+    const mesh = new THREE.Mesh(
         cone,
         material
     );
+
+    mesh.castShadow = true;
+
+    return mesh;
   }
 
   addHead() {
@@ -89,8 +97,7 @@ class Snowman extends BaseObject {
         sphere,
         material
     );
-
-    this.addAxisToNode(mesh);
+    mesh.castShadow = true;
 
     this.add(mesh);
   }

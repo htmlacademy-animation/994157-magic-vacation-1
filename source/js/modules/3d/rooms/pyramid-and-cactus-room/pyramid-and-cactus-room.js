@@ -65,7 +65,11 @@ class PyramidAndCactusRoom extends Room {
     const staticObject = {
       name: `scene1-static-output-2`,
       type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf`
+      path: `3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf`,
+      shadow: {
+        receiveShadow: true,
+        castShadow: true,
+      },
     };
 
     const wallMaterial = {

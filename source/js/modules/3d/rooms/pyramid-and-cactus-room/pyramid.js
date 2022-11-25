@@ -31,7 +31,7 @@ class Pyramid extends BaseObject {
     const mesh = new THREE.Mesh(
         cone,
         material);
-    this.addAxisToNode(mesh);
+    mesh.castShadow = true;
     this.add(mesh);
   }
 }

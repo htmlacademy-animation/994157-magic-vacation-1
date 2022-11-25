@@ -23,7 +23,6 @@ class BehindKeyhole extends BaseObject {
     const mesh = new THREE.Mesh(
         geometry,
         material);
-    this.addAxisToNode(mesh);
     this.add(mesh);
   }
 }

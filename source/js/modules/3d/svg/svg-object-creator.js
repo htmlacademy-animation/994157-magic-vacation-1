@@ -32,7 +32,6 @@ export class SvgObjectCreator extends BaseObject {
         const geometry = new THREE.ExtrudeGeometry(shape, geometrySettings);
 
         const mesh = new THREE.Mesh(geometry, meshMaterial);
-        this.addAxisToNode(mesh);
         this.add(mesh);
       }
     }

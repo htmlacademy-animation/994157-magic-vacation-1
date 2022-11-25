@@ -5,6 +5,36 @@ export class BaseObject extends THREE.Group {
     super();
   }
 
+  addShadow({castShadow, receiveShadow}, child = this) {
+
+    if (receiveShadow) {
+      child.receiveShadow = true;
+    }
+
+    if (castShadow) {
+      child.castShadow = true;
+    }
+  }
+
+  // createMaterial({color, ...rest}, type = `standard`) {
+  //   switch (type) {
+  //     case `phong`:
+  //       return new THREE.MeshPhongMaterial({
+  //         ...(color && {
+  //           color: new THREE.Color(color)
+  //         }),
+  //         ...rest
+  //       });
+  //     default:
+  //       return new THREE.MeshStandardMaterial({
+  //         ...(color && {
+  //           color: new THREE.Color(color)
+  //         }),
+  //         ...rest
+  //       });
+  //   }
+  // }
+
   createMaterial({color, ...rest}) {
     return new THREE.MeshStandardMaterial({
       ...(color && {

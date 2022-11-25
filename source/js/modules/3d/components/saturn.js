@@ -58,15 +58,16 @@ export class Saturn extends BaseObject {
         sphere,
         this.createMaterial(this.planet.material)
     );
-    this.addAxisToNode(sphereMesh);
+
+    sphereMesh.castShadow = true;
 
     const ring = new LatheObject().createLatheGeometry(this.ring);
     const ringMesh = new THREE.Mesh(
         ring,
         this.createMaterial(this.ring.material)
     );
+    ringMesh.castShadow = true;
     ringMesh.rotation.copy(new THREE.Euler(20 * THREE.Math.DEG2RAD, 0, 18 * THREE.Math.DEG2RAD), `XYZ`);
-    this.addAxisToNode(ringMesh);
 
     planet.add(sphereMesh, ringMesh);
 
@@ -79,7 +80,7 @@ export class Saturn extends BaseObject {
         sphere,
         this.createMaterial(this.moon.material)
     );
-    this.addAxisToNode(sphereMesh);
+    sphereMesh.castShadow = true;
     return sphereMesh;
   }
 
@@ -94,7 +95,7 @@ export class Saturn extends BaseObject {
         wire,
         this.createMaterial(this.wire.material)
     );
-    this.addAxisToNode(wireMesh);
+    wireMesh.castShadow = true;
     return wireMesh;
   }
 
