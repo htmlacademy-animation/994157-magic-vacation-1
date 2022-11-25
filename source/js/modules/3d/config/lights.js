@@ -36,4 +36,8 @@ export const LIGHTS = [
     decay: 2.0,
     distance: 2500,
   },
+  {
+    type: `AmbientLight`,
+    color: 0x404040,
+  }
 ];

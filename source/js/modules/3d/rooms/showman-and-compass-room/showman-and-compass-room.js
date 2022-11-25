@@ -1,24 +1,59 @@
 import * as THREE from 'three';
 import {snowMan} from './snowman';
 import {road} from './road/road';
-import {BaseSceneItem} from '../../components/base-scene-item';
+import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
+import {COLORS_MAP} from '../../config/colors';
+import {Room} from '../room';
 
-class ShowmanAndCompassRoom extends BaseSceneItem {
+class ShowmanAndCompassRoom extends Room {
   constructor() {
     super();
+
+    const staticObject = {
+      name: `scene1-static-output-3`,
+      type: `gltf`,
+      path: `3d/module-6/rooms-scenes/scenesStatic/scene3-static-output-1.gltf`
+    };
+
+    const wallMaterial = {
+      ...MATERIAL_REFLECTIVITY.soft,
+      color: COLORS_MAP.SkyLightBlue,
+      side: THREE.DoubleSide,
+    };
+
+    const floorMaterial = {
+      ...MATERIAL_REFLECTIVITY.soft,
+      color: COLORS_MAP.MountainBlue,
+    };
+    this.createRoom({staticObject, wallMaterial, floorMaterial});
+
     this.addObjects();
   }
 
+  addSnowMan() {
+    const placement = {
+      position: {
+        x: 210,
+        y: 125,
+        z: 400
+      },
+      rotate: {
+        x: 0,
+        y: 90,
+        z: 0
+      }
+    };
+    snowMan.place(placement);
+    this.addObject(snowMan);
+  }
+
+  addRoad() {
+    this.addObject(road);
+  }
+
   addObjects() {
-    snowMan.position.set(-130, -115, -770);
-    snowMan.rotation.copy(
-        new THREE.Euler(20 * THREE.Math.DEG2RAD, 60 * THREE.Math.DEG2RAD, 0),
-        `XYZ`
-    );
-    road.scale.set(0.7, 0.7, 0.7);
-    road.position.set(-10, -100, -720);
-    road.rotation.copy(new THREE.Euler(15 * THREE.Math.DEG2RAD, 45 * THREE.Math.DEG2RAD, 180 * THREE.Math.DEG2RAD), `XYZ`);
-    this.add(snowMan, road);
+    this.addSnowMan();
+    this.addRoad();
   }
 }
 

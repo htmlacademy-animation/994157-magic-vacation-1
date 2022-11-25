@@ -1,11 +1,11 @@
-import * as THREE from 'three';
 import {Rug} from '../../components/rug/rug';
 import {Saturn} from '../../components/saturn';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
-import {BaseSceneItem} from '../../components/base-scene-item';
+import {Room} from '../room';
+import * as THREE from 'three';
 
-class DogAndSuitcaseRoom extends BaseSceneItem {
+class DogAndSuitcaseRoom extends Room {
   constructor() {
     super();
     this.svgShapes = [
@@ -17,25 +17,71 @@ class DogAndSuitcaseRoom extends BaseSceneItem {
           cap: 2,
         },
         material: {
-          color: COLORS_MAP.DarkPurple,
-          ...MATERIAL_REFLECTIVITY.basic
-        }
+          color: COLORS_MAP.ShadowedLightPurple,
+          ...MATERIAL_REFLECTIVITY.soft
+        },
+        placement: {
+          position: {
+            x: 60,
+            y: 410,
+            z: 440
+          },
+          rotate: {
+            x: 180,
+            y: -90,
+            z: 0,
+          }
+        },
       }
     ];
 
-    this.addObject();
+    const staticObject = {
+      name: `scene1-static-output-1`,
+      type: `gltf`,
+      path: `3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf`
+    };
+
+    const wallMaterial = {
+      ...MATERIAL_REFLECTIVITY.soft,
+      color: COLORS_MAP.Purple,
+      side: THREE.DoubleSide,
+    };
+
+    const floorMaterial = {
+      ...MATERIAL_REFLECTIVITY.soft,
+      color: COLORS_MAP.DarkPurple,
+    };
+
+    this.createRoom({staticObject, wallMaterial, floorMaterial});
+
+    this.addObjects();
     this.addSvgShapes = this.addSvgShapes.bind(this);
   }
 
-  addObject() {
+  addRug() {
     const rug = new Rug();
-    rug.scale.set(0.7, 0.7, 0.7);
-    rug.position.set(-20, 0, -540);
-    rug.rotation.copy(new THREE.Euler(20 * THREE.Math.DEG2RAD, 45 * THREE.Math.DEG2RAD, 180 * THREE.Math.DEG2RAD), `XYZ`);
+    this.addObject(rug);
+  }
+
+  addSaturn() {
+    const placement = {
+      position: {
+        x: 350,
+        y: 500,
+        z: 280
+      },
+      rotate: {
+        y: -90
+      }
+    };
     const saturn = new Saturn({isShadowed: false});
-    saturn.scale.set(0.9, 0.9, 0.9);
-    saturn.position.set(55, 220, -540);
-    this.add(rug, saturn);
+    saturn.place(placement);
+    this.addObject(saturn);
+  }
+
+  addObjects() {
+    this.addRug();
+    this.addSaturn();
   }
 }
 
