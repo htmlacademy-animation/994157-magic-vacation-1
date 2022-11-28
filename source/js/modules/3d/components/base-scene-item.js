@@ -7,28 +7,41 @@ export class BaseSceneItem extends THREE.Group {
     super();
     this.svgShapes = [];
     this.models = [];
+    this.animations = [];
   }
 
-  addSvgShapes(svgObjectsLoader) {
+  addSvgShapes(svgObjectsLoader, callback) {
     const svgGroup = new THREE.Group();
+    const figureWithObjects = [];
     this.svgShapes.forEach((shape) => {
       const paths = svgObjectsLoader.getPaths(shape.name);
 
       const svgObject = new SvgObjectCreator({...shape, paths});
       svgGroup.add(svgObject);
+      figureWithObjects.push(svgObject);
     });
+
+    if (callback) {
+      callback(figureWithObjects);
+    }
 
     this.add(svgGroup);
   }
 
-  addModels() {
+  addModels(callback) {
     const groupModel = new THREE.Group();
+    const figureWithObjects = [];
     this.models.forEach((model) => {
       const modelItem = new ModelObjectCreator(model);
       groupModel.add(modelItem);
+      figureWithObjects.push(modelItem);
     });
 
     this.add(groupModel);
+
+    if (callback) {
+      callback(figureWithObjects);
+    }
   }
 
   addModel(model) {
@@ -38,5 +51,17 @@ export class BaseSceneItem extends THREE.Group {
 
   addObject(item) {
     this.add(item);
+  }
+
+  startAnimations() {
+    this.animations.forEach((anim) => {
+      anim.start();
+    });
+  }
+
+  stopAnimations() {
+    this.animations.forEach((anim) => {
+      anim.stop();
+    });
   }
 }

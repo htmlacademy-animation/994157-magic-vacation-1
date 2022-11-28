@@ -1,17 +1,18 @@
 import * as THREE from 'three';
-import {GUI} from 'dat.gui';
+// import {GUI} from 'dat.gui';
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
-import {Animation2d} from '../2d/animation-2d';
-import {IMAGE_WIDTH} from './consts';
+import {Animation} from '../animation';
+import {CAMERA_POSITION, IMAGE_WIDTH} from './consts';
 import {SvgObjectsLoader} from './svg';
 import {SVG_SHAPES} from './config/svg-shapes';
 import {LIGHTS} from './config/lights';
 import {SCENE_INDEX_BY_NAME, SCENES} from './config/scenes';
 import {BUBBLES} from './config/bubbles';
 import {Apartment} from './rooms/apartment';
+import {Intro} from './rooms';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -57,7 +58,7 @@ class Scene3dStory extends Scene3d {
     this.setCameraPosition(screenName);
   }
 
-  // todo: разобраться с позицией камеры
+  // todo: разобраться с позицией камеры и добавить start/stop анимации
   updateSlide({detail}) {
     this.setCameraPosition(detail.slideName);
     this.storyScreen = detail.slideName;
@@ -115,6 +116,7 @@ class Scene3dStory extends Scene3d {
         this.addSceneItem(texture, index);
       });
       this.initAnimations();
+      this.setLight();
       this.render();
     };
   }
@@ -124,7 +126,7 @@ class Scene3dStory extends Scene3d {
     let hueShiftDegrees = maxHueShift;
     const halfPi = Math.PI / 2;
     let period = 1;
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress, details) => {
         const time = (details.currentTime - details.startTime) / 1000;
         const sinusValue = Math.abs(Math.sin(2 * time));
@@ -147,7 +149,7 @@ class Scene3dStory extends Scene3d {
     };
 
     BUBBLES.forEach((bubble, index) => {
-      this.animations.push(new Animation2d({
+      this.animations.push(new Animation({
         func: (progress) => {
           const amplitudeX = getAmplitude(progress);
           const cloned = bubble.center.clone();
@@ -187,8 +189,8 @@ class Scene3dStory extends Scene3d {
   getLight() {
     const light = new THREE.Group();
     const helper = new THREE.Group();
-    const gui = new GUI();
-    let counter = 0;
+    // const gui = new GUI();
+    // let counter = 0;
 
     // todo: разобраться со светом
     LIGHTS.forEach(({type, color, intensity, position, distance, decay, castShadow}) => {
@@ -223,15 +225,14 @@ class Scene3dStory extends Scene3d {
           this.scene.add(cameraHelper);
           light.add(lightUnit);
 
-          const pointLightFolder = gui.addFolder(`PointLight ${counter}`);
-          pointLightFolder.add(lightUnit, `distance`, 0, 100, 0.01);
-          pointLightFolder.add(lightUnit, `decay`, 0, 4, 0.1);
-          pointLightFolder.add(lightUnit.position, `x`, -1500, 1500, 10);
-          pointLightFolder.add(lightUnit.position, `y`, -1500, 1500, 10);
-          pointLightFolder.add(lightUnit.position, `z`, -1500, 1500, 10);
-          pointLightFolder.open();
-
-          counter += 1;
+          // const pointLightFolder = gui.addFolder(`PointLight ${counter}`);
+          // pointLightFolder.add(lightUnit, `distance`, 0, 100, 0.01);
+          // pointLightFolder.add(lightUnit, `decay`, 0, 4, 0.1);
+          // pointLightFolder.add(lightUnit.position, `x`, -1500, 1500, 10);
+          // pointLightFolder.add(lightUnit.position, `y`, -1500, 1500, 10);
+          // pointLightFolder.add(lightUnit.position, `z`, -1500, 1500, 10);
+          // pointLightFolder.open();
+          // counter += 1;
           break;
         }
 
@@ -248,13 +249,19 @@ class Scene3dStory extends Scene3d {
   setLight() {
     const light = this.getLight();
     light.position.z = this.camera.position.z;
-    light.position.y = this.camera.position.y;
+    // light.position.y = this.camera.position.y;
     this.scene.add(light);
   }
 
   addSceneObject(object) {
     this.scene.add(object);
     this.render();
+  }
+
+  addIntro() {
+    const intro = new Intro(this.svgObjectsLoader);
+    this.addSceneObject(intro);
+    this.setLight();
   }
 
   addApartment() {
@@ -275,8 +282,8 @@ class Scene3dStory extends Scene3d {
 
   initScreenObjects() {
     this.svgObjectsLoader.createMap().then(() => {
-      // this.initTextures();
-      this.addApartment();
+      this.addIntro();
+      // this.addApartment();
       // eslint-disable-next-line no-console
     }).catch((e) => console.warn(e));
   }
@@ -290,7 +297,7 @@ class Scene3dStory extends Scene3d {
       camera
     } = setup3d({initialWidth: this.width, initialHeight: this.height, fov: 35});
     const canvas = document.getElementById(`animation-screen`);
-    // camera.position.z = CAMERA_POSITION;
+    camera.position.z = CAMERA_POSITION;
     scene.add(camera);
     this.renderer = renderer;
     this.scene = scene;

@@ -1,4 +1,4 @@
-import {Animation2d} from './animation-2d';
+import {Animation} from '../animation';
 import {Scene2D} from './scene-2d.js';
 import _ from '../../utils/easing';
 
@@ -148,7 +148,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: () => {
         this.drawScene();
       },
@@ -165,7 +165,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initPlaneAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
 
@@ -184,7 +184,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initBlobAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
 
@@ -204,7 +204,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initTreesAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.tree.transforms.translateY = 30 * (1 - progress);
         this.objects.tree.opacity = progress;
@@ -214,7 +214,7 @@ export class Scene2DSeaCalf extends Scene2D {
       easing: _.easeLinear
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.tree2.transforms.translateY = 30 * (1 - progress);
         this.objects.tree2.opacity = progress;
@@ -227,7 +227,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initSeaCalfAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
 
@@ -242,7 +242,7 @@ export class Scene2DSeaCalf extends Scene2D {
       easing: _.easeOutElastic
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.seaCalf.opacity = progress;
         this.objects.ice.opacity = progress;
@@ -255,7 +255,7 @@ export class Scene2DSeaCalf extends Scene2D {
 
 
   initSnowflakesAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress, details) => {
         this.objects.snowflake.transforms.translateY =
           2 * Math.sin(1.5 * (details.currentTime - details.startTime) / 1000);
@@ -263,7 +263,7 @@ export class Scene2DSeaCalf extends Scene2D {
       duration: `infinite`
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress, details) => {
         this.objects.snowflake2.transforms.translateY =
           2 * Math.sin(1.5 * (details.currentTime - details.startTime) / 1000);
@@ -272,7 +272,7 @@ export class Scene2DSeaCalf extends Scene2D {
       delay: 800
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.snowflake.opacity = progress;
       },
@@ -281,7 +281,7 @@ export class Scene2DSeaCalf extends Scene2D {
       easing: _.easeLinear
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.snowflake2.opacity = progress;
       },

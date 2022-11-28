@@ -1,11 +1,12 @@
 import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {BaseObject} from './base-object';
+// import {GUI} from 'dat.gui';
 
 export class ModelObjectCreator extends BaseObject {
   constructor(objectWithSettings) {
     super();
-    this.object = objectWithSettings;
+    this.figure = objectWithSettings;
     this.objLoader = new OBJLoader();
     this.loaderGltf = new GLTFLoader();
 
@@ -24,12 +25,13 @@ export class ModelObjectCreator extends BaseObject {
     const onComplete = (obj3d) => {
       obj3d.traverse((child) => {
         if (child.isMesh) {
-          if (this.object.material) {
-            child.material = this.createMaterial(this.object.material);
+          if (this.figure.material) {
+            child.material = this.createMaterial(this.figure.material);
           }
-          if (this.object.shadow) {
-            this.addShadow(this.object.shadow, child);
+          if (this.figure.shadow) {
+            this.addShadow(this.figure.shadow, child);
           }
+          // this.addAxisToNode(child);
         }
       });
 
@@ -45,25 +47,37 @@ export class ModelObjectCreator extends BaseObject {
       onComplete(gltf.scene);
     };
 
-    switch (this.object.type) {
+    switch (this.figure.type) {
       case `gltf`:
-        this.loadGltf(this.object.path, onGltfComplete);
+        this.loadGltf(this.figure.path, onGltfComplete);
 
         break;
       default:
-        this.loadObj(this.object.path, onComplete);
+        this.loadObj(this.figure.path, onComplete);
 
         break;
     }
   }
 
   create() {
+    const {name} = this.figure;
+    this.addName(name);
+    // const gui = new GUI();
     this.loadModel((mesh) => {
-      mesh.name = this.object.name;
-      this.add(mesh);
+      mesh.name = this.figure.name;
+      this.addGroupSandwich(mesh);
+      // if (this.figure.name === `watermelon`) {
+      //   const elem = document.querySelector(`.dg.ac`);
+      //   elem.style.zIndex = 1000;
+      //   const folder = gui.addFolder(`figure ${this.figure.name}`);
+      //   folder.add(this.rotation, `x`, 0, Math.PI * 2, 0.01);
+      //   folder.add(this.rotation, `y`, 0, Math.PI * 2, 0.01);
+      //   folder.add(this.rotation, `z`, 0, Math.PI * 2, 0.01);
+      //   folder.open();
+      // }
 
-      if (this.object.placement) {
-        this.place(this.object.placement);
+      if (this.figure.placement) {
+        this.place(this.figure.placement, this.inner);
       }
     });
   }

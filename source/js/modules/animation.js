@@ -1,7 +1,7 @@
-import _ from '../../utils/easing';
+import _ from '../utils/easing';
 
 
-export class Animation2d {
+export class Animation {
   constructor(options) {
     this.options = options;
 
