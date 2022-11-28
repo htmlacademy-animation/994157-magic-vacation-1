@@ -28,7 +28,7 @@ class Road extends LatheObject {
     const mesh = new THREE.Mesh(
         geometry,
         material);
-    this.addAxisToNode(mesh);
+    mesh.receiveShadow = true;
     this.add(mesh);
   }
 }

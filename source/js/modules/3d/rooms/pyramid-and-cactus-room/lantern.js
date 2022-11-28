@@ -88,6 +88,7 @@ class Lantern extends BaseObject {
         lightBoxBottom,
         this.createMaterial(this.lightBoxBottom.material)
     );
+    lightBoxBottomMesh.castShadow = true;
 
     // светильник
     const box = new THREE.CylinderGeometry(
@@ -100,6 +101,7 @@ class Lantern extends BaseObject {
         box,
         this.createMaterial(this.lightBox.material)
     );
+    boxMesh.castShadow = true;
 
     boxMesh.position.set(0, this.lightBox.height / 2 + this.lightBoxBottom.height / 2, 0);
 
@@ -119,6 +121,7 @@ class Lantern extends BaseObject {
         lightBoxTop,
         this.createMaterial(this.lightBoxTop.material)
     );
+    lightBoxTopMesh.castShadow = true;
 
     lightBoxTopMesh.position.set(0, this.lightBox.height + this.lightBoxBottom.height, 0);
 
@@ -146,7 +149,7 @@ class Lantern extends BaseObject {
         column,
         this.createMaterial(this.column.material)
     );
-    this.addAxisToNode(columnMesh);
+    columnMesh.castShadow = true;
 
     // ножка
     const foot = new THREE.CylinderGeometry(
@@ -159,6 +162,7 @@ class Lantern extends BaseObject {
         foot,
         this.createMaterial(this.foot.material)
     );
+    footMesh.castShadow = true;
 
     const halfSphere = new THREE.SphereGeometry(
         this.sphere.radius,
@@ -173,6 +177,7 @@ class Lantern extends BaseObject {
         halfSphere,
         this.createMaterial(this.sphere.material)
     );
+    halfSphereMesh.castShadow = true;
 
     halfSphereMesh.position.set(0, this.foot.height / 2, 0);
 

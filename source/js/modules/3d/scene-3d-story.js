@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {GUI} from 'dat.gui';
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
@@ -186,27 +187,21 @@ class Scene3dStory extends Scene3d {
   getLight() {
     const light = new THREE.Group();
     const helper = new THREE.Group();
+    const gui = new GUI();
+    let counter = 0;
+
     // todo: разобраться со светом
-    LIGHTS.forEach(({type, color, intensity, position, distance, decay}) => {
+    LIGHTS.forEach(({type, color, intensity, position, distance, decay, castShadow}) => {
       const lightColor = new THREE.Color(color);
       switch (type) {
         case `DirectionalLight`: {
           const lightUnit = new THREE.DirectionalLight(lightColor, intensity);
-          // const lightTarget = new THREE.Object3D();
-          // lightTarget.position.set(...Object.values(position));
-          // lightUnit.target = lightTarget;
-          // this.scene.add(lightTarget);
-          // light.add(lightUnit);
-          lightUnit.position.set(...Object.values(position));
-          this.scene.add(lightUnit.target);
+          const lightTarget = new THREE.Object3D();
+          lightTarget.position.set(...Object.values(position));
+          lightUnit.target = lightTarget;
+          this.scene.add(lightTarget);
           light.add(lightUnit);
-          helper.add(new THREE.DirectionalLightHelper(lightUnit));
-          break;
-        }
-
-        case `AmbientLight`: {
-          const lightUnit = new THREE.AmbientLight(color);
-          light.add(lightUnit);
+          helper.add(new THREE.DirectionalLightHelper(lightUnit, 50));
           break;
         }
 
@@ -214,7 +209,29 @@ class Scene3dStory extends Scene3d {
           const lightUnit = new THREE.PointLight(lightColor, intensity, distance, decay);
           lightUnit.position.set(...Object.values(position));
           helper.add(new THREE.PointLightHelper(lightUnit, 10));
+          if (castShadow) {
+            lightUnit.castShadow = true;
+            // lightUnit.shadow.mapSize.width = this.width;
+            // lightUnit.shadow.mapSize.height = this.height;
+            lightUnit.shadow.mapSize.width = 1024;
+            lightUnit.shadow.mapSize.height = 1024;
+            lightUnit.shadow.camera.near = 0.5;
+            lightUnit.shadow.camera.far = distance;
+            lightUnit.shadow.camera.visible = true;
+          }
+          const cameraHelper = new THREE.CameraHelper(lightUnit.shadow.camera);
+          this.scene.add(cameraHelper);
           light.add(lightUnit);
+
+          const pointLightFolder = gui.addFolder(`PointLight ${counter}`);
+          pointLightFolder.add(lightUnit, `distance`, 0, 100, 0.01);
+          pointLightFolder.add(lightUnit, `decay`, 0, 4, 0.1);
+          pointLightFolder.add(lightUnit.position, `x`, -1500, 1500, 10);
+          pointLightFolder.add(lightUnit.position, `y`, -1500, 1500, 10);
+          pointLightFolder.add(lightUnit.position, `z`, -1500, 1500, 10);
+          pointLightFolder.open();
+
+          counter += 1;
           break;
         }
 
@@ -224,12 +241,14 @@ class Scene3dStory extends Scene3d {
 
       this.scene.add(helper);
     });
+
     return light;
   }
 
   setLight() {
     const light = this.getLight();
     light.position.z = this.camera.position.z;
+    light.position.y = this.camera.position.y;
     this.scene.add(light);
   }
 
@@ -239,16 +258,19 @@ class Scene3dStory extends Scene3d {
   }
 
   addApartment() {
-    const positionZ = 2550;
-    const positionY = 800;
+    const positionZ = 2150;
+    const positionY = 700;
     this.camera.position.set(0, positionY, positionZ);
     this.orbitControls.target.set(0,
         positionY - positionZ * Math.tan(15 * THREE.Math.DEG2RAD),
         0);
     this.orbitControls.update();
     const apartment = new Apartment(this.svgObjectsLoader);
+    // apartment.rotateY(-1 * Math.PI / 4);
     apartment.rotateY(-1 * Math.PI / 4);
     this.addSceneObject(apartment);
+
+    this.setLight();
   }
 
   initScreenObjects() {
@@ -276,8 +298,6 @@ class Scene3dStory extends Scene3d {
     this.appendRendererToDOMElement(this.renderer, canvas);
     this.setListener();
     this.addDeveloperHelpers({camera: this.camera, canvas, scene});
-
-    this.setLight();
 
     this.renderer.setAnimationLoop(() => {
       this.render();

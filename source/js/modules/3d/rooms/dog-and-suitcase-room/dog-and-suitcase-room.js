@@ -35,10 +35,38 @@ class DogAndSuitcaseRoom extends Room {
       }
     ];
 
+    this.models = [
+      {
+        name: `dog`,
+        type: `gltf`,
+        placement: {
+          position: {
+            x: 480,
+            y: 0,
+            z: 420
+          },
+          rotate: {
+            x: 0,
+            y: 65,
+            z: 0
+          },
+        },
+        shadow: {
+          receiveShadow: true,
+          castShadow: true,
+        },
+        path: `3d/module-6/rooms-scenes/objects/dog.gltf`
+      }
+    ];
+
     const staticObject = {
       name: `scene1-static-output-1`,
       type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf`
+      path: `3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf`,
+      shadow: {
+        receiveShadow: true,
+        castShadow: true,
+      },
     };
 
     const wallMaterial = {
@@ -80,6 +108,7 @@ class DogAndSuitcaseRoom extends Room {
   }
 
   addObjects() {
+    this.addModels();
     this.addRug();
     this.addSaturn();
   }

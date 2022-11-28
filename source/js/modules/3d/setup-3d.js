@@ -14,6 +14,9 @@ export const setup3d = ({initialWidth = 100, initialHeight = 100, far = 15500, f
   renderer.setSize(initialWidth, initialHeight);
   renderer.setClearColor(0x5F458C);
 
+  // todo: добавить в resize
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   //
   // 1.1.2. Scene
   const scene = new THREE.Scene();

@@ -8,8 +8,8 @@ export const LIGHTS = [
     intensity: 0.84,
     position: {
       x: 0,
-      y: CAMERA_POSITION * Math.tan(-15 * THREE.Math.DEG2RAD),
-      z: CAMERA_POSITION,
+      y: -CAMERA_POSITION * Math.tan(15 * THREE.Math.DEG2RAD),
+      z: 0,
     }
   },
   {
@@ -18,11 +18,12 @@ export const LIGHTS = [
     intensity: 0.60,
     position: {
       x: -785,
-      y: -350,
+      y: 800,
       z: -710,
     },
-    decay: 2.0,
+    decay: 2,
     distance: 2500,
+    castShadow: true
   },
   {
     type: `PointLight`,
@@ -33,11 +34,12 @@ export const LIGHTS = [
       y: 800,
       z: -985
     },
-    decay: 2.0,
+    decay: 2,
     distance: 2500,
+    castShadow: true,
   },
-  {
-    type: `AmbientLight`,
-    color: 0x404040,
-  }
+  // {
+  //   type: `AmbientLight`,
+  //   color: 0x404040
+  // },
 ];
