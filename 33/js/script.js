@@ -70424,14 +70424,6 @@ class Apartment extends _components_base_scene_item__WEBPACK_IMPORTED_MODULE_1__
 
     const {times, values} = keyframe;
 
-    // const initialScaleY = values[fromIndex];
-    // const initialScale = {
-    //   x: 1 / Math.sqrt(initialScaleY),
-    //   y: initialScaleY,
-    //   z: 1 / Math.sqrt(initialScaleY),
-    // };
-    // suitcaseGroup.setScale(initialScale, suitcaseGroup.inner);
-
     this.animations.push(new _animation__WEBPACK_IMPORTED_MODULE_2__["Animation"]({
       func: (progress) => {
         const percent = progress * 100;
@@ -72505,8 +72497,8 @@ const setup3d = ({initialWidth = 100, initialHeight = 100, far = 15500, fov = 45
   renderer.setClearColor(0x5F458C);
 
   // todo: добавить в resize
-  // renderer.shadowMap.enabled = true;
-  // renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = three__WEBPACK_IMPORTED_MODULE_0__["PCFShadowMap"];
   //
   // 1.1.2. Scene
   const scene = new three__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
