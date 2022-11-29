@@ -106,3 +106,6 @@ const _ = Object.freeze({
 
 
 export default _;
+
+// Squash and stretch in 3d
+// scale.x = scale.z = 1 / Math.sqrt(scale.y)

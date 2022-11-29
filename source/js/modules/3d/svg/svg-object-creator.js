@@ -4,14 +4,14 @@ import {BaseObject} from '../components/base-object';
 export class SvgObjectCreator extends BaseObject {
   constructor(objectWithSettings) {
     super();
-    this.object = objectWithSettings;
-
+    this.figure = objectWithSettings;
     this.create();
   }
 
   create() {
     // realThickness = relativeThickness * realHeight / relativeHeight
-    const {paths, settings, placement, material} = this.object;
+    const {paths, settings, placement, material, name} = this.figure;
+    this.addName(name);
     const geometrySettings = {
       steps: 2,
       depth: settings.depth,
@@ -21,6 +21,8 @@ export class SvgObjectCreator extends BaseObject {
       bevelOffset: 0,
       bevelSegments: 5
     };
+
+    const meshGroup = new THREE.Group();
 
     for (const path of paths) {
       const meshMaterial = this.createMaterial({side: THREE.DoubleSide,
@@ -32,13 +34,14 @@ export class SvgObjectCreator extends BaseObject {
         const geometry = new THREE.ExtrudeGeometry(shape, geometrySettings);
 
         const mesh = new THREE.Mesh(geometry, meshMaterial);
-        this.add(mesh);
+        meshGroup.add(mesh);
       }
     }
-    this.rotateZ(Math.PI);
+
+    this.addGroupSandwich(meshGroup);
 
     if (placement) {
-      this.place(placement);
+      this.place(placement, this.inner);
     }
   }
 }

@@ -101,14 +101,17 @@ export class Saturn extends BaseObject {
 
   addObject() {
     const planet = this.createPlanet();
-    this.add(planet);
+    this.inner.add(planet);
 
     if (this.withMoon) {
       const moon = this.createMoon();
       const wire = this.createWire();
       wire.position.set(0, this.wire.height / 2, 0);
       moon.position.set(0, 120, 0);
-      this.add(moon, wire);
+      this.inner.add(moon, wire);
     }
+
+    this.root.add(this.inner);
+    this.add(this.root);
   }
 }

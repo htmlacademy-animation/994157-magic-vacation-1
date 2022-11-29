@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom} from '../rooms';
 import {BaseSceneItem} from '../components/base-scene-item';
 

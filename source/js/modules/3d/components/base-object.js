@@ -3,6 +3,23 @@ import * as THREE from 'three';
 export class BaseObject extends THREE.Group {
   constructor() {
     super();
+
+    // root вкладываем в THREE.Group
+    this.root = new THREE.Group();
+    // inner вкладываем в root
+    this.inner = new THREE.Group();
+  }
+
+  addName(name) {
+    this.name = name;
+    this.inner.name = `inner_${name}`;
+    this.root.name = `root_${name}`;
+  }
+
+  addGroupSandwich(mesh) {
+    this.inner.add(mesh);
+    this.root.add(this.inner);
+    this.add(this.root);
   }
 
   addShadow({castShadow, receiveShadow}, child = this) {
@@ -16,25 +33,6 @@ export class BaseObject extends THREE.Group {
     }
   }
 
-  // createMaterial({color, ...rest}, type = `standard`) {
-  //   switch (type) {
-  //     case `phong`:
-  //       return new THREE.MeshPhongMaterial({
-  //         ...(color && {
-  //           color: new THREE.Color(color)
-  //         }),
-  //         ...rest
-  //       });
-  //     default:
-  //       return new THREE.MeshStandardMaterial({
-  //         ...(color && {
-  //           color: new THREE.Color(color)
-  //         }),
-  //         ...rest
-  //       });
-  //   }
-  // }
-
   createMaterial({color, ...rest}) {
     return new THREE.MeshStandardMaterial({
       ...(color && {
@@ -44,28 +42,40 @@ export class BaseObject extends THREE.Group {
     });
   }
 
-  place(placement) {
+  setRotate(rotate, object = this) {
+    const {x = 0, y = 0, z = 0} = rotate;
+    object.rotation.copy(
+        new THREE.Euler(x * THREE.Math.DEG2RAD, y * THREE.Math.DEG2RAD, z * THREE.Math.DEG2RAD),
+        `XYZ`
+    );
+  }
+
+  setPosition(position, object = this) {
+    object.position.set(...Object.values(position));
+  }
+
+  setScale(scale, object = this) {
+    if (typeof scale === `number`) {
+      object.scale.set(scale, scale, scale);
+    } else {
+      const {x = 0, y = 0, z = 0} = scale;
+      object.scale.set(x, y, z);
+    }
+  }
+
+  place(placement, object = this) {
     const {position, rotate, scale} = placement;
 
     if (position) {
-      this.position.set(...Object.values(position));
+      this.setPosition(position);
     }
 
     if (rotate) {
-      const {x = 0, y = 0, z = 0} = rotate;
-      this.rotation.copy(
-          new THREE.Euler(x * THREE.Math.DEG2RAD, y * THREE.Math.DEG2RAD, z * THREE.Math.DEG2RAD),
-          `XYZ`
-      );
+      this.setRotate(rotate, object);
     }
 
-    if (scale) {
-      if (typeof scale === `number`) {
-        this.scale.set(scale, scale, scale);
-      } else {
-        const {x = 0, y = 0, z = 0} = scale;
-        this.scale.set(x, y, z);
-      }
+    if (scale !== undefined) {
+      this.setScale(scale, object);
     }
   }
 

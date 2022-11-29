@@ -1,5 +1,5 @@
 import {Scene2D} from './scene-2d';
-import {Animation2d} from './animation-2d';
+import {Animation} from '../animation';
 import _ from '../../utils/easing';
 
 const IMAGES_URLS = Object.freeze({
@@ -126,7 +126,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: () => {
         this.drawScene();
       },
@@ -160,7 +160,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initCrocodileAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.crocodile.transforms.translateY = -25 * progressReversed;
@@ -173,7 +173,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initSnowflakeAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.snowflake.transforms.translateY = 5 * progressReversed;
@@ -186,7 +186,7 @@ export class Scene2DCrocodile extends Scene2D {
       easing: _.easeOutQuad
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.snowflake.transforms.translateY = 70 * progress;
       },
@@ -197,7 +197,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initWatermelonAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.watermelon.transforms.translateY = -5 * progressReversed;
@@ -209,7 +209,7 @@ export class Scene2DCrocodile extends Scene2D {
       delay: 500,
       easing: _.easeOutQuad
     }));
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.watermelon.transforms.translateY = 70 * progress;
       },
@@ -220,7 +220,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initLeafAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.leaf.transforms.translateY = 20 * progressReversed;
@@ -232,7 +232,7 @@ export class Scene2DCrocodile extends Scene2D {
       delay: 500,
       easing: _.easeOutQuad
     }));
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.leaf.transforms.translateY = 70 * progress;
       },
@@ -243,7 +243,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initSaturnAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.saturn.transforms.translateY = -15 * progressReversed;
@@ -256,7 +256,7 @@ export class Scene2DCrocodile extends Scene2D {
       easing: _.easeOutQuad
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.saturn.transforms.translateY = 70 * progress;
       },
@@ -267,7 +267,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initFlamingoAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         const progressReversed = 1 - progress;
         this.objects.flamingo.transforms.translateY = 20 * progressReversed;
@@ -280,7 +280,7 @@ export class Scene2DCrocodile extends Scene2D {
       easing: _.easeOutQuad
     }));
 
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.objects.flamingo.transforms.translateY = 70 * progress;
       },
@@ -292,7 +292,7 @@ export class Scene2DCrocodile extends Scene2D {
 
   initTearDropAnimations() {
     let prevValue = 0;
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress, details) => {
         const oldPrevValue = prevValue;
 
@@ -328,7 +328,7 @@ export class Scene2DCrocodile extends Scene2D {
   }
 
   initKeyAnimations() {
-    this.animations.push(new Animation2d({
+    this.animations.push(new Animation({
       func: (progress) => {
         this.locals.key.opacity = progress;
         this.locals.key.scale = 0.8 + (progress / 5);

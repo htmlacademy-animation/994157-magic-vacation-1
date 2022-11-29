@@ -1,12 +1,11 @@
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../../constants';
-import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom, intro} from '../rooms';
+import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom} from '../rooms';
 import {BUBBLES} from './bubbles';
 
 export const SCENES = Object.freeze({
   [SCREEN_NAMES.TOP]: {
     image: `img/module-5/scenes-textures/scene-0.png`,
     hasHueShift: false,
-    room: intro
   },
   [STORY_SLIDE_NAMES.DOG_AND_SUITCASE]: {
     image: `img/module-5/scenes-textures/scene-1.png`,
