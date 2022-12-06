@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {LatheObject} from './lathe-object';
 import {COLORS_MAP} from '../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../config/material-reflectivity';
+import {degreesToRadians} from '../utils';
 
 export class Saturn extends BaseObject {
   constructor({isShadowed, withMoon = true}) {
@@ -67,11 +68,17 @@ export class Saturn extends BaseObject {
         this.createMaterial(this.ring.material)
     );
     ringMesh.castShadow = true;
-    ringMesh.rotation.copy(new THREE.Euler(20 * THREE.Math.DEG2RAD, 0, 18 * THREE.Math.DEG2RAD), `XYZ`);
+    ringMesh.rotation.copy(new THREE.Euler(0, 0, degreesToRadians(18)), `XYZ`);
 
+    this.ring.mesh = ringMesh;
     planet.add(sphereMesh, ringMesh);
+    this.addAxisToNode(sphereMesh);
 
     return planet;
+  }
+
+  getRing() {
+    return this.ring.mesh;
   }
 
   createMoon() {

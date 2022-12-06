@@ -5,6 +5,8 @@ import {Rug} from '../../components/rug/rug';
 import {Room} from '../room';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 import {COLORS_MAP} from '../../config/colors';
+import {Animation} from '../../../animation';
+import {degreesToRadians} from '../../utils';
 
 class AiSonyaRoom extends Room {
   constructor() {
@@ -37,23 +39,21 @@ class AiSonyaRoom extends Room {
       }
     ];
 
-    this.models = [
-      {
-        name: `sonya`,
-        type: `gltf`,
-        placement: {
-          position: {
-            x: 440,
-            y: 120,
-            z: 280
-          },
+    this.sonya = {
+      name: `sonya`,
+      type: `gltf`,
+      placement: {
+        position: {
+          x: 440,
+          y: 120,
+          z: 280
         },
-        shadow: {
-          castShadow: true,
-        },
-        path: `3d/module-6/rooms-scenes/objects/sonya.gltf`
-      }
-    ];
+      },
+      shadow: {
+        castShadow: true,
+      },
+      path: `3d/module-6/rooms-scenes/objects/sonya.gltf`
+    };
 
     const staticObject = {
       name: `scene1-static-output-4`,
@@ -75,6 +75,8 @@ class AiSonyaRoom extends Room {
       ...MATERIAL_REFLECTIVITY.soft,
       color: COLORS_MAP.ShadowedDarkPurple,
     };
+
+    this.addSonyaAnimation = this.addSonyaAnimation.bind(this);
 
     this.createRoom({staticObject, wallMaterial, floorMaterial});
 
@@ -102,10 +104,49 @@ class AiSonyaRoom extends Room {
     this.addObject(rug);
   }
 
+  addSonyaAnimation(sonyaObj) {
+    const rightHand = sonyaObj.getObjectByName(`RightHand`);
+    const leftHand = sonyaObj.getObjectByName(`LeftHand`);
+
+    this.animations.push(new Animation({
+      func: (progress, {currentTime, startTime}) => {
+        const time = (currentTime - startTime) / 1000;
+        const sine = Math.sin(time * 2);
+        sonyaObj.position.y = 10 * sine;
+      },
+      duration: `infinite`,
+    }));
+
+    this.animations.push(new Animation({
+      func: (progress, {currentTime, startTime}) => {
+        const time = (currentTime - startTime) / 1000;
+        const cos = Math.cos(1.5 + time * 2);
+
+        rightHand.rotation.y = degreesToRadians(-55) + degreesToRadians(5) * cos;
+      },
+      duration: `infinite`,
+    }));
+
+    this.animations.push(new Animation({
+      func: (progress, {currentTime, startTime}) => {
+        const time = (currentTime - startTime) / 1000;
+        const cos = Math.cos(-1.5 + time * 2);
+
+        leftHand.rotation.y = degreesToRadians(55) + degreesToRadians(5) * cos;
+      },
+      duration: `infinite`,
+    }));
+  }
+
   addObjects() {
-    this.addModels();
+    this.addModel(this.sonya, this.addSonyaAnimation);
     this.addSaturn();
     this.addRug();
+
+    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
+    setTimeout(() => {
+      this.startAnimations();
+    }, 3000);
   }
 }
 

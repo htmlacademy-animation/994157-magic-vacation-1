@@ -1,5 +1,5 @@
-import * as THREE from 'three';
 import {CAMERA_POSITION} from '../consts';
+import {degreesToRadians} from '../utils';
 
 export const LIGHTS = [
   {
@@ -8,7 +8,7 @@ export const LIGHTS = [
     intensity: 0.84,
     position: {
       x: 0,
-      y: -CAMERA_POSITION * Math.tan(15 * THREE.Math.DEG2RAD),
+      y: -CAMERA_POSITION * Math.tan(degreesToRadians(15)),
       z: 0,
       // y: CAMERA_POSITION * Math.tan(-15 * THREE.Math.DEG2RAD),
       // z: CAMERA_POSITION,

@@ -4,11 +4,13 @@ import {BaseObject} from './base-object';
 // import {GUI} from 'dat.gui';
 
 export class ModelObjectCreator extends BaseObject {
-  constructor(objectWithSettings) {
+  constructor(objectWithSettings, callbackAfterCreate) {
     super();
     this.figure = objectWithSettings;
     this.objLoader = new OBJLoader();
     this.loaderGltf = new GLTFLoader();
+    this.obj3d = null;
+    this.callbackAfterCreate = callbackAfterCreate;
 
     this.create();
   }
@@ -34,6 +36,7 @@ export class ModelObjectCreator extends BaseObject {
           // this.addAxisToNode(child);
         }
       });
+      this.obj3d = obj3d;
 
       if (typeof callback === `function`) {
         callback.call(null, obj3d);
@@ -59,13 +62,17 @@ export class ModelObjectCreator extends BaseObject {
     }
   }
 
+  getObjectByName(name) {
+    return this.obj3d.getObjectByName(name);
+  }
+
   create() {
     const {name} = this.figure;
     this.addName(name);
     // const gui = new GUI();
-    this.loadModel((mesh) => {
-      mesh.name = this.figure.name;
-      this.addGroupSandwich(mesh);
+    this.loadModel(async (mesh) => {
+      mesh.name = `mesh_${this.figure.name}`;
+      await this.addGroupSandwich(mesh);
       // if (this.figure.name === `watermelon`) {
       //   const elem = document.querySelector(`.dg.ac`);
       //   elem.style.zIndex = 1000;
@@ -78,6 +85,10 @@ export class ModelObjectCreator extends BaseObject {
 
       if (this.figure.placement) {
         this.place(this.figure.placement, this.inner);
+      }
+
+      if (this.callbackAfterCreate) {
+        this.callbackAfterCreate(this);
       }
     });
   }

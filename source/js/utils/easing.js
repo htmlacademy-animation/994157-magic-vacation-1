@@ -89,7 +89,6 @@ function easeInOutBack(x) {
 const easeOutQuad = makeEaseOut(easeInQuad);
 const easeInOutQuad = makeEaseInOut(easeInQuad);
 
-
 const _ = Object.freeze({
   easeLinear,
   easeInCubic,

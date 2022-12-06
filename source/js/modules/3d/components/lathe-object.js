@@ -1,5 +1,6 @@
 import {BaseObject} from './base-object';
 import * as THREE from 'three';
+import {degreesToRadians} from '../utils';
 
 export class LatheObject extends BaseObject {
   constructor() {
@@ -30,8 +31,8 @@ export class LatheObject extends BaseObject {
     if (degree) {
       const {from, to} = degree;
 
-      const phiStart = THREE.Math.DEG2RAD * from;
-      const phiLength = THREE.Math.DEG2RAD * (to - from);
+      const phiStart = degreesToRadians(from);
+      const phiLength = degreesToRadians(to - from);
 
       return new THREE.LatheGeometry(points, segments, phiStart, phiLength);
     } else {

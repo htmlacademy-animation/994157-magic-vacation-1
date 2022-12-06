@@ -5,22 +5,22 @@ import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 import {COLORS_MAP} from '../../config/colors';
 import {Room} from '../room';
 import {BaseObject} from '../../components/base-object';
+import {degreesToRadians} from '../../utils';
+import {Animation} from '../../../animation';
 
 class ShowmanAndCompassRoom extends Room {
   constructor() {
     super();
 
-    this.models = [
-      {
-        name: `compass`,
-        type: `gltf`,
-        path: `3d/module-6/rooms-scenes/objects/compass.gltf`,
-        shadow: {
-          receiveShadow: true,
-          castShadow: true,
-        },
-      }
-    ];
+    this.compass = {
+      name: `compass`,
+      type: `gltf`,
+      path: `3d/module-6/rooms-scenes/objects/compass.gltf`,
+      shadow: {
+        receiveShadow: true,
+        castShadow: true,
+      },
+    };
 
     const staticObject = {
       name: `scene1-static-output-3`,
@@ -42,6 +42,7 @@ class ShowmanAndCompassRoom extends Room {
       ...MATERIAL_REFLECTIVITY.soft,
       color: COLORS_MAP.MountainBlue,
     };
+    this.addCompassAnimation = this.addCompassAnimation.bind(this);
     this.createRoom({staticObject, wallMaterial, floorMaterial});
 
     this.addObjects();
@@ -73,7 +74,7 @@ class ShowmanAndCompassRoom extends Room {
 
     const radius = 700;
     const blockCount = 5;
-    const angleBetweenBlocks = 15 * THREE.Math.DEG2RAD;
+    const angleBetweenBlocks = degreesToRadians(15);
 
     const outerAngle = Math.PI / 2 - angleBetweenBlocks * blockCount;
 
@@ -108,11 +109,29 @@ class ShowmanAndCompassRoom extends Room {
 
   }
 
+  addCompassAnimation(compassObj) {
+    const compass = compassObj.getObjectByName(`Compas`);
+
+    this.animations.push(new Animation({
+      func: (progress, {currentTime, startTime}) => {
+        const time = (currentTime - startTime) / 1000;
+        const sine = Math.sin(2 * time);
+        compass.rotation.z = degreesToRadians(15) * sine;
+      },
+      duration: `infinite`,
+    }));
+  }
+
   addObjects() {
-    this.addModels();
+    this.addModel(this.compass, this.addCompassAnimation);
     this.addSnowMan();
     this.addRoad();
     this.addRoadBlocks();
+
+    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
+    setTimeout(() => {
+      this.startAnimations();
+    }, 3000);
   }
 }
 

@@ -13,6 +13,7 @@ import {SCENE_INDEX_BY_NAME, SCENES} from './config/scenes';
 import {BUBBLES} from './config/bubbles';
 import {Apartment} from './rooms/apartment';
 import {Intro} from './rooms';
+import {degreesToRadians} from './utils';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -269,7 +270,7 @@ class Scene3dStory extends Scene3d {
     const positionY = 700;
     this.camera.position.set(0, positionY, positionZ);
     this.orbitControls.target.set(0,
-        positionY - positionZ * Math.tan(15 * THREE.Math.DEG2RAD),
+        positionY - positionZ * Math.tan(degreesToRadians(15)),
         0);
     this.orbitControls.update();
     const apartment = new Apartment(this.svgObjectsLoader);

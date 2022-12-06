@@ -4,6 +4,7 @@ import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 import {Room} from '../room';
 import * as THREE from 'three';
+import {Animation} from '../../../animation';
 
 class PyramidAndCactusRoom extends Room {
   constructor() {
@@ -23,17 +24,26 @@ class PyramidAndCactusRoom extends Room {
         },
         placement: {
           position: {
-            x: 80,
-            y: 90,
-            z: 480
+            x: 0,
+            y: 105,
+            z: 160
           },
           rotate: {
             x: -150,
             y: -90,
             z: 0
           },
-          scale: 1.1
-        }
+          scale: 1.5
+        },
+        position: {
+          x: 80,
+          y: 20,
+          z: 330
+        },
+        animation: {
+          amplitude: 1.2,
+          factor: 0.3,
+        },
       },
       {
         name: `leaf`,
@@ -48,9 +58,9 @@ class PyramidAndCactusRoom extends Room {
         },
         placement: {
           position: {
-            x: 80,
+            x: 0,
             y: 300,
-            z: 400
+            z: 30
           },
           rotate: {
             x: 166,
@@ -58,7 +68,16 @@ class PyramidAndCactusRoom extends Room {
             z: 0
           },
           scale: 2.5
-        }
+        },
+        position: {
+          x: 80,
+          y: 20,
+          z: 330
+        },
+        animation: {
+          amplitude: 1,
+          factor: 0.4,
+        },
       },
     ];
 
@@ -83,9 +102,31 @@ class PyramidAndCactusRoom extends Room {
       color: COLORS_MAP.BrightBlue,
     };
 
+    this.addFigureAnimation = this.addFigureAnimation.bind(this);
+
     this.createRoom({staticObject, wallMaterial, floorMaterial});
 
     this.addObjects();
+  }
+
+  addFigureAnimation(shapesWithObjects) {
+    shapesWithObjects.forEach((group) => {
+      const {figure: {animation, position}} = group;
+      const {amplitude, factor} = animation;
+      const object = group.root;
+
+      if (position) {
+        group.setPosition(position);
+      }
+
+      this.animations.push(new Animation({
+        func: (progress, {currentTime, startTime}) => {
+          const time = ((currentTime - startTime) / 300) % 16;
+          object.rotation.x = factor * Math.exp(-0.2 * time) * Math.cos(amplitude * time + Math.PI / 2);
+        },
+        duration: `infinite`
+      }));
+    });
   }
 
   addLantern() {
@@ -122,9 +163,18 @@ class PyramidAndCactusRoom extends Room {
     this.addObject(pyramid);
   }
 
+  addSvgShapes(loader) {
+    super.addSvgShapes(loader, this.addFigureAnimation);
+  }
+
   addObjects() {
     this.addPyramid();
     this.addLantern();
+
+    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
+    setTimeout(() => {
+      this.startAnimations();
+    }, 3000);
   }
 }
 
