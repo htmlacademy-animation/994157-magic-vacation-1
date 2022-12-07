@@ -283,8 +283,8 @@ class Scene3dStory extends Scene3d {
 
   initScreenObjects() {
     this.svgObjectsLoader.createMap().then(() => {
-      // this.addIntro();
-      this.addApartment();
+      this.addIntro();
+      // this.addApartment();
       // eslint-disable-next-line no-console
     }).catch((e) => console.warn(e));
   }
