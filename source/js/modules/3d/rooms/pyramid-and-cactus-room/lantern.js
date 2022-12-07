@@ -1,6 +1,6 @@
 import {BaseObject} from '../../components/base-object';
 import * as THREE from 'three';
-import {getConeRadius} from '../../utils';
+import {degreesToRadians, getConeRadius} from '../../utils';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 
@@ -106,7 +106,7 @@ class Lantern extends BaseObject {
     boxMesh.position.set(0, this.lightBox.height / 2 + this.lightBoxBottom.height / 2, 0);
 
     boxMesh.rotation.copy(
-        new THREE.Euler(0, 45 * THREE.Math.DEG2RAD, 0),
+        new THREE.Euler(0, degreesToRadians(45), 0),
         `XYZ`
     );
 
@@ -126,7 +126,7 @@ class Lantern extends BaseObject {
     lightBoxTopMesh.position.set(0, this.lightBox.height + this.lightBoxBottom.height, 0);
 
     lightBoxTopMesh.rotation.copy(
-        new THREE.Euler(0, 45 * THREE.Math.DEG2RAD, 0),
+        new THREE.Euler(0, degreesToRadians(45), 0),
         `XYZ`
     );
 

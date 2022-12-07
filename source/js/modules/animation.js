@@ -23,6 +23,7 @@ export class Animation {
 
     this.timeoutId = null;
     this.requestId = null;
+    this.currentIterationCount = 1;
   }
 
 
@@ -83,6 +84,11 @@ export class Animation {
 
             if (this.isFinished) {
               this.stop();
+
+              if (this.options.iterationCount && (this.options.iterationCount === `infinite` || this.currentIterationCount < this.options.iterationCount)) {
+                this.currentIterationCount += 1;
+                this.start();
+              }
 
               if (typeof this.options.callback === `function`) {
                 this.options.callback();

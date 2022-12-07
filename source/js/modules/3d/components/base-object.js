@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {degreesToRadians} from '../utils';
 
 export class BaseObject extends THREE.Group {
   constructor() {
@@ -45,7 +46,7 @@ export class BaseObject extends THREE.Group {
   setRotate(rotate, object = this) {
     const {x = 0, y = 0, z = 0} = rotate;
     object.rotation.copy(
-        new THREE.Euler(x * THREE.Math.DEG2RAD, y * THREE.Math.DEG2RAD, z * THREE.Math.DEG2RAD),
+        new THREE.Euler(degreesToRadians(x), degreesToRadians(y), degreesToRadians(z)),
         `XYZ`
     );
   }
@@ -67,7 +68,7 @@ export class BaseObject extends THREE.Group {
     const {position, rotate, scale} = placement;
 
     if (position) {
-      this.setPosition(position);
+      this.setPosition(position, object);
     }
 
     if (rotate) {
@@ -80,6 +81,7 @@ export class BaseObject extends THREE.Group {
   }
 
   addAxisToNode(node, axisSize = 200) {
+    // The X axis is red. The Y axis is green. The Z axis is blue.
     node.geometry.computeBoundingBox();
 
     const bounds = node.geometry.boundingBox;

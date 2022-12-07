@@ -3,6 +3,7 @@ import {BaseSceneItem} from '../components/base-scene-item';
 import {Animation} from '../../animation';
 import _ from '../../../utils/easing';
 import {tick} from '../../../utils/keyframe-tools';
+import {GUI} from 'dat.gui';
 
 export class Apartment extends BaseSceneItem {
   constructor(svgObjectsLoader) {
@@ -135,9 +136,16 @@ export class Apartment extends BaseSceneItem {
     this.addRooms();
     this.addModel(this.suitcase, this.addSuitcaseAnimation);
 
+    const gui = new GUI();
+    const elem = document.querySelector(`.dg.ac`);
+    elem.style.zIndex = 1000;
+    const folder = gui.addFolder(`apartment`);
+    folder.add(this.rotation, `y`, -Math.PI * 2, Math.PI * 2, 0.01);
+    folder.open();
+
     // todo добавит старт анимации при загрузке страницы после синхронизации двух сцен
     setTimeout(() => {
       this.startAnimations();
-    }, 500);
+    }, 1500);
   }
 }

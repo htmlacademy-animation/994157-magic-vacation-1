@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {BaseObject} from '../../components/base-object';
 import {COLORS_MAP} from '../../config/colors';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
+import {degreesToRadians} from '../../utils';
 
 class Snowman extends BaseObject {
   constructor() {
@@ -77,7 +78,7 @@ class Snowman extends BaseObject {
     const smallBallMesh = this.getSmallBallMesh();
     const noseMesh = this.getNoseMesh();
 
-    noseMesh.rotation.x = 90 * THREE.Math.DEG2RAD;
+    noseMesh.rotation.x = degreesToRadians(90);
     noseMesh.position.set(0, 0, 43);
 
     head.add(smallBallMesh, noseMesh);
