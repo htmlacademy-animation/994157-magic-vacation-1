@@ -225,17 +225,24 @@ export class Intro extends BaseSceneItem {
         name: `suitcase`,
         type: `gltf`,
         placement: {
-          scale: 0.4,
-          position: {
-            x: -60,
-            y: -120,
-            z: 150
-          },
           rotate: {
             x: 35,
             y: 220,
             z: 20
           },
+        },
+        animation: {
+          from: {
+            scale: 0,
+            position: {
+              x: 0,
+              y: 0,
+              z: 0
+            },
+          },
+          to: {
+            scale: 0.4,
+          }
         },
         path: `3d/module-6/scene-0-objects/suitcase.gltf`,
       },
@@ -257,7 +264,7 @@ export class Intro extends BaseSceneItem {
             }
           },
           to: {
-            scale: 1,
+            scale: 1.5,
             position: {
               x: -600,
               y: -240,
@@ -271,7 +278,6 @@ export class Intro extends BaseSceneItem {
             y: 189,
             z: 45
           },
-          scale: 1.8
         },
         path: `3d/module-6/scene-0-objects/watermelon.gltf`,
       }];
@@ -327,7 +333,7 @@ export class Intro extends BaseSceneItem {
     this.addObject(behindKeyhole);
   }
 
-  addBounceAnimation(object) {
+  addBounceAnimation(object, delay = 2000) {
     const amplitude = (0.5 + Math.random() / 2) * 25;
     const period = 3 + 10 * Math.random();
 
@@ -338,18 +344,18 @@ export class Intro extends BaseSceneItem {
           amplitude * Math.sin((2 * Math.PI * time) / period);
       },
       duration: `infinite`,
-      delay: 2000,
+      delay,
       easing: _.easeOutCubic,
     }));
   }
 
-  addAppearAnimation(object, animation) {
+  addAppearAnimation(object, animation, delay = 500) {
     const {from, to} = animation;
     this.animations.push(new Animation({
       func: (progress) => {
         // scale
         if (to.scale !== undefined) {
-          object.setScale(to.scale * progress, object.root);
+          object.setScale(to.scale * progress, object.inner);
         }
 
         if (from.rotate !== undefined) {
@@ -363,16 +369,18 @@ export class Intro extends BaseSceneItem {
           object.setRotate(rotate, object.root);
         }
 
-        // position
-        const position = {
-          x: to.position.x * progress,
-          y: to.position.y * progress,
-          z: to.position.z * progress,
-        };
-        object.setPosition(position);
+        if (to.position) {
+          // position
+          const position = {
+            x: to.position.x * progress,
+            y: to.position.y * progress,
+            z: to.position.z * progress,
+          };
+          object.setPosition(position);
+        }
       },
       duration: 1500,
-      delay: 500,
+      delay,
       easing: _.easeOutCubic,
     }));
   }
@@ -393,14 +401,90 @@ export class Intro extends BaseSceneItem {
     this.addBounceAnimation(saturn.root);
   }
 
+  addSuitcaseAnimation(suitcase) {
+    const {figure: {animation}} = suitcase;
+
+    const rotateAnimation = {
+      x: -95,
+      y: 33,
+      z: 48,
+    };
+
+    this.animations.push(new Animation({
+      func: (progress) => {
+        // rotate
+        const progressReversed = 1 - progress;
+        const rotate = {
+          x: rotateAnimation.x + 13 * progress,
+          y: rotateAnimation.y + 7 * progress,
+          z: rotateAnimation.z * progressReversed,
+        };
+        suitcase.setRotate(rotate, suitcase.root);
+      },
+      duration: 500,
+      delay: 800,
+      easing: _.easeInOutSine,
+    }));
+
+    this.animations.push(new Animation({
+      func: (progress) => {
+        // rotate
+        const progressReversed = 1 - progress;
+        const rotate = {
+          x: -82 * progressReversed,
+          y: 40 * progressReversed,
+          z: 0,
+        };
+        suitcase.setRotate(rotate, suitcase.root);
+      },
+      duration: 500,
+      delay: 1300,
+      easing: _.easeInOutSine,
+    }));
+
+    this.animations.push(new Animation({
+      func: (progress) => {
+        // position
+        const position = {
+          x: 0,
+          y: 80 * progress,
+          z: 60 * progress,
+        };
+        suitcase.setPosition(position);
+      },
+      duration: 500,
+      delay: 800,
+      easing: _.easeInOutSine,
+    }));
+
+    this.animations.push(new Animation({
+      func: (progress) => {
+        // position
+        const position = {
+          x: -60 * progress,
+          y: 80 - 220 * progress,
+          z: 60 + progress * 60,
+        };
+        suitcase.setPosition(position);
+      },
+      duration: 500,
+      delay: 1300,
+      easing: _.easeInOutSine,
+    }));
+
+
+    this.addAppearAnimation(suitcase, animation, 800);
+    this.addBounceAnimation(suitcase.root, 2200);
+  }
+
   addFigureAnimation(shapesWithObjects) {
     shapesWithObjects.forEach((group) => {
-      const {figure: {animation}} = group;
+      const {figure: {animation, name}} = group;
 
       if (animation && animation.from) {
         const {scale, position, rotate} = animation.from;
         if (scale !== undefined) {
-          group.setScale(scale, group.root);
+          group.setScale(scale, group.inner);
         }
         if (rotate) {
           group.setRotate(rotate, group.root);
@@ -410,8 +494,12 @@ export class Intro extends BaseSceneItem {
           group.setPosition(position);
         }
 
-        this.addAppearAnimation(group, animation);
-        this.addBounceAnimation(group.root);
+        if (name === `suitcase`) {
+          this.addSuitcaseAnimation(group);
+        } else {
+          this.addAppearAnimation(group, animation);
+          this.addBounceAnimation(group.root);
+        }
       }
     });
   }
