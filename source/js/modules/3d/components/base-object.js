@@ -4,21 +4,24 @@ import {degreesToRadians} from '../utils';
 export class BaseObject extends THREE.Group {
   constructor() {
     super();
-
-    // root вкладываем в THREE.Group
+    // root вкладываем в THREE.Group(обьект сцены)
     this.root = new THREE.Group();
     // inner вкладываем в root
     this.inner = new THREE.Group();
+    // mesh вкладываем в inner
+    this.mesh = new THREE.Group();
   }
 
   addName(name) {
     this.name = name;
+    this.mesh.name = `mesh_${name}`;
     this.inner.name = `inner_${name}`;
     this.root.name = `root_${name}`;
   }
 
   addGroupSandwich(mesh) {
-    this.inner.add(mesh);
+    this.mesh.add(mesh);
+    this.inner.add(this.mesh);
     this.root.add(this.inner);
     this.add(this.root);
   }

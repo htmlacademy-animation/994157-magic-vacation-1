@@ -5,6 +5,7 @@ import {behindKeyhole} from './behind-keyhole';
 import {Saturn} from '../../components/saturn';
 import {Animation} from '../../../animation';
 import _ from '../../../../utils/easing';
+import {AirplaneRig} from './airplane-rig';
 
 export class Intro extends BaseSceneItem {
   constructor(svgObjectsLoader) {
@@ -200,27 +201,6 @@ export class Intro extends BaseSceneItem {
     ];
 
     this.models = [
-      {
-        name: `airplane`,
-        type: `obj`,
-        placement: {
-          position: {
-            x: 190,
-            y: 120,
-            z: 70
-          },
-          rotate: {
-            x: 50,
-            y: 140,
-            z: 0
-          },
-        },
-        material: {
-          ...MATERIAL_REFLECTIVITY.soft,
-          color: COLORS_MAP.White,
-        },
-        path: `3d/module-6/scene-0-objects/airplane.obj`,
-      },
       {
         name: `suitcase`,
         type: `gltf`,
@@ -504,10 +484,43 @@ export class Intro extends BaseSceneItem {
     });
   }
 
+  addAirPlane() {
+    const plane = new AirplaneRig();
+    this.add(plane);
+
+    const initialFightRadius = plane.flightRadius;
+    const flightAltitude = plane.flightHeight;
+    const initialRigRotationY = plane.rigRotationY;
+    const initialPlaneRotationZ = plane.planeRotationZ;
+    const initialPlaneIncline = plane.planeIncline;
+
+    this.animations.push(new Animation({
+      func: (progress) => {
+
+        const progressReversed = 1 - progress;
+        plane.flightRadius = (plane.maxFlightRadius - initialFightRadius) * progress;
+        plane.flightHeight = flightAltitude * progress;
+        plane.rigRotationY = initialRigRotationY * progressReversed;
+
+        plane.planeRotationZ = progress < 0.5 ? initialPlaneRotationZ - progress * Math.PI : initialPlaneRotationZ - 0.5 * Math.PI + (progress - 0.5) * Math.PI;
+
+        plane.planeIncline = initialPlaneIncline + (progress * Math.PI) / 5;
+
+        plane.invalidate();
+      },
+      duration: 2000,
+      delay: 1400,
+      easing: _.easeOutExpo,
+    }));
+
+    this.addBounceAnimation(plane.modelItem, 3400);
+  }
+
   addObjects() {
     this.addSvgShapes(this.svgObjectsLoader, this.addFigureAnimation);
     this.addModels(this.addFigureAnimation);
     this.addBehindKeyhole();
+    this.addAirPlane();
     this.addSaturn();
     // задержка старта всей анимации 1.4s
     // todo добавит старт анимации при загрузке страницы после синхронизации двух сцен
