@@ -30,7 +30,7 @@ export class AirplaneRig extends BaseObject {
     this._flightHeight = 200;
     this._flightHeightChanged = true;
 
-    this._rigRotationY = -180;
+    this._rigRotationY = -205;
     this._rigRotationYChanged = true;
 
     this._planeRotationZ = 0;

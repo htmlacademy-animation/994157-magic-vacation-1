@@ -309,7 +309,7 @@ export class Intro extends BaseSceneItem {
   }
 
   addBehindKeyhole() {
-    behindKeyhole.position.set(0, 0, -10);
+    behindKeyhole.position.set(0, 0, -100);
     this.addObject(behindKeyhole);
   }
 

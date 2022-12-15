@@ -1,4 +1,3 @@
-import {CAMERA_POSITION} from '../consts';
 import {degreesToRadians} from '../utils';
 
 export const LIGHTS = [
@@ -8,10 +7,8 @@ export const LIGHTS = [
     intensity: 0.84,
     position: {
       x: 0,
-      y: -CAMERA_POSITION * Math.tan(degreesToRadians(15)),
-      z: 0,
-      // y: CAMERA_POSITION * Math.tan(-15 * THREE.Math.DEG2RAD),
-      // z: CAMERA_POSITION,
+      y: -1000 * Math.tan(degreesToRadians(15)),
+      z: -3000
     }
   },
   {
@@ -39,9 +36,5 @@ export const LIGHTS = [
     decay: 2,
     distance: 2500,
     castShadow: true,
-  },
-  // {
-  //   type: `AmbientLight`,
-  //   color: 0x404040
-  // },
+  }
 ];
