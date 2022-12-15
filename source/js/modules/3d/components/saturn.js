@@ -49,6 +49,8 @@ export class Saturn extends BaseObject {
       }
     };
 
+    this.name = `saturn`;
+
     this.addObject();
   }
 

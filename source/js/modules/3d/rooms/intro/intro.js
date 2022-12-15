@@ -266,7 +266,7 @@ export class Intro extends BaseSceneItem {
       placement: {
         scale: 0.5,
         rotate: {
-          x: -10,
+          x: 10,
           y: 0,
           z: 10,
         },
@@ -286,7 +286,7 @@ export class Intro extends BaseSceneItem {
           }
         },
         to: {
-          scale: 1,
+          scale: 0.5,
           position: {
             x: 350,
             y: -120,
@@ -309,7 +309,7 @@ export class Intro extends BaseSceneItem {
   }
 
   addBehindKeyhole() {
-    behindKeyhole.position.set(0, 0, -10);
+    behindKeyhole.position.set(0, 0, -100);
     this.addObject(behindKeyhole);
   }
 
@@ -331,6 +331,7 @@ export class Intro extends BaseSceneItem {
 
   addAppearAnimation(object, animation, delay = 500) {
     const {from, to} = animation;
+
     this.animations.push(new Animation({
       func: (progress) => {
         // scale
@@ -369,7 +370,7 @@ export class Intro extends BaseSceneItem {
     const saturn = new Saturn({isShadowed: false, withMoon: false});
     saturn.place(this.saturn.placement, saturn.inner);
 
-    saturn.setScale(this.saturn.animation.from.scale, saturn.root);
+    saturn.setScale(this.saturn.animation.from.scale, saturn.inner);
     saturn.setRotate(this.saturn.animation.from.rotate, saturn.root);
     saturn.setPosition(this.saturn.animation.from.position);
     this.addObject(saturn);

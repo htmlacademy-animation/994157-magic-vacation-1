@@ -1,11 +1,10 @@
 import * as THREE from 'three';
-// import {GUI} from 'dat.gui';
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation} from '../animation';
-import {CAMERA_POSITION, IMAGE_WIDTH} from './consts';
+import {IMAGE_WIDTH} from './consts';
 import {SvgObjectsLoader} from './svg';
 import {SVG_SHAPES} from './config/svg-shapes';
 import {LIGHTS} from './config/lights';
@@ -13,7 +12,7 @@ import {SCENE_INDEX_BY_NAME, SCENES} from './config/scenes';
 import {BUBBLES} from './config/bubbles';
 import {Apartment} from './rooms/apartment';
 import {Intro} from './rooms';
-import {degreesToRadians} from './utils';
+import {CameraRig} from './components/camera-rig';
 
 class Scene3dStory extends Scene3d {
   constructor() {
@@ -36,18 +35,7 @@ class Scene3dStory extends Scene3d {
 
   setCameraPosition(screenName) {
     const sceneName = screenName === SCREEN_NAMES.STORY ? this.storyScreen : screenName;
-    const sceneIndex = this.getSceneIndex(sceneName);
-    this.camera.position.x = IMAGE_WIDTH * sceneIndex;
-
-    this.orbitControls.target.set(this.camera.position.x, 5, 0);
-    this.orbitControls.update();
-
-    if (sceneName === STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS) {
-      this.startAnimations();
-    } else {
-      this.stopAnimations();
-    }
-    this.render();
+    this.cameraRig.setCameraPosition(sceneName);
   }
 
   updateScreen({detail}) {
@@ -84,6 +72,7 @@ class Scene3dStory extends Scene3d {
     return {map: {value: texture.map}, hasHueShift: {value: false}, hasBubbles: {value: false}};
   }
 
+  // не используется
   addSceneItem(texture, index) {
     const geometry = new THREE.PlaneBufferGeometry(1024, 512);
     const material = getRawShaderMaterial(this.getUniforms(texture));
@@ -103,6 +92,7 @@ class Scene3dStory extends Scene3d {
     this.scene.add(plane);
   }
 
+  // не используется
   initTextures() {
     const loadManager = new THREE.LoadingManager();
     const textureLoader = new THREE.TextureLoader(loadManager);
@@ -117,7 +107,6 @@ class Scene3dStory extends Scene3d {
         this.addSceneItem(texture, index);
       });
       this.initAnimations();
-      this.setLight();
       this.render();
     };
   }
@@ -190,10 +179,7 @@ class Scene3dStory extends Scene3d {
   getLight() {
     const light = new THREE.Group();
     const helper = new THREE.Group();
-    // const gui = new GUI();
-    // let counter = 0;
 
-    // todo: разобраться со светом
     LIGHTS.forEach(({type, color, intensity, position, distance, decay, castShadow}) => {
       const lightColor = new THREE.Color(color);
       switch (type) {
@@ -205,6 +191,15 @@ class Scene3dStory extends Scene3d {
           this.scene.add(lightTarget);
           light.add(lightUnit);
           helper.add(new THREE.DirectionalLightHelper(lightUnit, 50));
+
+          // const gui = new GUI();
+          // const elem = document.querySelector(`.dg.ac`);
+          // elem.style.zIndex = 1000;
+          // const folder = gui.addFolder(`this light ${index}`);
+          // folder.add(lightUnit.position, `x`, -5000, 5000, 1);
+          // folder.add(lightUnit.position, `y`, -5000, 5000, 1);
+          // folder.add(lightUnit.position, `z`, -5000, 5000, 1);
+          // folder.open();
           break;
         }
 
@@ -225,15 +220,6 @@ class Scene3dStory extends Scene3d {
           const cameraHelper = new THREE.CameraHelper(lightUnit.shadow.camera);
           this.scene.add(cameraHelper);
           light.add(lightUnit);
-
-          // const pointLightFolder = gui.addFolder(`PointLight ${counter}`);
-          // pointLightFolder.add(lightUnit, `distance`, 0, 100, 0.01);
-          // pointLightFolder.add(lightUnit, `decay`, 0, 4, 0.1);
-          // pointLightFolder.add(lightUnit.position, `x`, -1500, 1500, 10);
-          // pointLightFolder.add(lightUnit.position, `y`, -1500, 1500, 10);
-          // pointLightFolder.add(lightUnit.position, `z`, -1500, 1500, 10);
-          // pointLightFolder.open();
-          // counter += 1;
           break;
         }
 
@@ -247,13 +233,6 @@ class Scene3dStory extends Scene3d {
     return light;
   }
 
-  setLight() {
-    const light = this.getLight();
-    light.position.z = this.camera.position.z;
-    // light.position.y = this.camera.position.y;
-    this.scene.add(light);
-  }
-
   addSceneObject(object) {
     this.scene.add(object);
     this.render();
@@ -261,32 +240,30 @@ class Scene3dStory extends Scene3d {
 
   addIntro() {
     const intro = new Intro(this.svgObjectsLoader);
+    intro.position.set(0, 0, 0);
     this.addSceneObject(intro);
-    this.setLight();
   }
 
   addApartment() {
-    const positionZ = 2150;
-    const positionY = 700;
-    this.camera.position.set(0, positionY, positionZ);
-    this.orbitControls.target.set(0,
-        positionY - positionZ * Math.tan(degreesToRadians(15)),
-        0);
-    this.orbitControls.update();
     const apartment = new Apartment(this.svgObjectsLoader);
-    // apartment.rotateY(-1 * Math.PI / 4);
-    apartment.rotateY(-1 * Math.PI / 4);
+    apartment.position.set(0, -700, -3270);
     this.addSceneObject(apartment);
-
-    this.setLight();
   }
 
   initScreenObjects() {
     this.svgObjectsLoader.createMap().then(() => {
       this.addIntro();
-      // this.addApartment();
+      this.addApartment();
       // eslint-disable-next-line no-console
     }).catch((e) => console.warn(e));
+  }
+
+  initCameraRig(camera) {
+    this.cameraRig = new CameraRig();
+    this.cameraRig.addObjectToCameraNull(camera);
+    this.scene.add(this.cameraRig);
+    const light = this.getLight();
+    this.cameraRig.addObjectToCameraNull(light);
   }
 
   init() {
@@ -298,14 +275,14 @@ class Scene3dStory extends Scene3d {
       camera
     } = setup3d({initialWidth: this.width, initialHeight: this.height, fov: 35});
     const canvas = document.getElementById(`animation-screen`);
-    camera.position.z = CAMERA_POSITION;
     scene.add(camera);
     this.renderer = renderer;
     this.scene = scene;
     this.camera = camera;
+    this.initCameraRig(camera);
     this.appendRendererToDOMElement(this.renderer, canvas);
     this.setListener();
-    this.addDeveloperHelpers({camera: this.camera, canvas, scene});
+    // this.addDeveloperHelpers({camera: this.camera, canvas, scene});
 
     this.renderer.setAnimationLoop(() => {
       this.render();
