@@ -17,7 +17,7 @@ export const LIGHTS = [
     intensity: 0.60,
     position: {
       x: -785,
-      y: 800,
+      y: -350,
       z: -710,
     },
     decay: 2,
