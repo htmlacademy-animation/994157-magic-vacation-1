@@ -66,6 +66,7 @@ class ShowmanAndCompassRoom extends Room {
   }
 
   addRoad() {
+    road.setPosition({x: 0, y: 0, z: 15});
     this.addObject(road);
   }
 

@@ -94,6 +94,7 @@ class DogAndSuitcaseRoom extends Room {
 
   addRug() {
     const rug = new Rug();
+    rug.position.z = -20;
     this.addObject(rug);
   }
 

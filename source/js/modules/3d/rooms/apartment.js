@@ -1,8 +1,5 @@
 import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom} from '../rooms';
 import {BaseSceneItem} from '../components/base-scene-item';
-import {Animation} from '../../animation';
-import _ from '../../../utils/easing';
-import {tick} from '../../../utils/keyframe-tools';
 
 export class Apartment extends BaseSceneItem {
   constructor(svgObjectsLoader) {
@@ -65,7 +62,6 @@ export class Apartment extends BaseSceneItem {
       path: `3d/module-6/scene-0-objects/suitcase.gltf`,
     };
 
-    this.addSuitcaseAnimation = this.addSuitcaseAnimation.bind(this);
     this.create();
   }
 
@@ -77,63 +73,8 @@ export class Apartment extends BaseSceneItem {
     });
   }
 
-  addSuitcaseAnimation(suitcaseGroup) {
-    const {figure: {animation, keyframe}} = suitcaseGroup;
-    const {from, to} = animation;
-    suitcaseGroup.setPosition(from.position);
-
-    this.animations.push(new Animation({
-      func: (progress) => {
-        const position = {
-          x: to.position.x,
-          y: from.position.y - from.position.y * progress,
-          z: to.position.z,
-        };
-        suitcaseGroup.setPosition(position);
-      },
-      duration: 500,
-      delay: 500,
-      easing: _.easeOutCubic,
-    }));
-
-    let fromIndex = 0;
-    let toIndex = 1;
-
-    const {times, values} = keyframe;
-
-    this.animations.push(new Animation({
-      func: (progress) => {
-        const percent = progress * 100;
-
-        if (percent > times[toIndex]) {
-          fromIndex += 1;
-          toIndex += 1;
-        }
-
-        const fromValueY = values[fromIndex];
-        const toValueY = values[toIndex];
-
-        const tickProgress = (percent - times[fromIndex]) / (times[toIndex] - times[fromIndex]);
-
-        const otherValue = tick(1 / Math.sqrt(fromValueY), 1 / Math.sqrt(toValueY), tickProgress);
-
-        const scale = {
-          x: otherValue,
-          y: tick(fromValueY, toValueY, tickProgress),
-          z: otherValue,
-        };
-
-        suitcaseGroup.setScale(scale, suitcaseGroup.inner);
-      },
-      duration: 1300,
-      delay: 500,
-      easing: _.easeOutCubic,
-    }));
-  }
-
   create() {
     this.addRooms();
-    this.addModel(this.suitcase, this.addSuitcaseAnimation);
     this.rotateY(-1 * Math.PI / 4);
 
     // todo добавит старт анимации при загрузке страницы после синхронизации двух сцен
