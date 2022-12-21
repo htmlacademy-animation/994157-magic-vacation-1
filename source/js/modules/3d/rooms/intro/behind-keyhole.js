@@ -43,8 +43,8 @@ class BehindKeyhole extends BaseObject {
 
     let opacity;
 
-    const fullOpacityBreakpoint = -3700;
-    const noOpacityBreakpoint = -3000;
+    const fullOpacityBreakpoint = -2200;
+    const noOpacityBreakpoint = -1800;
 
     if (depth < fullOpacityBreakpoint) {
       opacity = 1;

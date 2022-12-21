@@ -185,7 +185,7 @@ class Scene3dStory extends Scene3d {
     const light = new THREE.Group();
     const helper = new THREE.Group();
 
-    LIGHTS.forEach(({type, color, intensity, position, distance, decay, castShadow}, index) => {
+    LIGHTS.forEach(({type, color, intensity, position, distance, decay, castShadow}) => {
       const lightColor = new THREE.Color(color);
 
       if (lightType !== type) {
@@ -222,7 +222,9 @@ class Scene3dStory extends Scene3d {
             // lightUnit.shadow.mapSize.height = this.height;
             lightUnit.shadow.mapSize.width = 1024;
             lightUnit.shadow.mapSize.height = 1024;
-            lightUnit.shadow.camera.near = 0.5;
+            // сглаживаем тени, убираем артефакты отражений
+            lightUnit.shadow.bias = -0.005;
+            lightUnit.shadow.camera.near = 100;
             lightUnit.shadow.camera.far = distance;
             lightUnit.shadow.camera.visible = true;
           }
@@ -286,10 +288,12 @@ class Scene3dStory extends Scene3d {
     this.cameraRig.addObjectToCameraNull(camera);
     this.scene.add(this.cameraRig);
     const dirLight = this.getLight(`DirectionalLight`);
+    const ambientLight = new THREE.AmbientLight(`#fff`, 0.05);
+    dirLight.add(ambientLight);
     this.cameraRig.addObjectToCameraNull(dirLight);
 
     const pointerLight = this.getLight(`PointLight`);
-    pointerLight.position.z = this.cameraRig.getMinDepth();
+    pointerLight.position.z = CameraRig.getMinDepth();
     this.cameraRig.addObjectToRotationAxis(pointerLight);
     this.cameraRig.addObjectToRotationAxis(this.suitcase);
 
