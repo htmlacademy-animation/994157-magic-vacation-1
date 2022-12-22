@@ -32,9 +32,16 @@ export class Intro extends BaseSceneItem {
           to: {
             scale: 1,
             position: {
-              x: -460,
-              y: 270,
-              z: 140
+              album: {
+                x: -460,
+                y: 270,
+                z: 140
+              },
+              portrait: {
+                x: -180,
+                y: 370,
+                z: 140,
+              }
             },
           }
         },
@@ -74,9 +81,12 @@ export class Intro extends BaseSceneItem {
           to: {
             scale: 1,
             position: {
-              x: -320,
-              y: -20,
-              z: 90
+              album: {
+                x: -320,
+                y: -20,
+                z: 90
+              },
+              portrait: {x: -160, y: 20, z: 90}
             },
           }
         },
@@ -116,9 +126,12 @@ export class Intro extends BaseSceneItem {
           to: {
             scale: 1,
             position: {
-              x: 140,
-              y: -260,
-              z: 50
+              album: {
+                x: 140,
+                y: -260,
+                z: 50
+              },
+              portrait: {x: 30, y: -330, z: 50}
             },
           }
         },
@@ -158,9 +171,12 @@ export class Intro extends BaseSceneItem {
           to: {
             scale: 1,
             position: {
-              x: 500,
-              y: 290,
-              z: 100
+              album: {
+                x: 500,
+                y: 290,
+                z: 100
+              },
+              portrait: {x: 150, y: 290, z: 100}
             },
           }
         },
@@ -246,9 +262,12 @@ export class Intro extends BaseSceneItem {
           to: {
             scale: 1.5,
             position: {
-              x: -600,
-              y: -240,
-              z: 200
+              album: {
+                x: -600,
+                y: -240,
+                z: 200
+              },
+              portrait: {x: -200, y: -240, z: 200},
             },
           }
         },
@@ -288,9 +307,12 @@ export class Intro extends BaseSceneItem {
         to: {
           scale: 0.5,
           position: {
-            x: 350,
-            y: -120,
-            z: 140
+            album: {
+              x: 350,
+              y: -120,
+              z: 140
+            },
+            portrait: {x: 150, y: -150, z: 140}
           },
           rotate: {
             x: 0,
@@ -301,9 +323,18 @@ export class Intro extends BaseSceneItem {
       }
     };
 
+    this.shapesWithObjects = [];
+
+    this.isPortrait = window.innerWidth < window.innerHeight;
+
     this.addAppearAnimation = this.addAppearAnimation.bind(this);
     this.addBounceAnimation = this.addBounceAnimation.bind(this);
     this.addFigureAnimation = this.addFigureAnimation.bind(this);
+
+    this.onResize = this.onResize.bind(this);
+    this.resetSaturnPosition = this.resetSaturnPosition.bind(this);
+
+    window.addEventListener(`resize`, this.onResize);
 
     this.addObjects();
   }
@@ -351,11 +382,13 @@ export class Intro extends BaseSceneItem {
         }
 
         if (to.position) {
+          const exactPosition = this.isPortrait ? to.position.portrait : to.position.album;
+
           // position
           const position = {
-            x: to.position.x * progress,
-            y: to.position.y * progress,
-            z: to.position.z * progress,
+            x: exactPosition.x * progress,
+            y: exactPosition.y * progress,
+            z: exactPosition.z * progress,
           };
           object.setPosition(position);
         }
@@ -368,6 +401,8 @@ export class Intro extends BaseSceneItem {
 
   addSaturn() {
     const saturn = new Saturn({isShadowed: false, withMoon: false});
+    this.saturn.object = saturn;
+
     saturn.place(this.saturn.placement, saturn.inner);
 
     saturn.setScale(this.saturn.animation.from.scale, saturn.inner);
@@ -459,6 +494,7 @@ export class Intro extends BaseSceneItem {
   }
 
   addFigureAnimation(shapesWithObjects) {
+    this.shapesWithObjects = [...this.shapesWithObjects, ...shapesWithObjects];
     shapesWithObjects.forEach((group) => {
       const {figure: {animation, name}} = group;
 
@@ -528,5 +564,40 @@ export class Intro extends BaseSceneItem {
     setTimeout(() => {
       this.startAnimations();
     }, 500);
+  }
+
+  resetSaturnPosition(positionType) {
+    const {animation: {to: {position}}} = this.saturn;
+    const exactPosition = position[positionType];
+    this.saturn.object.position.set(...Object.values(exactPosition));
+  }
+
+  onResize() {
+    const isPortrait = window.innerWidth < window.innerHeight;
+
+    if (this.isPortrait === isPortrait) {
+      return;
+    }
+
+    this.isPortrait = isPortrait;
+    const positionType = isPortrait ? `portrait` : `album`;
+
+    this.resetSaturnPosition(positionType);
+
+    this.shapesWithObjects.forEach((object) => {
+      const {figure: {animation}} = object;
+
+      if (animation) {
+        const {to: {position}} = animation;
+
+        if (position) {
+          const exactPosition = position[positionType];
+
+          if (exactPosition) {
+            object.position.set(...Object.values(exactPosition));
+          }
+        }
+      }
+    });
   }
 }

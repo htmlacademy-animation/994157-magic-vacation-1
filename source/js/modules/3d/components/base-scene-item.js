@@ -12,6 +12,7 @@ export class BaseSceneItem extends THREE.Group {
 
   addSvgShapes(svgObjectsLoader, callback) {
     const svgGroup = new THREE.Group();
+    svgGroup.name = `svgGroup`;
     const figureWithObjects = [];
     this.svgShapes.forEach((shape) => {
       const paths = svgObjectsLoader.getPaths(shape.name);
