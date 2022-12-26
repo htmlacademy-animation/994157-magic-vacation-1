@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import {degreesToRadians} from '../utils';
+import {isMobile} from '../../../utils/is-mobile';
+import {textureLoader} from '../helpers/texture-loader';
 
 export class BaseObject extends THREE.Group {
   constructor() {
@@ -13,6 +15,10 @@ export class BaseObject extends THREE.Group {
 
     this.animations = [];
     this.isRunningAnimations = false;
+
+    this.isMobile = isMobile();
+
+    this.textureLoader = textureLoader;
   }
 
   addName(name) {
@@ -40,7 +46,17 @@ export class BaseObject extends THREE.Group {
     }
   }
 
-  createMaterial({color, ...rest}) {
+  createMaterial({color, type, ...rest}) {
+    if (this.isMobile) {
+      return new THREE.MeshMatcapMaterial({
+        ...(color && {
+          color: new THREE.Color(color)
+        }),
+        matcap: textureLoader.matcapsMaterial[type],
+        ...rest,
+      });
+    }
+
     return new THREE.MeshStandardMaterial({
       ...(color && {
         color: new THREE.Color(color)
