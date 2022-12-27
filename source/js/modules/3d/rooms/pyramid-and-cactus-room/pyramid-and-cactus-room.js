@@ -6,7 +6,7 @@ import {Room} from '../room';
 import * as THREE from 'three';
 import {Animation} from '../../../animation';
 
-class PyramidAndCactusRoom extends Room {
+export class PyramidAndCactusRoom extends Room {
   constructor() {
     super();
 
@@ -82,9 +82,7 @@ class PyramidAndCactusRoom extends Room {
     ];
 
     const staticObject = {
-      name: `scene1-static-output-2`,
-      type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf`,
+      name: `pyramid-and-cactus-room`,
       shadow: {
         receiveShadow: true,
         castShadow: true,
@@ -163,19 +161,16 @@ class PyramidAndCactusRoom extends Room {
     this.addObject(pyramid);
   }
 
-  addSvgShapes(loader) {
-    super.addSvgShapes(loader, this.addFigureAnimation);
+  addSvgShapes() {
+    super.addSvgShapes(this.addFigureAnimation);
   }
 
   addObjects() {
     this.addPyramid();
     this.addLantern();
 
-    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
     setTimeout(() => {
       this.startAnimations();
-    }, 3000);
+    }, 300);
   }
 }
-
-export const pyramidAndCactusRoom = new PyramidAndCactusRoom();

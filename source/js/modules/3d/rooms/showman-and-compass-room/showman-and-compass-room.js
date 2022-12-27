@@ -8,14 +8,12 @@ import {BaseObject} from '../../components/base-object';
 import {degreesToRadians} from '../../utils';
 import {Animation} from '../../../animation';
 
-class ShowmanAndCompassRoom extends Room {
+export class ShowmanAndCompassRoom extends Room {
   constructor() {
     super();
 
     this.compass = {
       name: `compass`,
-      type: `gltf`,
-      path: `3d/module-6/rooms-scenes/objects/compass.gltf`,
       shadow: {
         receiveShadow: true,
         castShadow: true,
@@ -23,9 +21,7 @@ class ShowmanAndCompassRoom extends Room {
     };
 
     const staticObject = {
-      name: `scene1-static-output-3`,
-      type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene3-static-output-1.gltf`,
+      name: `showman-and-compass-room`,
       shadow: {
         receiveShadow: true,
         castShadow: true,
@@ -129,11 +125,8 @@ class ShowmanAndCompassRoom extends Room {
     this.addRoad();
     this.addRoadBlocks();
 
-    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
     setTimeout(() => {
       this.startAnimations();
-    }, 3000);
+    }, 300);
   }
 }
-
-export const showmanAndCompassRoom = new ShowmanAndCompassRoom();

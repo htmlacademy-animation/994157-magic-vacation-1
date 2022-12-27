@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import {SvgObjectCreator} from '../svg';
-import {ModelObjectCreator} from './model-object-creator';
+import {SvgObjectCreator} from '../helpers/svg-object-creator';
+import {ModelObjectCreator} from '../helpers/model-object-creator';
+import {objectStore} from '../helpers/objectStore';
 
 export class BaseSceneItem extends THREE.Group {
   constructor() {
@@ -10,12 +11,12 @@ export class BaseSceneItem extends THREE.Group {
     this.animations = [];
   }
 
-  addSvgShapes(svgObjectsLoader, callback) {
+  addSvgShapes(callback) {
     const svgGroup = new THREE.Group();
     svgGroup.name = `svgGroup`;
     const figureWithObjects = [];
     this.svgShapes.forEach((shape) => {
-      const paths = svgObjectsLoader.getPaths(shape.name);
+      const {paths} = objectStore.getItem(shape.name);
 
       const svgObject = new SvgObjectCreator({...shape, paths});
       svgGroup.add(svgObject);

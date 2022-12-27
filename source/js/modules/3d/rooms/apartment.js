@@ -1,73 +1,34 @@
-import {dogAndSuitcaseRoom, pyramidAndCactusRoom, showmanAndCompassRoom, aiSonyaRoom} from '../rooms';
+import {DogAndSuitcaseRoom, PyramidAndCactusRoom, ShowmanAndCompassRoom, AiSonyaRoom} from '../rooms';
 import {BaseSceneItem} from '../components/base-scene-item';
 
 export class Apartment extends BaseSceneItem {
-  constructor(svgObjectsLoader) {
+  constructor() {
     super();
-    this.svgObjectsLoader = svgObjectsLoader;
-
     this.rooms = [
       {
-        item: dogAndSuitcaseRoom,
+        item: new DogAndSuitcaseRoom(),
         rotateY: 0,
       },
       {
-        item: pyramidAndCactusRoom,
+        item: new PyramidAndCactusRoom(),
         rotateY: Math.PI / 2,
       },
       {
-        item: showmanAndCompassRoom,
+        item: new ShowmanAndCompassRoom(),
         rotateY: Math.PI,
       },
       {
-        item: aiSonyaRoom,
+        item: new AiSonyaRoom(),
         rotateY: -Math.PI / 2,
       }
     ];
-
-    this.suitcase = {
-      name: `suitcase`,
-      type: `gltf`,
-      placement: {
-        rotate: {
-          x: 0,
-          y: 20,
-          z: 0
-        },
-      },
-      animation: {
-        from: {
-          position: {
-            x: 300,
-            y: 140,
-            z: 790
-          },
-        },
-        to: {
-          position: {
-            x: 300,
-            y: 0,
-            z: 790
-          },
-        },
-      },
-      keyframe: {
-        times: [0, 50, 65, 85, 100],
-        values: [1, 1.1, 0.85, 1.05, 1],
-      },
-      shadow: {
-        receiveShadow: true,
-        castShadow: true,
-      },
-      path: `3d/module-6/scene-0-objects/suitcase.gltf`,
-    };
 
     this.create();
   }
 
   addRooms() {
     this.rooms.forEach(({item, rotateY}) => {
-      item.addSvgShapes(this.svgObjectsLoader);
+      item.addSvgShapes();
       item.rotateY(rotateY);
       this.add(item);
     });

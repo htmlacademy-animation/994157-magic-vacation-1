@@ -1,29 +1,22 @@
-import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {BaseObject} from './base-object';
+import {BaseObject} from '../components/base-object';
+import {objectStore} from './objectStore';
+import {Object3D} from 'three';
 
 export class ModelObjectCreator extends BaseObject {
   constructor(objectWithSettings, callbackAfterCreate) {
     super();
     this.figure = objectWithSettings;
-    this.objLoader = new OBJLoader();
-    this.loaderGltf = new GLTFLoader();
     this.obj3d = null;
     this.callbackAfterCreate = callbackAfterCreate;
 
     this.create();
   }
 
-  loadObj(path, onComplete) {
-    this.objLoader.load(path, onComplete);
-  }
+  getModel(callback) {
+    const storedItem = objectStore.getItem(this.figure.name);
+    const obj3d = new Object3D().copy(storedItem, true);
 
-  loadGltf(path, onComplete) {
-    this.loaderGltf.load(path, onComplete);
-  }
-
-  loadModel(callback) {
-    const onComplete = (obj3d) => {
+    try {
       obj3d.traverse((child) => {
         if (child.isMesh) {
           if (this.figure.material) {
@@ -35,29 +28,15 @@ export class ModelObjectCreator extends BaseObject {
           // this.addAxisToNode(child);
         }
       });
-      this.obj3d = obj3d;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(this.figure.name, obj3d, `error get Model`, e);
+      return;
+    }
+    this.obj3d = obj3d;
 
-      if (typeof callback === `function`) {
-        callback.call(null, obj3d);
-      }
-    };
-
-    const onGltfComplete = (gltf) => {
-      if (!gltf.scene) {
-        return;
-      }
-      onComplete(gltf.scene);
-    };
-
-    switch (this.figure.type) {
-      case `gltf`:
-        this.loadGltf(this.figure.path, onGltfComplete);
-
-        break;
-      default:
-        this.loadObj(this.figure.path, onComplete);
-
-        break;
+    if (typeof callback === `function`) {
+      callback.call(null, obj3d);
     }
   }
 
@@ -68,7 +47,7 @@ export class ModelObjectCreator extends BaseObject {
   create() {
     const {name} = this.figure;
     this.addName(name);
-    this.loadModel(async (mesh) => {
+    this.getModel(async (mesh) => {
       mesh.name = `mesh_${this.figure.name}`;
       await this.addGroupSandwich(mesh);
 

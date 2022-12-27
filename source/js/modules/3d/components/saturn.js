@@ -74,7 +74,6 @@ export class Saturn extends BaseObject {
 
     this.ring.mesh = ringMesh;
     planet.add(sphereMesh, ringMesh);
-    this.addAxisToNode(sphereMesh);
 
     return planet;
   }

@@ -8,9 +8,8 @@ import _ from '../../../../utils/easing';
 import {AirplaneRig} from './airplane-rig';
 
 export class Intro extends BaseSceneItem {
-  constructor(svgObjectsLoader) {
+  constructor() {
     super();
-    this.svgObjectsLoader = svgObjectsLoader;
 
     this.svgShapes = [
       {
@@ -219,7 +218,6 @@ export class Intro extends BaseSceneItem {
     this.models = [
       {
         name: `suitcase`,
-        type: `gltf`,
         placement: {
           rotate: {
             x: 35,
@@ -240,11 +238,9 @@ export class Intro extends BaseSceneItem {
             scale: 0.4,
           }
         },
-        path: `3d/module-6/scene-0-objects/suitcase.gltf`,
       },
       {
         name: `watermelon`,
-        type: `gltf`,
         animation: {
           from: {
             scale: 0,
@@ -278,7 +274,6 @@ export class Intro extends BaseSceneItem {
             z: 45
           },
         },
-        path: `3d/module-6/scene-0-objects/watermelon.gltf`,
       }];
 
     this.saturn = {
@@ -554,16 +549,11 @@ export class Intro extends BaseSceneItem {
   }
 
   addObjects() {
-    this.addSvgShapes(this.svgObjectsLoader, this.addFigureAnimation);
+    this.addSvgShapes(this.addFigureAnimation);
     this.addModels(this.addFigureAnimation);
     this.addBehindKeyhole();
     this.addAirPlane();
     this.addSaturn();
-    // задержка старта всей анимации 1.4s
-    // todo добавит старт анимации при загрузке страницы после синхронизации двух сцен
-    setTimeout(() => {
-      this.startAnimations();
-    }, 500);
   }
 
   resetSaturnPosition(positionType) {

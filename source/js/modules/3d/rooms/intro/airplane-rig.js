@@ -1,7 +1,7 @@
 import {BaseObject} from '../../components/base-object';
 import {MATERIAL_REFLECTIVITY} from '../../config/material-reflectivity';
 import {COLORS_MAP} from '../../config/colors';
-import {ModelObjectCreator} from '../../components/model-object-creator';
+import {ModelObjectCreator} from '../../helpers/model-object-creator';
 import {degreesToRadians} from '../../utils';
 
 export class AirplaneRig extends BaseObject {
@@ -9,7 +9,6 @@ export class AirplaneRig extends BaseObject {
     super();
     this.model = {
       name: `airplane`,
-      type: `obj`,
       placement: {
         position: {
           x: -100,
@@ -21,7 +20,6 @@ export class AirplaneRig extends BaseObject {
         ...MATERIAL_REFLECTIVITY.soft,
         color: COLORS_MAP.White,
       },
-      path: `3d/module-6/scene-0-objects/airplane.obj`,
     };
 
     this._flightRadius = 200;
