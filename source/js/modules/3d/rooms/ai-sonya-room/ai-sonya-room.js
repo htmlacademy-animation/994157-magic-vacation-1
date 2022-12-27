@@ -8,7 +8,7 @@ import {COLORS_MAP} from '../../config/colors';
 import {Animation} from '../../../animation';
 import {degreesToRadians} from '../../utils';
 
-class AiSonyaRoom extends Room {
+export class AiSonyaRoom extends Room {
   constructor() {
     super();
 
@@ -41,7 +41,6 @@ class AiSonyaRoom extends Room {
 
     this.sonya = {
       name: `sonya`,
-      type: `gltf`,
       placement: {
         position: {
           x: 440,
@@ -52,13 +51,10 @@ class AiSonyaRoom extends Room {
       shadow: {
         castShadow: true,
       },
-      path: `3d/module-6/rooms-scenes/objects/sonya.gltf`
     };
 
     const staticObject = {
-      name: `scene1-static-output-4`,
-      type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf`,
+      name: `ai-sonya-room`,
       shadow: {
         receiveShadow: true,
         castShadow: true,
@@ -148,11 +144,8 @@ class AiSonyaRoom extends Room {
     this.addSaturn();
     this.addRug();
 
-    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
     setTimeout(() => {
       this.startAnimations();
-    }, 3000);
+    }, 300);
   }
 }
-
-export const aiSonyaRoom = new AiSonyaRoom();

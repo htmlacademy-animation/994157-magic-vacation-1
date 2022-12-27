@@ -8,7 +8,7 @@ import bezierEasing from '../../../../utils/bezier-easing';
 import {Animation} from '../../../animation';
 import {degreesToRadians} from '../../utils';
 
-class DogAndSuitcaseRoom extends Room {
+export class DogAndSuitcaseRoom extends Room {
   constructor() {
     super();
     this.svgShapes = [
@@ -65,9 +65,7 @@ class DogAndSuitcaseRoom extends Room {
     };
 
     const staticObject = {
-      name: `scene1-static-output-1`,
-      type: `gltf`,
-      path: `3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf`,
+      name: `dog-and-suitcase-room`,
       shadow: {
         receiveShadow: true,
         castShadow: true,
@@ -174,12 +172,8 @@ class DogAndSuitcaseRoom extends Room {
     this.addRug();
     this.addSaturn();
 
-
-    // todo добавит старт анимации при пеерходе на слайд после синхронизации двух сцен
     setTimeout(() => {
       this.startAnimations();
-    }, 3000);
+    }, 300);
   }
 }
-
-export const dogAndSuitcaseRoom = new DogAndSuitcaseRoom();

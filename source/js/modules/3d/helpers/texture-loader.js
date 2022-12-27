@@ -2,20 +2,45 @@ import * as THREE from 'three';
 
 class TextureLoader {
   constructor() {
-    this.loadManager = new THREE.LoadingManager();
-    this.textureLoader = new THREE.TextureLoader(this.loadManager);
+    this.textureLoader = new THREE.TextureLoader();
     this.isInit = false;
     this.matcapsMaterial = {};
+    this.matcapsMaterial = {};
+
+    this.matcaps = [
+      {
+        name: `soft`,
+        src: `./img/module-7/matcaps/Soft-Mat.png`
+      },
+      {
+        name: `basic`,
+        src: `./img/module-7/matcaps/Basic-Mat.png`
+      },
+      {
+        name: `strong`,
+        src: `./img/module-7/matcaps/Strong-Mat-SnowColor.png`
+      }
+    ];
 
     this.init();
   }
 
   loadMatcapsMaterial() {
-    this.matcapsMaterial = {
-      soft: this.textureLoader.load(`./img/module-7/matcaps/Soft-Mat.png`),
-      basic: this.textureLoader.load(`./img/module-7/matcaps/Basic-Mat.png`),
-      strong: this.textureLoader.load(`./img/module-7/matcaps/Strong-Mat-SnowColor.png`),
-    };
+    this.matcapsMaterial = this.matcaps.reduce((accum, item) => {
+      this.textureLoader.load(item.src, (data) => {
+        accum[item.name] = data;
+      }, null);
+      return accum;
+    }, {});
+  }
+
+  loadModels() {
+    this.matcapsMaterial = this.matcaps.reduce((accum, item) => {
+      this.textureLoader.load(item.src, (data) => {
+        accum[item.name] = data;
+      }, null);
+      return accum;
+    }, {});
   }
 
   init() {
