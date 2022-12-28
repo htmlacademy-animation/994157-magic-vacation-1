@@ -1,6 +1,7 @@
 precision mediump float;
 uniform sampler2D map;
 varying vec2 vUv;
+uniform float aspectRatio;
 
 uniform bool hasHueShift;
 
@@ -27,11 +28,10 @@ vec4 blendBorder(vec4 texel) {
 }
 
 void drawBubble(in Bubble bubble, inout vec4 texel) {
-    float imageAspectRatio = 2.0;
     float borderWidth = 0.002;
     float bubbleRadius = bubble.radius;
-    vec2 currentPoint = vec2(vUv.x * imageAspectRatio, vUv.y);
-    vec2 bubbleCenter = vec2(bubble.center.x * imageAspectRatio, bubble.center.y);
+    vec2 currentPoint = vec2(vUv.x * aspectRatio, vUv.y);
+    vec2 bubbleCenter = vec2(bubble.center.x * aspectRatio, bubble.center.y);
 
     float distance = length(currentPoint - bubbleCenter);
 
