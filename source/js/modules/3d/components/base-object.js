@@ -114,6 +114,10 @@ export class BaseObject extends THREE.Group {
   }
 
   startAnimations() {
+    if (this.isRunningAnimations) {
+      return;
+    }
+
     this.isRunningAnimations = true;
     this.animations.forEach((anim) => {
       anim.start();
@@ -121,7 +125,6 @@ export class BaseObject extends THREE.Group {
   }
 
   stopAnimations() {
-    this.isRunningAnimations = false;
     this.animations.forEach((anim) => {
       anim.stop();
     });

@@ -1,10 +1,12 @@
 import * as THREE from 'three';
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
+import {ShaderPass} from "three/examples/jsm/postprocessing/ShaderPass";
 import {Scene3d} from './scene-3d';
 import {setup3d} from './setup-3d';
 import {SCREEN_NAMES, STORY_SLIDE_NAMES} from '../../constants';
 import {getRawShaderMaterial} from './shaders';
 import {Animation} from '../animation';
-import {IMAGE_WIDTH} from './consts';
 import {LIGHTS} from './config/lights';
 import {SCENE_INDEX_BY_NAME} from './config/scenes';
 import {BUBBLES} from './config/bubbles';
@@ -45,6 +47,14 @@ class Scene3dStory extends Scene3d {
     this.cameraRig.setCameraPosition(sceneName);
   }
 
+  resetComposeAnimation(screenName) {
+    if (screenName === SCREEN_NAMES.STORY && this.storyScreen === STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS) {
+      this.startAnimations();
+    } else {
+      this.stopAnimations();
+    }
+  }
+
   updateScreen({detail}) {
     const {screenName} = detail;
     if (screenName !== SCREEN_NAMES.TOP && screenName !== SCREEN_NAMES.STORY) {
@@ -63,11 +73,13 @@ class Scene3dStory extends Scene3d {
       }, 1400);
     }
     this.setCameraPosition(screenName);
+    this.resetComposeAnimation(screenName);
   }
 
   updateSlide({detail}) {
     this.setCameraPosition(detail.slideName);
     this.storyScreen = detail.slideName;
+    this.resetComposeAnimation(SCREEN_NAMES.STORY);
   }
 
   setListener() {
@@ -76,59 +88,7 @@ class Scene3dStory extends Scene3d {
     document.body.addEventListener(`resize`, this.resize);
   }
 
-  getUniforms(texture) {
-    if (texture.bubbles) {
-      return {
-        map: {value: texture.map},
-        hasHueShift: {value: true},
-        hueShift: {value: 0},
-        bubbles: {value: texture.bubbles},
-        hasBubbles: {value: true}
-      };
-    }
-    return {map: {value: texture.map}, hasHueShift: {value: false}, hasBubbles: {value: false}};
-  }
-
-  // не используется
-  addSceneItem(texture, index) {
-    const geometry = new THREE.PlaneBufferGeometry(1024, 512);
-    const material = getRawShaderMaterial(this.getUniforms(texture));
-    material.needsUpdate = true;
-    this.materials[texture.name] = material;
-    const plane = new THREE.Mesh(geometry, material);
-    plane.position.x = IMAGE_WIDTH * index;
-
-    // room
-    if (texture.room) {
-      const room = texture.room;
-      room.addSvgShapes();
-      room.position.x = plane.position.x;
-      this.scene.add(room);
-    }
-
-    this.scene.add(plane);
-  }
-
-  // не используется
-  initTextures() {
-    const loadManager = new THREE.LoadingManager();
-    const textureLoader = new THREE.TextureLoader(loadManager);
-    const textures = Object.entries([]).map(([name, {image, ...other}]) => ({
-      name,
-      map: textureLoader.load(image),
-      ...other
-    }));
-
-    loadManager.onLoad = () => {
-      textures.forEach((texture, index) => {
-        this.addSceneItem(texture, index);
-      });
-      this.initAnimations();
-      this.render();
-    };
-  }
-
-  initHueShiftAnimation() {
+  initHueShiftAnimation(material) {
     const maxHueShift = 0.25;
     let hueShiftDegrees = maxHueShift;
     const halfPi = Math.PI / 2;
@@ -142,15 +102,16 @@ class Scene3dStory extends Scene3d {
           hueShiftDegrees = Math.random() * maxHueShift;
         }
 
-        this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.hueShift.value = -hueShiftDegrees * sinusValue;
-        this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].needsUpdate = true;
+        material.uniforms.hueShift.value = -hueShiftDegrees * sinusValue;
+        material.needsUpdate = true;
         this.render();
       },
-      duration: `infinite`
+      duration: `infinite`,
+      delay: 300,
     }));
   }
 
-  initBubblesAnimations() {
+  initBubblesAnimations(material) {
     const getAmplitude = (progress) => {
       return Math.sin(20 * progress) * Math.exp(-0.5 * progress) / 30;
     };
@@ -163,12 +124,18 @@ class Scene3dStory extends Scene3d {
 
           const currentX = bubble.center.getComponent(0);
           cloned.setX(currentX + amplitudeX);
-          cloned.setY(progress + 0.05);
 
-          const currentBubbles = this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.bubbles.value;
+          const factor = bubble.radius + 0.01;
+          const positive = factor * progress;
+          const negative = factor * (progress - 1);
+
+
+          cloned.setY(progress + positive + negative);
+
+          const currentBubbles = material.uniforms.bubbles.value;
           currentBubbles[index] = {center: cloned, radius: bubble.radius};
-          this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].uniforms.bubbles.value = currentBubbles;
-          this.materials[STORY_SLIDE_NAMES.PYRAMID_AND_CACTUS].needsUpdate = true;
+          material.uniforms.bubbles.value = currentBubbles;
+          material.needsUpdate = true;
         },
         duration: 2000,
         delay: bubble.delay,
@@ -176,9 +143,9 @@ class Scene3dStory extends Scene3d {
     });
   }
 
-  initAnimations() {
-    this.initHueShiftAnimation();
-    this.initBubblesAnimations();
+  initAnimations(material) {
+    this.initHueShiftAnimation(material);
+    this.initBubblesAnimations(material);
   }
 
   startAnimations() {
@@ -326,6 +293,31 @@ class Scene3dStory extends Scene3d {
     this.cameraRig.addObjectToRotationAxis(this.suitcase);
   }
 
+  getEffectMaterial(texture) {
+    const uniform = {
+      map: new THREE.Uniform(texture),
+      hasHueShift: {value: true},
+      hueShift: {value: 0},
+      bubbles: {value: BUBBLES},
+      hasBubbles: {value: true},
+      aspectRatio: {value: window.innerWidth / window.innerHeight},
+    };
+    return getRawShaderMaterial(uniform);
+  }
+
+  initComposer() {
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.setPixelRatio(window.devicePixelRatio);
+
+    const renderPass = new RenderPass(this.scene, this.camera);
+    const effectMaterial = this.getEffectMaterial();
+    this.initAnimations(effectMaterial);
+    const effectPass = new ShaderPass(effectMaterial, `map`);
+
+    this.composer.addPass(renderPass);
+    this.composer.addPass(effectPass);
+  }
+
   init() {
     super.init();
     this.initScreenObjects();
@@ -342,6 +334,7 @@ class Scene3dStory extends Scene3d {
 
     // this.addDeveloperHelpers({camera: this.camera, canvas, scene});
     this.appendRendererToDOMElement(this.renderer, canvas);
+    this.initComposer();
     this.setListener();
 
     this.renderer.setAnimationLoop(() => {
@@ -381,11 +374,12 @@ class Scene3dStory extends Scene3d {
 
     // 3.3. Renderer resize
     this.renderer.setSize(width, height);
+    this.composer.setSize(width, height);
     this.render();
   }
 
   render() {
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     this.resizeInProgress = false;
   }
 }

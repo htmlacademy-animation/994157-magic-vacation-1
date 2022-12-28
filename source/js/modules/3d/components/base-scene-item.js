@@ -9,6 +9,7 @@ export class BaseSceneItem extends THREE.Group {
     this.svgShapes = [];
     this.models = [];
     this.animations = [];
+    this.isAnimationStarted = false;
   }
 
   addSvgShapes(callback) {
@@ -60,6 +61,11 @@ export class BaseSceneItem extends THREE.Group {
   }
 
   startAnimations() {
+    if (this.isAnimationStarted) {
+      return;
+    }
+
+    this.isAnimationStarted = true;
     this.animations.forEach((anim) => {
       anim.start();
     });
