@@ -1,7 +1,8 @@
-import {SCREEN_ACTIVE_SET, SCREEN_CHANGED_EVENT_TYPE, SCREEN_NAMES} from '../constants';
+import {GET_SUCCESS_MESSAGE, SCREEN_ACTIVE_SET, SCREEN_CHANGED_EVENT_TYPE, SCREEN_NAMES} from '../constants';
 import {GameTimer} from './game-timer';
 import {Scene2DSeaCalf} from './2d/scene-2d-sea-calf';
 import {Scene2DCrocodile} from './2d/scene-2d-crocodile';
+import {SonyaGame} from './2d/sonya-game';
 
 export class Game {
   constructor() {
@@ -14,6 +15,7 @@ export class Game {
     this.timer = new GameTimer();
     this.scene2DSeaCalf = new Scene2DSeaCalf();
     this.scene2DCrocodile = new Scene2DCrocodile();
+    this.sonya = new SonyaGame();
 
     this.showResultEls = document.querySelectorAll(`.js-show-result`);
     this.playBtn = document.querySelector(`.js-play`);
@@ -28,9 +30,11 @@ export class Game {
     this.onEndTimer = this.onEndTimer.bind(this);
     this.emitChangeDisplayEvent = this.emitChangeDisplayEvent.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.setSuccessScreen = this.setSuccessScreen.bind(this);
   }
 
   setCurrentResultScreen(targetId) {
+    this.hideSonya();
     this.activeGameScreen = targetId;
     const targetScreenEl = [].slice.call(this.resultScreens).find(function (el) {
       return el.getAttribute(`id`) === targetId;
@@ -113,7 +117,16 @@ export class Game {
     this.timer.stopTimer();
   }
 
+  showSonya() {
+    this.sonya.appear();
+  }
+
+  hideSonya() {
+    this.sonya.disappear();
+  }
+
   onEndTimer() {
+    this.hideSonya();
     this.showFailScreen();
   }
 
@@ -133,19 +146,29 @@ export class Game {
       if (isPlayScreen) {
         this.startTimer();
         this.setPlayScreenActive();
+        this.showSonya();
       } else {
         this.setCurrentResultScreen(this.activeGameScreen);
       }
     } else {
+      this.hideSonya();
       this.timer.stopTimer();
       this.hideScreens();
       this.screenGameEl.classList.remove(`screen--show`);
     }
   }
 
+  setSuccessScreen({detail}) {
+    const {screenElement} = detail;
+    this.hideScreens();
+    this.setCurrentResultScreen(screenElement);
+    this.timer.stopTimer();
+  }
+
   init() {
     this.timer.init(this.onEndTimer);
     document.body.addEventListener(SCREEN_CHANGED_EVENT_TYPE, this.checkScreen);
+    document.body.addEventListener(GET_SUCCESS_MESSAGE, this.setSuccessScreen);
 
     if (this.playBtn) {
       this.playBtn.addEventListener(`click`, this.restartGame);
