@@ -404,6 +404,27 @@
   }
 }
 
+.screen__sonya {
+  position: absolute;
+  z-index: 1;
+  right: -8.5rem;
+  bottom: 0;
+  width: 32.7rem;
+  height: 36.9rem;
+  object-fit: contain;
+  transform: scale(0);
+
+  @media (min-width: $stop-scaling) {
+    right: -85px;
+    width: 327px;
+    height: 369px;
+  }
+
+  @media (max-width: $tablet) and (orientation: portrait) {
+    opacity: 0;
+  }
+}
+
 .screen--prizes {
   .page[data-previos-active-screen='story'] & {
     transition-delay: 0ms;
@@ -412,33 +433,6 @@
 
 .screen--game {
   background-color: $c-dark;
-
-  &::before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    right: -8.5rem;
-    bottom: 0;
-    width: 32.7rem;
-    height: 36.9rem;
-    background-image: url("../img/sonya.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-
-    @include retina {
-      background-image: url("../img/sonya@2x.png");
-    }
-
-    @media (min-width: $stop-scaling) {
-      right: -85px;
-      width: 327px;
-      height: 369px;
-    }
-
-    @media (max-width: $tablet) and (orientation: portrait) {
-      opacity: 0;
-    }
-  }
 }
 
 .screen--result {

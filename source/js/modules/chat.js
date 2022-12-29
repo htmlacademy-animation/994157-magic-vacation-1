@@ -1,4 +1,21 @@
+import {GET_SUCCESS_MESSAGE, SCREEN_NAMES} from '../constants';
+
+const RESULT_TRIP_MESSAGE = `Это Антарктида?`;
+const RESULT_SUITCASE_MESSAGE = `Антарктида?`;
+
+const emitChangeDisplayEvent = (screenEl) => {
+  const event = new CustomEvent(GET_SUCCESS_MESSAGE, {
+    detail: {
+      'screenElement': screenEl
+    }
+  });
+
+  document.body.dispatchEvent(event);
+};
+
 export default () => {
+  let winScreen = null;
+  let message = ``;
   let messageForm = document.getElementById(`message-form`);
   let messageField = document.getElementById(`message-field`);
   let messageList = document.getElementById(`messages`);
@@ -6,6 +23,12 @@ export default () => {
 
   messageForm.addEventListener(`submit`, function (e) {
     e.preventDefault();
+
+    const checkWinScreen = () => {
+      if (winScreen) {
+        emitChangeDisplayEvent(winScreen);
+      }
+    };
 
     let scrollToBottom = function () {
       if (messageList.scrollHeight > chatBlock.offsetHeight) {
@@ -36,6 +59,16 @@ export default () => {
           answerText = `Нет`;
         }
 
+        if (message === RESULT_TRIP_MESSAGE.toLowerCase()) {
+          winScreen = SCREEN_NAMES.RESULT_TRIP;
+          answerText = `Да`;
+        }
+
+        if (message === RESULT_SUITCASE_MESSAGE.toLowerCase()) {
+          winScreen = SCREEN_NAMES.RESULT_SUITCASE;
+          answerText = `Да`;
+        }
+
         textEl.innerText = answerText;
         textEl.classList.add(`hidden`);
         answerEl.appendChild(textEl);
@@ -43,6 +76,7 @@ export default () => {
         scrollToBottom();
 
         setTimeout(function () {
+          checkWinScreen();
           let lastMessage = document.querySelector(`.chat__message--last`);
           if (lastMessage) {
             let lastMessagePlaceholder = lastMessage.querySelector(`.chat__placeholder`);
@@ -60,6 +94,7 @@ export default () => {
 
     let postQuestion = function () {
       if (messageField.value) {
+        message = messageField.value.toLowerCase();
         let messageEl = document.createElement(`li`);
         messageEl.classList.add(`chat__message`);
         let messageText = messageField.value;
